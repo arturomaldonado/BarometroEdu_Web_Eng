@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Data management using the Americas Barometer</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LAPOP_edu</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="instalando.html">Installing R and RStudio</a>
+    </li>
+    <li>
+      <a href="basica.html">Basic procedures</a>
+    </li>
+    <li>
+      <a href="bases.html">Importing datasets</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Initial steps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Manipulation.html">Data manipulation</a>
+    </li>
+    <li>
+      <a href="Expansion.html">Survey weights</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Describing and plotting data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Descriptivos.html">Descriptive statistics: nominal variables</a>
+    </li>
+    <li>
+      <a href="Descriptivos2.html">Descriptive statistics: ordinal variables</a>
+    </li>
+    <li>
+      <a href="Descriptivos3.html">Descriptive statistics: numerical variables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Basic inference
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="IC.html">Confidence intervals</a>
+    </li>
+    <li>
+      <a href="pruebat.html">Compararing 2 means</a>
+    </li>
+    <li>
+      <a href="anova.html">Comparing more than 2 means</a>
+    </li>
+    <li>
+      <a href="chi.html">Crosstables and chi-square analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="correlacion.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regresion1.html">Simple linear regresion</a>
+    </li>
+    <li>
+      <a href="regresion2.html">Multiple linear regresion</a>
+    </li>
+    <li>
+      <a href="logit.html">Logistic regresion</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapas.html">Maps</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Contact</a>
+</li>
+<li>
+  <a href="https://arturomaldonado.github.io/BarometroEdu_Web/index.html">Spanish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Data management using the Americas
+Barometer</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This document will cover basic aspects of data management, such as
+recoding a variable, selecting data, and calculating a new variable. At
+the end, there is a note about the statistical calculations considering
+the design effect.</p>
+</div>
+<div id="about-the-database" class="section level1">
+<h1>About the database</h1>
+<p>The data that we are going to use should be cited as follows: Source:
+Barometer of the Americas by the Latin American Public Opinion Project
+(LAPOP), wwww.LapopSurveys.org.</p>
+<p>In this document a registered database is loaded. This database is
+hosted in the “materials_edu” repository of LAPOP’s GitHub account.
+Through the library <code>rio</code> and the command
+<code>import</code>, this database can be imported from this repository,
+using the following code. The database is imported into the object
+“lapop18”.</p>
+<pre class="r"><code>library(rio)
+lapop18 &lt;- import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)</code></pre>
+<p>It is necessary to clarify that this database, imported from a SPSS
+file, loads the variables as numeric type (“num”).</p>
+</div>
+<div id="recoding-a-variable" class="section level1">
+<h1>Recoding a variable</h1>
+<p>In this section we will use the report “The Pulse of Democracy”,
+available <a
+href="https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf">here</a>.
+This report presents the results on support for democracy in the
+Americas. These results are based on the ING4 variable in the database.
+This variable is phrased as follows: ING4. <em>Changing the subject
+again, democracy may have problems, but it is better than any other form
+of government. To what extent do you agree or disagree with this
+statement?</em></p>
+<p>As the report indicates “the interviewees evaluate this phrase giving
+an answer that goes from 1 to 7, where 1 means”strongly disagree”and 7
+means “strongly agree”(p.11). To see the distribution of responses to
+this variable, you can use the <code>table</code> command.</p>
+<pre class="r"><code>table(lapop18$ing4)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5    6    7 
+## 1699 1470 3003 6089 6530 4673 6625</code></pre>
+<p>In this way, the observations (absolute frequencies) are calculated
+for each value of the variable The report indicates the form of
+recoding: “The responses are considered in the portion of the scale that
+indicates agreement, that is, the values from 5 to 7, to indicate the
+percentage that supports democracy” (p.11) . That is, the original
+variable ING4, on a scale of 1-7, has to be recoded into a new variable,
+following the next rule:</p>
+<ol style="list-style-type: decimal">
+<li>Values between 1-4 of ING4 become 0 in a new variable ing4r</li>
+<li>Values between 5-7 of ING4 become 1 in a new variable ing4r</li>
+</ol>
+<p>An example of how this recoded data is presented in the report can be
+seen in Graph 1.2. This shows the percentage of citizens who support
+democracy by country. That is, the percentage of interviewees who
+answered between 5 and 7 to the ING4 question in each country is shown.
+According to the recoding proposed, this graph would represent the
+percentage of interviewees who register a 1 in the recoded variable.</p>
+<p><img src="Graf1.2.png" width="350" /></p>
+<p>To recode a variable in R there are several ways. One of the most
+efficient ways to do this is by using the <code>recode</code> command
+from the<code>car</code> package. The <code>dplyr</code> package has
+a<code>recode</code> command that can confuse R. To avoid confusion we
+will use the <code>car :: recode</code> syntax for recoding, that is, to
+specify that the <code>recode</code> command from the <code>car</code>
+package be used and not from another. The recoded variable is saved as
+“lapop18  $ ing4rec”. Then the <code>table</code> command is used to
+describe this new variable.</p>
+<pre class="r"><code>library(car)
+lapop18$ing4rec &lt;- car::recode(lapop18$ing4, &quot;1:4=0; 5:7=1&quot;)
+table(lapop18$ing4rec)</code></pre>
+<pre><code>## 
+##     0     1 
+## 12261 17828</code></pre>
+<p>If the observations between 1 and 4 of the original variable (1699 +
+1470 + 3003 + 6089) are added, we see that it is the result that is
+obtained in the value 0 of the new variable (12261), as it was written
+in the recoding. It should also be noted that the database in the
+Environment now has one more variable, totaling 85 variables.</p>
+</div>
+<div id="case-selection" class="section level1">
+<h1>Case selection</h1>
+<p>The report indicates that “Figure 1.2 shows the percentage of people
+in each country who express support for democracy in 2018/19. Support
+for democracy ranges from a minimum of 45% in Honduras to a maximum of
+76.2% in Uruguay” (p.11).</p>
+<p>To replicate these results about Honduras and about Uruguay for
+2018/19, the data from these two countries could be selected. According
+to the questionnaire, which can be seen <span
+class="math display">\[here\]</span> (<a
+href="https://www.vanderbilt.edu/lapop/ab2018/AB2018-v12.0-Spa-190131_W.pdf"
+class="uri">https://www.vanderbilt.edu/lapop/ab2018/AB2018-v12.0-Spa-190131_W.pdf</a>),
+Honduras is country 4 and Uruguay is country 14 of the variable “pais”,
+which has also been imported as a numeric variable.</p>
+<p><img src="pais.png" width="552" /></p>
+<p>Selection of cases in R can be done in multiple ways. One way is to
+use the brackets <span class="math display">\[  \]</span>. Another way
+is using the <code>subset</code> command. With this command we select
+the observations of these countries and save this selection in a new
+dataframe “lapop2” using this last command (additionally a comment is
+included, which is marked with  #, which includes the syntax if you want
+to do it with []) . The “or” operator is included, denoted in R by “ |”.
+In this way, it is indicated that the observations of Honduras or
+Uruguay (<code>pais == 4 | pais == 14</code>) be selected.</p>
+<pre class="r"><code># lapop2 &lt;- lapop18[lapop18$pais == 4 | lapop18$pais==14, ]
+lapop2 &lt;- subset(lapop18, pais==4 | pais==14)
+table(lapop2$pais)</code></pre>
+<pre><code>## 
+##    4   14 
+## 1560 1581</code></pre>
+<p>The new dataframe “lapop2” has 3141 observations and 85 variables.
+The description of the variable “pais” shows that it only includes the
+cases of Honduras (2) and Uruguay (14). With this selection of data, you
+can calculate the percentages (relative frequencies) using the command
+<code>prop.table</code>. This command gives us the relative frequencies
+(in values between 0 and 1) of a table of frequencies calculated with
+<code>table</code>. These relative frequencies are multiplied by 100 to
+reproduce the percentage in each country. In this case, the [] are used
+to make the selection of cases from each country.</p>
+<pre class="r"><code>prop.table(table(lapop2$ing4rec[lapop2$pais==4]))*100</code></pre>
+<pre><code>## 
+##        0        1 
+## 54.98995 45.01005</code></pre>
+<pre class="r"><code>prop.table(table(lapop2$ing4rec[lapop2$pais==14]))*100</code></pre>
+<pre><code>## 
+##        0        1 
+## 23.80641 76.19359</code></pre>
+<p>These results are percentages (between 0 and 100), but include many
+decimal places. To round to a decimal, as shown in Graph 1.2, you can
+use the <code>round</code> command, where all the previous syntax is
+nested. In this command, in addition, you have to specify the number of
+decimal places you want, which in this case is 1.</p>
+<pre class="r"><code>round(prop.table(table(lapop2$ing4rec[lapop2$pais==4]))*100, 1)</code></pre>
+<pre><code>## 
+##  0  1 
+## 55 45</code></pre>
+<pre class="r"><code>round(prop.table(table(lapop2$ing4rec[lapop2$pais==14]))*100, 1)</code></pre>
+<pre><code>## 
+##    0    1 
+## 23.8 76.2</code></pre>
+<p>With this code, the results of the countries have been reproduced at
+the ends of FIgure 1.2 of the report.</p>
+<p>The report also indicates that the United States and Canada are
+excluded from the calculations. The database loaded as “lapop18”
+includes all the countries in the round. To exclude these two countries,
+you have to select the countries that are NOT the US. and Canada. This
+new selection can be saved in a new dataframe or it can be overwritten
+in the original dataframe, as it is done in this case because the
+exclusion of these countries is for all the calculations that follow.
+According to the questionnaire, the US has the code 40 and Canada, the
+code 41 in the variable “country”. To exclude them, countries with a
+code of less than 40 (or 35 or less) must be included. For this we can
+again use the <code>subset</code> command.</p>
+<pre class="r"><code>lapop18 &lt;- subset(lapop18, pais&lt;=35)</code></pre>
+<p>It can be observed in the Environment that the observations of the
+“lapop18” dataframe are reduced after running this code, since the
+observations of interviewees in these two countries have been
+eliminated. The number of observations goes from 31,050 to 28,042, a
+number that coincides with that of the database in .RData format that we
+used in the previous module and that we indicated that it did not
+include these countries.</p>
+</div>
+<div id="calculating-a-variable" class="section level1">
+<h1>Calculating a variable</h1>
+<p>A frequent LAPOP practice with the Americas Barometer data is the
+rescaling of variables. The report’s chapter on democratic legitimacy
+provides examples of this rescaling with variables related to support
+for the system. To calculate this system support index, we work with a
+set of five variables:</p>
+<p>B1. <em>To what extent do you think the courts of (country) guarantee
+a fair trial?</em> <span class="math display">\[Probe: If you believe
+that the courts do not guarantee justice at all, choose number 1; if you
+think the courts guarantee justice a lot, choose number 7 or choose a
+score in between\]</span>.</p>
+<p>B2. <em>To what extent do you respect the political institutions of
+(country)?</em></p>
+<p>B3. <em>To what extent do you think the basic rights of the citizen
+are well protected by the political system of (country)?</em></p>
+<p>B4. <em>To what extent are you proud to live under the political
+system of (country)?</em></p>
+<p>B6. <em>To what extent do you think the political system of (country)
+should be supported?</em></p>
+<p>As the report indicates “For each question, the original scale from 1
+(” Not at all “) to 7 (” Much “) is recoded on a scale from 0 to 100, in
+such a way that 0 indicates the lowest level of support for the
+political system. and 100 is the maximum level of support for the
+political system. This new scale follows the typical LAPOP recoding and
+can be interpreted as a measure of support in units, or degrees, on a
+continuous scale ranging from 0 to 100”(p. 34). To check the original
+scale of these variables, you can describe these variables using the
+<code>table</code> command.</p>
+<pre class="r"><code>table(lapop18$b1)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5    6    7 
+## 4089 4067 5881 6137 4215 1631 1371</code></pre>
+<pre class="r"><code>table(lapop18$b2)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5    6    7 
+## 2861 2152 2998 4153 5182 4448 5679</code></pre>
+<pre class="r"><code>table(lapop18$b3)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5    6    7 
+## 5080 4096 5153 5349 4219 2061 1491</code></pre>
+<pre class="r"><code>table(lapop18$b4)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5    6    7 
+## 5095 3206 3743 4557 4326 3041 3584</code></pre>
+<pre class="r"><code>table(lapop18$b6)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5    6    7 
+## 3713 2325 2971 4277 4616 3868 5572</code></pre>
+<p>It is observed that indeed all the variables run on a scale from 1 to
+7. To rescale a variable from an original scale from 1 to 7 to another
+from 0 to 100, the first thing to do is subtract 1 unit, so the variable
+would have a scale of 0 to 6, then divide it by 6, with which would vary
+between 0 and 1 and, finally, multiply it by 100. this is:</p>
+<p>Rescaled variable = ((original variable -1)/6)*100</p>
+<pre class="r"><code>lapop18$b1rec &lt;- ((lapop18$b1-1)/6)*100
+lapop18$b2rec &lt;- ((lapop18$b2-1)/6)*100
+lapop18$b3rec &lt;- ((lapop18$b3-1)/6)*100
+lapop18$b4rec &lt;- ((lapop18$b4-1)/6)*100
+lapop18$b6rec &lt;- ((lapop18$b6-1)/6)*100
+table(lapop18$b1rec)</code></pre>
+<pre><code>## 
+##                0 16.6666666666667 33.3333333333333               50 
+##             4089             4067             5881             6137 
+## 66.6666666666667 83.3333333333333              100 
+##             4215             1631             1371</code></pre>
+<p>With this transformation, it is observed that the 4,089 interviewees
+who scored 1 in question B1 now have a score of 0. The 4,067 who scored
+2 now have a score of 16.67, that is 2-1=1/6=0.1667*100=16.67. This same
+operation could be done with the <code>car :: recode</code> command,
+following the following recoding rule:</p>
+<ul>
+<li>Value of 1 in original variable is recoded as 0 in new variable</li>
+<li>Value of 2 in original variable is recoded as 16.67 in new
+variable</li>
+<li>Value of 3 in original variable is recoded as 33.33 in new
+variable</li>
+<li>Value of 4 in original variable is recoded as 50 in new
+variable</li>
+<li>Value of 5 in original variable is recoded as 66.67 in new
+variable</li>
+<li>Value of 6 in original variable is recoded as 83.33 in new
+variable</li>
+<li>Value of 7 in original variable is recoded as 100 in new
+variable</li>
+</ul>
+<p>This way of recoding, however, is not very efficient. It is simpler
+to use the formula to calculate the recoding. To calculate the system
+support index, the report indicates that “The system support index is
+the average of five questions: B1, B2, B3, B4 and B6” (p.46). In other
+words, with the rescaled variables, the average of these five variables
+has to be calculated for each individual (that is, in each row of the
+database). This could be done by calculating the average manually.</p>
+<p>System support = (b1rec + b2rec + b3rec + b4rec + b6rec)/5</p>
+<p>In R we have the <code>rowMeans</code> command that is used to
+calculate averages of certain columns for each row. The syntax
+<code>[, 86:90]</code> indicates that the average calculation will be
+performed by rows for all rows and using columns 86 to 90 of the
+“lapop18” dataframe (the calculation could be done for some particular
+rows by defining <code>[ row_n: row_m, 86:90]</code>). This average is
+saved in a new variable “support”, which is described.</p>
+<pre class="r"><code>lapop18$apoyo &lt;- rowMeans(lapop18[,86:90])
+table(lapop18$apoyo)</code></pre>
+<pre><code>## 
+##                0 3.33333333333333 6.66666666666667               10 
+##              634              368              439              525 
+## 13.3333333333333 16.6666666666667               20 23.3333333333333 
+##              527              550              834              745 
+## 26.6666666666667               30 33.3333333333333 36.6666666666667 
+##              810              911             1063             1086 
+##               40 43.3333333333333 46.6666666666667               50 
+##             1287             1317             1254             1487 
+## 53.3333333333333 56.6666666666667               60 63.3333333333333 
+##             1397             1408             1449             1243 
+## 66.6666666666667               70 73.3333333333333 76.6666666666667 
+##             1227             1113              988              827 
+##               80 83.3333333333333 86.6666666666667               90 
+##              820              572              445              369 
+## 93.3333333333333 96.6666666666667              100 
+##              245              131              210</code></pre>
+<p>With this index, it is possible to calculate the support for the
+average system for the last round of the AmericasBarometer, as well as
+the averages of each of the variables that make up the index. The
+<code>mean</code> command is used for the average and
+the<code>na.rm = T</code> specification is used to tell the command not
+to take into account the missing values of these variables. These
+statistics will be seen in more detail in other documents.</p>
+<pre class="r"><code>mean(lapop18$apoyo, na.rm=T)</code></pre>
+<pre><code>## [1] 48.79419</code></pre>
+<pre class="r"><code>mean(lapop18$b1rec, na.rm=T) #courts guarantee fair trial</code></pre>
+<pre><code>## [1] 41.06032</code></pre>
+<pre class="r"><code>mean(lapop18$b2rec, na.rm=T) #Respect for institutions</code></pre>
+<pre><code>## [1] 59.23937</code></pre>
+<pre class="r"><code>mean(lapop18$b3rec, na.rm=T) #Basic rights are protected</code></pre>
+<pre><code>## [1] 40.42406</code></pre>
+<pre class="r"><code>mean(lapop18$b4rec, na.rm=T) #Pride in the political system</code></pre>
+<pre><code>## [1] 47.41096</code></pre>
+<pre class="r"><code>mean(lapop18$b6rec, na.rm=T) #The political system should be supported</code></pre>
+<pre><code>## [1] 56.28337</code></pre>
+<p>These results are those shown in Figure 2.1 for the 2018/19 round.
+<img src="Graf2.1.png" width="629" /></p>
+</div>
+<div id="calculating-a-variable-by-condicional-way"
+class="section level1">
+<h1>Calculating a variable by condicional way</h1>
+<p>Sometimes the calculation of a variable does not only require the
+numerical transformation of the original variable, but the values of the
+new variable depend on the values of other variables. For example, the
+chapter “Social networks and political attitudes” of the report “The
+Pulse of Democracy” presents the results for the variables “WhatsApp
+user”, “Twitter user” and “Facebook user”. To calculate these variables,
+footnote 7 of this chapter indicates: “For each platform, users are
+identified with a combination of two sets of questions. First, those who
+respond positively to the questions are identified as users, SMEDIA1 /
+SMEDIA4 / SMEDIA7. Do you have a Facebook / Twitter / Whatsapp account?
+Then, those who answer”never” to the following questions, SMEDIA2 /
+SMEDIA5 / SMEDIA8, are recoded as non-users. How often do you view
+content on Facebook / Twitter / Whatsapp ? ” (p. 64).</p>
+<p><img src="smedia.png" width="466" /></p>
+<p>That is, the user is not only the one who has an account (SMEDIA1 =
+1), but the one who uses it with a certain frequency (SMEDIA2 = 1, 2, 3,
+4). In this way, the non-user can have an account, but never use it.
+Therefore, the variable “user” depends on the values of 2 variables. The
+encoding rule that follows is:</p>
+<ul>
+<li><p>Facebook user = 1 (he/she is a user) si SMEDIA1 = 1 (he/she has
+an account) y SMEDIA2 &lt;= 4 (he/she uses it with some
+frequency)</p></li>
+<li><p>Facebook user = 0 (he/she is not a user) si SMEDIA2 = 2 (he/she
+doesn´t have an account) o SMEDIA2 = 5 ( he/she has an account but never
+uses it)</p></li>
+</ul>
+<p>This rule transforms into the following R syntax, which uses the
+<code>ìfelse</code> command. This syntax includes the condition to
+assign values of 1 to a new variable and assigns all other observations
+the value of 0. These new variables are described using the
+<code>table</code> command to generate the absolute frequencies,the
+<code>prop.table</code> command for the relative frequencies and the
+<code>round</code> command to round the decimals. These commands will be
+seen in more detail in the following documents.</p>
+<pre class="r"><code>lapop18$fb_user &lt;- ifelse(lapop18$smedia1==1 &amp; lapop18$smedia2&lt;=4, 1, 0)
+lapop18$tw_user &lt;- ifelse(lapop18$smedia4==1 &amp; lapop18$smedia5&lt;=4, 1, 0)
+lapop18$wa_user &lt;- ifelse(lapop18$smedia7==1 &amp; lapop18$smedia8&lt;=4, 1, 0)
+round(prop.table(table(lapop18$fb_user))*100, 1)</code></pre>
+<pre><code>## 
+##    0    1 
+## 43.8 56.2</code></pre>
+<pre class="r"><code>round(prop.table(table(lapop18$tw_user))*100, 1)</code></pre>
+<pre><code>## 
+##    0    1 
+## 92.1  7.9</code></pre>
+<pre class="r"><code>round(prop.table(table(lapop18$wa_user))*100, 1)</code></pre>
+<pre><code>## 
+##    0    1 
+## 35.8 64.2</code></pre>
+<p>These results are those presented in Graph 3.1 of the report in the
+form of pie charts. These types of graphs will be seen in the next
+section.</p>
+<p><img src="Graf3.1.png" width="323" /></p>
+</div>
+<div id="design-effect-observation" class="section level1">
+<h1>Design effect observation</h1>
+<p>Both the results for system support and those of social network users
+differ from those that appear in the report for two reasons. First, to
+support the system, because “Values over time are calculated including
+only the countries that the Americas Barometer has studied regularly
+since 2006: Argentina, Brazil, Bolivia, Chile, Colombia, Costa Rica ,
+Dominican Republic, Ecuador, El Salvador, Guatemala, Honduras, Jamaica,
+Mexico, Nicaragua, Panama, Paraguay, Peru, Uruguay” (p.46). The code
+only filters the last round, which includes countries that are not on
+that list, such as the United States or Canada. On the other hand, the
+calculations reported in the publication include the use of expansion
+factors, which have not been included in these calculations, but which
+will be incorporated in other documents (see <a
+href="https://rpubs.com/arturo_maldonado/728626">here</a>).</p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this document we have seen the basic elements of data manipulation
+and transformation using the Americas Barometer. A variable has been
+recoded using the <code>recode</code> command, cases have been selected
+using <code>subset</code> and a new variable has been calculated
+algebraically and with the <code>ifelse</code> command.</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGF0YSBtYW5hZ2VtZW50IHVzaW5nIHRoZSBBbWVyaWNhcyBCYXJvbWV0ZXIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGZsYXRseQogICAgI2NvZGVfZm9sZGluZzogaGlkZQplZGl0b3Jfb3B0aW9uczogCiAgbWFya2Rvd246IAogICAgd3JhcDogc2VudGVuY2UKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KG1lc3NhZ2U9RkFMU0Usd2FybmluZz1GQUxTRSwgY2FjaGU9VFJVRSkKYGBgCgpgYGB7Y3NzIGNvbG9yLCBlY2hvPUZBTFNFfQouY29sdW1ucyB7ZGlzcGxheTogZmxleDt9CmgxIHtjb2xvcjogIzMzNjZDQzt9CmBgYAoKIyBJbnRyb2R1Y3Rpb24KClRoaXMgZG9jdW1lbnQgd2lsbCBjb3ZlciBiYXNpYyBhc3BlY3RzIG9mIGRhdGEgbWFuYWdlbWVudCwgc3VjaCBhcyByZWNvZGluZyBhIHZhcmlhYmxlLCBzZWxlY3RpbmcgZGF0YSwgYW5kIGNhbGN1bGF0aW5nIGEgbmV3IHZhcmlhYmxlLgpBdCB0aGUgZW5kLCB0aGVyZSBpcyBhIG5vdGUgYWJvdXQgdGhlIHN0YXRpc3RpY2FsIGNhbGN1bGF0aW9ucyBjb25zaWRlcmluZyB0aGUgZGVzaWduIGVmZmVjdC4KCiMgQWJvdXQgdGhlIGRhdGFiYXNlCgpUaGUgZGF0YSB0aGF0IHdlIGFyZSBnb2luZyB0byB1c2Ugc2hvdWxkIGJlIGNpdGVkIGFzIGZvbGxvd3M6IFNvdXJjZTogQmFyb21ldGVyIG9mIHRoZSBBbWVyaWNhcyBieSB0aGUgTGF0aW4gQW1lcmljYW4gUHVibGljIE9waW5pb24gUHJvamVjdCAoTEFQT1ApLCB3d3d3LkxhcG9wU3VydmV5cy5vcmcuCgpJbiB0aGlzIGRvY3VtZW50IGEgcmVnaXN0ZXJlZCBkYXRhYmFzZSBpcyBsb2FkZWQuClRoaXMgZGF0YWJhc2UgaXMgaG9zdGVkIGluIHRoZSAibWF0ZXJpYWxzX2VkdSIgcmVwb3NpdG9yeSBvZiBMQVBPUCdzIEdpdEh1YiBhY2NvdW50LgpUaHJvdWdoIHRoZSBsaWJyYXJ5IGByaW9gIGFuZCB0aGUgY29tbWFuZCBgaW1wb3J0YCwgdGhpcyBkYXRhYmFzZSBjYW4gYmUgaW1wb3J0ZWQgZnJvbSB0aGlzIHJlcG9zaXRvcnksIHVzaW5nIHRoZSBmb2xsb3dpbmcgY29kZS4KVGhlIGRhdGFiYXNlIGlzIGltcG9ydGVkIGludG8gdGhlIG9iamVjdCAibGFwb3AxOCIuCgpgYGB7ciBiYXNlfQpsaWJyYXJ5KHJpbykKbGFwb3AxOCA8LSBpbXBvcnQoImh0dHBzOi8vcmF3LmdpdGh1Yi5jb20vbGFwb3AtY2VudHJhbC9tYXRlcmlhbHNfZWR1L21haW4vTEFQT1BfQUJfTWVyZ2VfMjAxOF92MS4wLnNhdiIpCmBgYAoKSXQgaXMgbmVjZXNzYXJ5IHRvIGNsYXJpZnkgdGhhdCB0aGlzIGRhdGFiYXNlLCBpbXBvcnRlZCBmcm9tIGEgU1BTUyBmaWxlLCBsb2FkcyB0aGUgdmFyaWFibGVzIGFzIG51bWVyaWMgdHlwZSAoIm51bSIpLgoKIyBSZWNvZGluZyBhIHZhcmlhYmxlCgpJbiB0aGlzIHNlY3Rpb24gd2Ugd2lsbCB1c2UgdGhlIHJlcG9ydCAiVGhlIFB1bHNlIG9mIERlbW9jcmFjeSIsIGF2YWlsYWJsZSBbaGVyZV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDE4LzIwMTgtMTlfQW1lcmljYXNCYXJvbWV0ZXJfUmVnaW9uYWxfUmVwb3J0X1NwYW5pc2hfV18wMy4yNy4yMC5wZGYpLgpUaGlzIHJlcG9ydCBwcmVzZW50cyB0aGUgcmVzdWx0cyBvbiBzdXBwb3J0IGZvciBkZW1vY3JhY3kgaW4gdGhlIEFtZXJpY2FzLgpUaGVzZSByZXN1bHRzIGFyZSBiYXNlZCBvbiB0aGUgSU5HNCB2YXJpYWJsZSBpbiB0aGUgZGF0YWJhc2UuClRoaXMgdmFyaWFibGUgaXMgcGhyYXNlZCBhcyBmb2xsb3dzOiBJTkc0LgoqQ2hhbmdpbmcgdGhlIHN1YmplY3QgYWdhaW4sIGRlbW9jcmFjeSBtYXkgaGF2ZSBwcm9ibGVtcywgYnV0IGl0IGlzIGJldHRlciB0aGFuIGFueSBvdGhlciBmb3JtIG9mIGdvdmVybm1lbnQuIFRvIHdoYXQgZXh0ZW50IGRvIHlvdSBhZ3JlZSBvciBkaXNhZ3JlZSB3aXRoIHRoaXMgc3RhdGVtZW50PyoKCkFzIHRoZSByZXBvcnQgaW5kaWNhdGVzICJ0aGUgaW50ZXJ2aWV3ZWVzIGV2YWx1YXRlIHRoaXMgcGhyYXNlIGdpdmluZyBhbiBhbnN3ZXIgdGhhdCBnb2VzIGZyb20gMSB0byA3LCB3aGVyZSAxIG1lYW5zInN0cm9uZ2x5IGRpc2FncmVlImFuZCA3IG1lYW5zICJzdHJvbmdseSBhZ3JlZSIocC4xMSkuIFRvIHNlZSB0aGUgZGlzdHJpYnV0aW9uIG9mIHJlc3BvbnNlcyB0byB0aGlzIHZhcmlhYmxlLCB5b3UgY2FuIHVzZSB0aGUgYHRhYmxlYCBjb21tYW5kLgoKYGBge3IgZGVzY3JpYmlyIGluZzR9CnRhYmxlKGxhcG9wMTgkaW5nNCkKYGBgCgpJbiB0aGlzIHdheSwgdGhlIG9ic2VydmF0aW9ucyAoYWJzb2x1dGUgZnJlcXVlbmNpZXMpIGFyZSBjYWxjdWxhdGVkIGZvciBlYWNoIHZhbHVlIG9mIHRoZSB2YXJpYWJsZSBUaGUgcmVwb3J0IGluZGljYXRlcyB0aGUgZm9ybSBvZiByZWNvZGluZzogIlRoZSByZXNwb25zZXMgYXJlIGNvbnNpZGVyZWQgaW4gdGhlIHBvcnRpb24gb2YgdGhlIHNjYWxlIHRoYXQgaW5kaWNhdGVzIGFncmVlbWVudCwgdGhhdCBpcywgdGhlIHZhbHVlcyBmcm9tIDUgdG8gNywgdG8gaW5kaWNhdGUgdGhlIHBlcmNlbnRhZ2UgdGhhdCBzdXBwb3J0cyBkZW1vY3JhY3kiIChwLjExKSAuClRoYXQgaXMsIHRoZSBvcmlnaW5hbCB2YXJpYWJsZSBJTkc0LCBvbiBhIHNjYWxlIG9mIDEtNywgaGFzIHRvIGJlIHJlY29kZWQgaW50byBhIG5ldyB2YXJpYWJsZSwgZm9sbG93aW5nIHRoZSBuZXh0IHJ1bGU6CgoxLiAgVmFsdWVzIGJldHdlZW4gMS00IG9mIElORzQgYmVjb21lIDAgaW4gYSBuZXcgdmFyaWFibGUgaW5nNHIKMi4gIFZhbHVlcyBiZXR3ZWVuIDUtNyBvZiBJTkc0IGJlY29tZSAxIGluIGEgbmV3IHZhcmlhYmxlIGluZzRyCgpBbiBleGFtcGxlIG9mIGhvdyB0aGlzIHJlY29kZWQgZGF0YSBpcyBwcmVzZW50ZWQgaW4gdGhlIHJlcG9ydCBjYW4gYmUgc2VlbiBpbiBHcmFwaCAxLjIuClRoaXMgc2hvd3MgdGhlIHBlcmNlbnRhZ2Ugb2YgY2l0aXplbnMgd2hvIHN1cHBvcnQgZGVtb2NyYWN5IGJ5IGNvdW50cnkuClRoYXQgaXMsIHRoZSBwZXJjZW50YWdlIG9mIGludGVydmlld2VlcyB3aG8gYW5zd2VyZWQgYmV0d2VlbiA1IGFuZCA3IHRvIHRoZSBJTkc0IHF1ZXN0aW9uIGluIGVhY2ggY291bnRyeSBpcyBzaG93bi4KQWNjb3JkaW5nIHRvIHRoZSByZWNvZGluZyBwcm9wb3NlZCwgdGhpcyBncmFwaCB3b3VsZCByZXByZXNlbnQgdGhlIHBlcmNlbnRhZ2Ugb2YgaW50ZXJ2aWV3ZWVzIHdobyByZWdpc3RlciBhIDEgaW4gdGhlIHJlY29kZWQgdmFyaWFibGUuCgohW10oR3JhZjEuMi5wbmcpe3dpZHRoPSIzNTAifQoKVG8gcmVjb2RlIGEgdmFyaWFibGUgaW4gUiB0aGVyZSBhcmUgc2V2ZXJhbCB3YXlzLgpPbmUgb2YgdGhlIG1vc3QgZWZmaWNpZW50IHdheXMgdG8gZG8gdGhpcyBpcyBieSB1c2luZyB0aGUgYHJlY29kZWAgY29tbWFuZCBmcm9tIHRoZWBjYXJgIHBhY2thZ2UuClRoZSBgZHBseXJgIHBhY2thZ2UgaGFzIGFgcmVjb2RlYCBjb21tYW5kIHRoYXQgY2FuIGNvbmZ1c2UgUi4KVG8gYXZvaWQgY29uZnVzaW9uIHdlIHdpbGwgdXNlIHRoZSBgY2FyIDo6IHJlY29kZWAgc3ludGF4IGZvciByZWNvZGluZywgdGhhdCBpcywgdG8gc3BlY2lmeSB0aGF0IHRoZSBgcmVjb2RlYCBjb21tYW5kIGZyb20gdGhlIGBjYXJgIHBhY2thZ2UgYmUgdXNlZCBhbmQgbm90IGZyb20gYW5vdGhlci4KVGhlIHJlY29kZWQgdmFyaWFibGUgaXMgc2F2ZWQgYXMgImxhcG9wMTggwqBcJCBpbmc0cmVjIi4KVGhlbiB0aGUgYHRhYmxlYCBjb21tYW5kIGlzIHVzZWQgdG8gZGVzY3JpYmUgdGhpcyBuZXcgdmFyaWFibGUuCgpgYGB7ciByZWNvZGlmaWNhY2nDs259CmxpYnJhcnkoY2FyKQpsYXBvcDE4JGluZzRyZWMgPC0gY2FyOjpyZWNvZGUobGFwb3AxOCRpbmc0LCAiMTo0PTA7IDU6Nz0xIikKdGFibGUobGFwb3AxOCRpbmc0cmVjKQpgYGAKCklmIHRoZSBvYnNlcnZhdGlvbnMgYmV0d2VlbiAxIGFuZCA0IG9mIHRoZSBvcmlnaW5hbCB2YXJpYWJsZSAoMTY5OSArIDE0NzAgKyAzMDAzICsgNjA4OSkgYXJlIGFkZGVkLCB3ZSBzZWUgdGhhdCBpdCBpcyB0aGUgcmVzdWx0IHRoYXQgaXMgb2J0YWluZWQgaW4gdGhlIHZhbHVlIDAgb2YgdGhlIG5ldyB2YXJpYWJsZSAoMTIyNjEpLCBhcyBpdCB3YXMgd3JpdHRlbiBpbiB0aGUgcmVjb2RpbmcuCkl0IHNob3VsZCBhbHNvIGJlIG5vdGVkIHRoYXQgdGhlIGRhdGFiYXNlIGluIHRoZSBFbnZpcm9ubWVudCBub3cgaGFzIG9uZSBtb3JlIHZhcmlhYmxlLCB0b3RhbGluZyA4NSB2YXJpYWJsZXMuCgojIENhc2Ugc2VsZWN0aW9uCgpUaGUgcmVwb3J0IGluZGljYXRlcyB0aGF0ICJGaWd1cmUgMS4yIHNob3dzIHRoZSBwZXJjZW50YWdlIG9mIHBlb3BsZSBpbiBlYWNoIGNvdW50cnkgd2hvIGV4cHJlc3Mgc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGluIDIwMTgvMTkuIFN1cHBvcnQgZm9yIGRlbW9jcmFjeSByYW5nZXMgZnJvbSBhIG1pbmltdW0gb2YgNDUlIGluIEhvbmR1cmFzIHRvIGEgbWF4aW11bSBvZiA3Ni4yJSBpbiBVcnVndWF5IiAocC4xMSkuCgpUbyByZXBsaWNhdGUgdGhlc2UgcmVzdWx0cyBhYm91dCBIb25kdXJhcyBhbmQgYWJvdXQgVXJ1Z3VheSBmb3IgMjAxOC8xOSwgdGhlIGRhdGEgZnJvbSB0aGVzZSB0d28gY291bnRyaWVzIGNvdWxkIGJlIHNlbGVjdGVkLgpBY2NvcmRpbmcgdG8gdGhlIHF1ZXN0aW9ubmFpcmUsIHdoaWNoIGNhbiBiZSBzZWVuICQkaGVyZSQkICg8aHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDE4L0FCMjAxOC12MTIuMC1TcGEtMTkwMTMxX1cucGRmPiksIEhvbmR1cmFzIGlzIGNvdW50cnkgNCBhbmQgVXJ1Z3VheSBpcyBjb3VudHJ5IDE0IG9mIHRoZSB2YXJpYWJsZSAicGFpcyIsIHdoaWNoIGhhcyBhbHNvIGJlZW4gaW1wb3J0ZWQgYXMgYSBudW1lcmljIHZhcmlhYmxlLgoKIVtdKHBhaXMucG5nKXt3aWR0aD0iNTUyIn0KClNlbGVjdGlvbiBvZiBjYXNlcyBpbiBSIGNhbiBiZSBkb25lIGluIG11bHRpcGxlIHdheXMuCk9uZSB3YXkgaXMgdG8gdXNlIHRoZSBicmFja2V0cyAkJCAgJCQuCkFub3RoZXIgd2F5IGlzIHVzaW5nIHRoZSBgc3Vic2V0YCBjb21tYW5kLgpXaXRoIHRoaXMgY29tbWFuZCB3ZSBzZWxlY3QgdGhlIG9ic2VydmF0aW9ucyBvZiB0aGVzZSBjb3VudHJpZXMgYW5kIHNhdmUgdGhpcyBzZWxlY3Rpb24gaW4gYSBuZXcgZGF0YWZyYW1lICJsYXBvcDIiIHVzaW5nIHRoaXMgbGFzdCBjb21tYW5kIChhZGRpdGlvbmFsbHkgYSBjb21tZW50IGlzIGluY2x1ZGVkLCB3aGljaCBpcyBtYXJrZWQgd2l0aCDCoCMsIHdoaWNoIGluY2x1ZGVzIHRoZSBzeW50YXggaWYgeW91IHdhbnQgdG8gZG8gaXQgd2l0aCBbXSkgLgpUaGUgIm9yIiBvcGVyYXRvciBpcyBpbmNsdWRlZCwgZGVub3RlZCBpbiBSIGJ5ICLCoFx8Ii4KSW4gdGhpcyB3YXksIGl0IGlzIGluZGljYXRlZCB0aGF0IHRoZSBvYnNlcnZhdGlvbnMgb2YgSG9uZHVyYXMgb3IgVXJ1Z3VheSAoYHBhaXMgPT0gNCB8IHBhaXMgPT0gMTRgKSBiZSBzZWxlY3RlZC4KCmBgYHtyIHNlbGVjY2lvbmFyIEhvbiB5IFVydX0KIyBsYXBvcDIgPC0gbGFwb3AxOFtsYXBvcDE4JHBhaXMgPT0gNCB8IGxhcG9wMTgkcGFpcz09MTQsIF0KbGFwb3AyIDwtIHN1YnNldChsYXBvcDE4LCBwYWlzPT00IHwgcGFpcz09MTQpCnRhYmxlKGxhcG9wMiRwYWlzKQpgYGAKClRoZSBuZXcgZGF0YWZyYW1lICJsYXBvcDIiIGhhcyAzMTQxIG9ic2VydmF0aW9ucyBhbmQgODUgdmFyaWFibGVzLgpUaGUgZGVzY3JpcHRpb24gb2YgdGhlIHZhcmlhYmxlICJwYWlzIiBzaG93cyB0aGF0IGl0IG9ubHkgaW5jbHVkZXMgdGhlIGNhc2VzIG9mIEhvbmR1cmFzICgyKSBhbmQgVXJ1Z3VheSAoMTQpLgpXaXRoIHRoaXMgc2VsZWN0aW9uIG9mIGRhdGEsIHlvdSBjYW4gY2FsY3VsYXRlIHRoZSBwZXJjZW50YWdlcyAocmVsYXRpdmUgZnJlcXVlbmNpZXMpIHVzaW5nIHRoZSBjb21tYW5kIGBwcm9wLnRhYmxlYC4KVGhpcyBjb21tYW5kIGdpdmVzIHVzIHRoZSByZWxhdGl2ZSBmcmVxdWVuY2llcyAoaW4gdmFsdWVzIGJldHdlZW4gMCBhbmQgMSkgb2YgYSB0YWJsZSBvZiBmcmVxdWVuY2llcyBjYWxjdWxhdGVkIHdpdGggYHRhYmxlYC4KVGhlc2UgcmVsYXRpdmUgZnJlcXVlbmNpZXMgYXJlIG11bHRpcGxpZWQgYnkgMTAwIHRvIHJlcHJvZHVjZSB0aGUgcGVyY2VudGFnZSBpbiBlYWNoIGNvdW50cnkuCkluIHRoaXMgY2FzZSwgdGhlIFtdIGFyZSB1c2VkIHRvIG1ha2UgdGhlIHNlbGVjdGlvbiBvZiBjYXNlcyBmcm9tIGVhY2ggY291bnRyeS4KCmBgYHtyIHBvcmNlbnRhamVzfQpwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMiRpbmc0cmVjW2xhcG9wMiRwYWlzPT00XSkpKjEwMApwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMiRpbmc0cmVjW2xhcG9wMiRwYWlzPT0xNF0pKSoxMDAKYGBgCgpUaGVzZSByZXN1bHRzIGFyZSBwZXJjZW50YWdlcyAoYmV0d2VlbiAwIGFuZCAxMDApLCBidXQgaW5jbHVkZSBtYW55IGRlY2ltYWwgcGxhY2VzLgpUbyByb3VuZCB0byBhIGRlY2ltYWwsIGFzIHNob3duIGluIEdyYXBoIDEuMiwgeW91IGNhbiB1c2UgdGhlIGByb3VuZGAgY29tbWFuZCwgd2hlcmUgYWxsIHRoZSBwcmV2aW91cyBzeW50YXggaXMgbmVzdGVkLgpJbiB0aGlzIGNvbW1hbmQsIGluIGFkZGl0aW9uLCB5b3UgaGF2ZSB0byBzcGVjaWZ5IHRoZSBudW1iZXIgb2YgZGVjaW1hbCBwbGFjZXMgeW91IHdhbnQsIHdoaWNoIGluIHRoaXMgY2FzZSBpcyAxLgoKYGBge3IgcmVkb25kZWFyfQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMiRpbmc0cmVjW2xhcG9wMiRwYWlzPT00XSkpKjEwMCwgMSkKcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDIkaW5nNHJlY1tsYXBvcDIkcGFpcz09MTRdKSkqMTAwLCAxKQpgYGAKCldpdGggdGhpcyBjb2RlLCB0aGUgcmVzdWx0cyBvZiB0aGUgY291bnRyaWVzIGhhdmUgYmVlbiByZXByb2R1Y2VkIGF0IHRoZSBlbmRzIG9mIEZJZ3VyZSAxLjIgb2YgdGhlIHJlcG9ydC4KClRoZSByZXBvcnQgYWxzbyBpbmRpY2F0ZXMgdGhhdCB0aGUgVW5pdGVkIFN0YXRlcyBhbmQgQ2FuYWRhIGFyZSBleGNsdWRlZCBmcm9tIHRoZSBjYWxjdWxhdGlvbnMuClRoZSBkYXRhYmFzZSBsb2FkZWQgYXMgImxhcG9wMTgiIGluY2x1ZGVzIGFsbCB0aGUgY291bnRyaWVzIGluIHRoZSByb3VuZC4KVG8gZXhjbHVkZSB0aGVzZSB0d28gY291bnRyaWVzLCB5b3UgaGF2ZSB0byBzZWxlY3QgdGhlIGNvdW50cmllcyB0aGF0IGFyZSBOT1QgdGhlIFVTLgphbmQgQ2FuYWRhLgpUaGlzIG5ldyBzZWxlY3Rpb24gY2FuIGJlIHNhdmVkIGluIGEgbmV3IGRhdGFmcmFtZSBvciBpdCBjYW4gYmUgb3ZlcndyaXR0ZW4gaW4gdGhlIG9yaWdpbmFsIGRhdGFmcmFtZSwgYXMgaXQgaXMgZG9uZSBpbiB0aGlzIGNhc2UgYmVjYXVzZSB0aGUgZXhjbHVzaW9uIG9mIHRoZXNlIGNvdW50cmllcyBpcyBmb3IgYWxsIHRoZSBjYWxjdWxhdGlvbnMgdGhhdCBmb2xsb3cuCkFjY29yZGluZyB0byB0aGUgcXVlc3Rpb25uYWlyZSwgdGhlIFVTIGhhcyB0aGUgY29kZSA0MCBhbmQgQ2FuYWRhLCB0aGUgY29kZSA0MSBpbiB0aGUgdmFyaWFibGUgImNvdW50cnkiLgpUbyBleGNsdWRlIHRoZW0sIGNvdW50cmllcyB3aXRoIGEgY29kZSBvZiBsZXNzIHRoYW4gNDAgKG9yIDM1IG9yIGxlc3MpIG11c3QgYmUgaW5jbHVkZWQuCkZvciB0aGlzIHdlIGNhbiBhZ2FpbiB1c2UgdGhlIGBzdWJzZXRgIGNvbW1hbmQuCgpgYGB7ciBlbGltaW5hciBVU0EgeSBDYW5hZMOhfQpsYXBvcDE4IDwtIHN1YnNldChsYXBvcDE4LCBwYWlzPD0zNSkKYGBgCgpJdCBjYW4gYmUgb2JzZXJ2ZWQgaW4gdGhlIEVudmlyb25tZW50IHRoYXQgdGhlIG9ic2VydmF0aW9ucyBvZiB0aGUgImxhcG9wMTgiIGRhdGFmcmFtZSBhcmUgcmVkdWNlZCBhZnRlciBydW5uaW5nIHRoaXMgY29kZSwgc2luY2UgdGhlIG9ic2VydmF0aW9ucyBvZiBpbnRlcnZpZXdlZXMgaW4gdGhlc2UgdHdvIGNvdW50cmllcyBoYXZlIGJlZW4gZWxpbWluYXRlZC4KVGhlIG51bWJlciBvZiBvYnNlcnZhdGlvbnMgZ29lcyBmcm9tIDMxLDA1MCB0byAyOCwwNDIsIGEgbnVtYmVyIHRoYXQgY29pbmNpZGVzIHdpdGggdGhhdCBvZiB0aGUgZGF0YWJhc2UgaW4gLlJEYXRhIGZvcm1hdCB0aGF0IHdlIHVzZWQgaW4gdGhlIHByZXZpb3VzIG1vZHVsZSBhbmQgdGhhdCB3ZSBpbmRpY2F0ZWQgdGhhdCBpdCBkaWQgbm90IGluY2x1ZGUgdGhlc2UgY291bnRyaWVzLgoKIyBDYWxjdWxhdGluZyBhIHZhcmlhYmxlCgpBIGZyZXF1ZW50IExBUE9QIHByYWN0aWNlIHdpdGggdGhlIEFtZXJpY2FzIEJhcm9tZXRlciBkYXRhIGlzIHRoZSByZXNjYWxpbmcgb2YgdmFyaWFibGVzLgpUaGUgcmVwb3J0J3MgY2hhcHRlciBvbiBkZW1vY3JhdGljIGxlZ2l0aW1hY3kgcHJvdmlkZXMgZXhhbXBsZXMgb2YgdGhpcyByZXNjYWxpbmcgd2l0aCB2YXJpYWJsZXMgcmVsYXRlZCB0byBzdXBwb3J0IGZvciB0aGUgc3lzdGVtLgpUbyBjYWxjdWxhdGUgdGhpcyBzeXN0ZW0gc3VwcG9ydCBpbmRleCwgd2Ugd29yayB3aXRoIGEgc2V0IG9mIGZpdmUgdmFyaWFibGVzOgoKQjEuCipUbyB3aGF0IGV4dGVudCBkbyB5b3UgdGhpbmsgdGhlIGNvdXJ0cyBvZiAoY291bnRyeSkgZ3VhcmFudGVlIGEgZmFpciB0cmlhbD8qICQkUHJvYmU6IElmIHlvdSBiZWxpZXZlIHRoYXQgdGhlIGNvdXJ0cyBkbyBub3QgZ3VhcmFudGVlIGp1c3RpY2UgYXQgYWxsLCBjaG9vc2UgbnVtYmVyIDE7IGlmIHlvdSB0aGluayB0aGUgY291cnRzIGd1YXJhbnRlZSBqdXN0aWNlIGEgbG90LCBjaG9vc2UgbnVtYmVyIDcgb3IgY2hvb3NlIGEgc2NvcmUgaW4gYmV0d2VlbiQkLgoKQjIuCipUbyB3aGF0IGV4dGVudCBkbyB5b3UgcmVzcGVjdCB0aGUgcG9saXRpY2FsIGluc3RpdHV0aW9ucyBvZiAoY291bnRyeSk/KgoKQjMuCipUbyB3aGF0IGV4dGVudCBkbyB5b3UgdGhpbmsgdGhlIGJhc2ljIHJpZ2h0cyBvZiB0aGUgY2l0aXplbiBhcmUgd2VsbCBwcm90ZWN0ZWQgYnkgdGhlIHBvbGl0aWNhbCBzeXN0ZW0gb2YgKGNvdW50cnkpPyoKCkI0LgoqVG8gd2hhdCBleHRlbnQgYXJlIHlvdSBwcm91ZCB0byBsaXZlIHVuZGVyIHRoZSBwb2xpdGljYWwgc3lzdGVtIG9mIChjb3VudHJ5KT8qCgpCNi4KKlRvIHdoYXQgZXh0ZW50IGRvIHlvdSB0aGluayB0aGUgcG9saXRpY2FsIHN5c3RlbSBvZiAoY291bnRyeSkgc2hvdWxkIGJlIHN1cHBvcnRlZD8qCgpBcyB0aGUgcmVwb3J0IGluZGljYXRlcyAiRm9yIGVhY2ggcXVlc3Rpb24sIHRoZSBvcmlnaW5hbCBzY2FsZSBmcm9tIDEgKCIgTm90IGF0IGFsbCAiKSB0byA3ICgiIE11Y2ggIikgaXMgcmVjb2RlZCBvbiBhIHNjYWxlIGZyb20gMCB0byAxMDAsIGluIHN1Y2ggYSB3YXkgdGhhdCAwIGluZGljYXRlcyB0aGUgbG93ZXN0IGxldmVsIG9mIHN1cHBvcnQgZm9yIHRoZSBwb2xpdGljYWwgc3lzdGVtLiBhbmQgMTAwIGlzIHRoZSBtYXhpbXVtIGxldmVsIG9mIHN1cHBvcnQgZm9yIHRoZSBwb2xpdGljYWwgc3lzdGVtLiBUaGlzIG5ldyBzY2FsZSBmb2xsb3dzIHRoZSB0eXBpY2FsIExBUE9QIHJlY29kaW5nIGFuZCBjYW4gYmUgaW50ZXJwcmV0ZWQgYXMgYSBtZWFzdXJlIG9mIHN1cHBvcnQgaW4gdW5pdHMsIG9yIGRlZ3JlZXMsIG9uIGEgY29udGludW91cyBzY2FsZSByYW5naW5nIGZyb20gMCB0byAxMDAiKHAuIDM0KS4KVG8gY2hlY2sgdGhlIG9yaWdpbmFsIHNjYWxlIG9mIHRoZXNlIHZhcmlhYmxlcywgeW91IGNhbiBkZXNjcmliZSB0aGVzZSB2YXJpYWJsZXMgdXNpbmcgdGhlIGB0YWJsZWAgY29tbWFuZC4KCmBgYHtyIGRlc2NyaWJpcn0KdGFibGUobGFwb3AxOCRiMSkKdGFibGUobGFwb3AxOCRiMikKdGFibGUobGFwb3AxOCRiMykKdGFibGUobGFwb3AxOCRiNCkKdGFibGUobGFwb3AxOCRiNikKYGBgCgpJdCBpcyBvYnNlcnZlZCB0aGF0IGluZGVlZCBhbGwgdGhlIHZhcmlhYmxlcyBydW4gb24gYSBzY2FsZSBmcm9tIDEgdG8gNy4KVG8gcmVzY2FsZSBhIHZhcmlhYmxlIGZyb20gYW4gb3JpZ2luYWwgc2NhbGUgZnJvbSAxIHRvIDcgdG8gYW5vdGhlciBmcm9tIDAgdG8gMTAwLCB0aGUgZmlyc3QgdGhpbmcgdG8gZG8gaXMgc3VidHJhY3QgMSB1bml0LCBzbyB0aGUgdmFyaWFibGUgd291bGQgaGF2ZSBhIHNjYWxlIG9mIDAgdG8gNiwgdGhlbiBkaXZpZGUgaXQgYnkgNiwgd2l0aCB3aGljaCB3b3VsZCB2YXJ5IGJldHdlZW4gMCBhbmQgMSBhbmQsIGZpbmFsbHksIG11bHRpcGx5IGl0IGJ5IDEwMC4KdGhpcyBpczoKClJlc2NhbGVkIHZhcmlhYmxlID0gKChvcmlnaW5hbCB2YXJpYWJsZSAtMSkvNilcKjEwMAoKYGBge3IgY2FsY3VsYXJ9CmxhcG9wMTgkYjFyZWMgPC0gKChsYXBvcDE4JGIxLTEpLzYpKjEwMApsYXBvcDE4JGIycmVjIDwtICgobGFwb3AxOCRiMi0xKS82KSoxMDAKbGFwb3AxOCRiM3JlYyA8LSAoKGxhcG9wMTgkYjMtMSkvNikqMTAwCmxhcG9wMTgkYjRyZWMgPC0gKChsYXBvcDE4JGI0LTEpLzYpKjEwMApsYXBvcDE4JGI2cmVjIDwtICgobGFwb3AxOCRiNi0xKS82KSoxMDAKdGFibGUobGFwb3AxOCRiMXJlYykKYGBgCgpXaXRoIHRoaXMgdHJhbnNmb3JtYXRpb24sIGl0IGlzIG9ic2VydmVkIHRoYXQgdGhlIDQsMDg5IGludGVydmlld2VlcyB3aG8gc2NvcmVkIDEgaW4gcXVlc3Rpb24gQjEgbm93IGhhdmUgYSBzY29yZSBvZiAwLgpUaGUgNCwwNjcgd2hvIHNjb3JlZCAyIG5vdyBoYXZlIGEgc2NvcmUgb2YgMTYuNjcsIHRoYXQgaXMgMi0xPTEvNj0wLjE2NjdcKjEwMD0xNi42Ny4KVGhpcyBzYW1lIG9wZXJhdGlvbiBjb3VsZCBiZSBkb25lIHdpdGggdGhlIGBjYXIgOjogcmVjb2RlYCBjb21tYW5kLCBmb2xsb3dpbmcgdGhlIGZvbGxvd2luZyByZWNvZGluZyBydWxlOgoKLSAgIFZhbHVlIG9mIDEgaW4gb3JpZ2luYWwgdmFyaWFibGUgaXMgcmVjb2RlZCBhcyAwIGluIG5ldyB2YXJpYWJsZQotICAgVmFsdWUgb2YgMiBpbiBvcmlnaW5hbCB2YXJpYWJsZSBpcyByZWNvZGVkIGFzIDE2LjY3IGluIG5ldyB2YXJpYWJsZQotICAgVmFsdWUgb2YgMyBpbiBvcmlnaW5hbCB2YXJpYWJsZSBpcyByZWNvZGVkIGFzIDMzLjMzIGluIG5ldyB2YXJpYWJsZQotICAgVmFsdWUgb2YgNCBpbiBvcmlnaW5hbCB2YXJpYWJsZSBpcyByZWNvZGVkIGFzIDUwIGluIG5ldyB2YXJpYWJsZQotICAgVmFsdWUgb2YgNSBpbiBvcmlnaW5hbCB2YXJpYWJsZSBpcyByZWNvZGVkIGFzIDY2LjY3IGluIG5ldyB2YXJpYWJsZQotICAgVmFsdWUgb2YgNiBpbiBvcmlnaW5hbCB2YXJpYWJsZSBpcyByZWNvZGVkIGFzIDgzLjMzIGluIG5ldyB2YXJpYWJsZQotICAgVmFsdWUgb2YgNyBpbiBvcmlnaW5hbCB2YXJpYWJsZSBpcyByZWNvZGVkIGFzIDEwMCBpbiBuZXcgdmFyaWFibGUKClRoaXMgd2F5IG9mIHJlY29kaW5nLCBob3dldmVyLCBpcyBub3QgdmVyeSBlZmZpY2llbnQuCkl0IGlzIHNpbXBsZXIgdG8gdXNlIHRoZSBmb3JtdWxhIHRvIGNhbGN1bGF0ZSB0aGUgcmVjb2RpbmcuClRvIGNhbGN1bGF0ZSB0aGUgc3lzdGVtIHN1cHBvcnQgaW5kZXgsIHRoZSByZXBvcnQgaW5kaWNhdGVzIHRoYXQgIlRoZSBzeXN0ZW0gc3VwcG9ydCBpbmRleCBpcyB0aGUgYXZlcmFnZSBvZiBmaXZlIHF1ZXN0aW9uczogQjEsIEIyLCBCMywgQjQgYW5kIEI2IiAocC40NikuCkluIG90aGVyIHdvcmRzLCB3aXRoIHRoZSByZXNjYWxlZCB2YXJpYWJsZXMsIHRoZSBhdmVyYWdlIG9mIHRoZXNlIGZpdmUgdmFyaWFibGVzIGhhcyB0byBiZSBjYWxjdWxhdGVkIGZvciBlYWNoIGluZGl2aWR1YWwgKHRoYXQgaXMsIGluIGVhY2ggcm93IG9mIHRoZSBkYXRhYmFzZSkuClRoaXMgY291bGQgYmUgZG9uZSBieSBjYWxjdWxhdGluZyB0aGUgYXZlcmFnZSBtYW51YWxseS4KClN5c3RlbSBzdXBwb3J0ID0gKGIxcmVjICsgYjJyZWMgKyBiM3JlYyArIGI0cmVjICsgYjZyZWMpLzUKCkluIFIgd2UgaGF2ZSB0aGUgYHJvd01lYW5zYCBjb21tYW5kIHRoYXQgaXMgdXNlZCB0byBjYWxjdWxhdGUgYXZlcmFnZXMgb2YgY2VydGFpbiBjb2x1bW5zIGZvciBlYWNoIHJvdy4KVGhlIHN5bnRheCBgWywgODY6OTBdYCBpbmRpY2F0ZXMgdGhhdCB0aGUgYXZlcmFnZSBjYWxjdWxhdGlvbiB3aWxsIGJlIHBlcmZvcm1lZCBieSByb3dzIGZvciBhbGwgcm93cyBhbmQgdXNpbmcgY29sdW1ucyA4NiB0byA5MCBvZiB0aGUgImxhcG9wMTgiIGRhdGFmcmFtZSAodGhlIGNhbGN1bGF0aW9uIGNvdWxkIGJlIGRvbmUgZm9yIHNvbWUgcGFydGljdWxhciByb3dzIGJ5IGRlZmluaW5nIGBbIHJvd19uOiByb3dfbSwgODY6OTBdYCkuClRoaXMgYXZlcmFnZSBpcyBzYXZlZCBpbiBhIG5ldyB2YXJpYWJsZSAic3VwcG9ydCIsIHdoaWNoIGlzIGRlc2NyaWJlZC4KCmBgYHtyIGFwb3lvIGFsIHNpc3RlbWF9CmxhcG9wMTgkYXBveW8gPC0gcm93TWVhbnMobGFwb3AxOFssODY6OTBdKQp0YWJsZShsYXBvcDE4JGFwb3lvKQpgYGAKCldpdGggdGhpcyBpbmRleCwgaXQgaXMgcG9zc2libGUgdG8gY2FsY3VsYXRlIHRoZSBzdXBwb3J0IGZvciB0aGUgYXZlcmFnZSBzeXN0ZW0gZm9yIHRoZSBsYXN0IHJvdW5kIG9mIHRoZSBBbWVyaWNhc0Jhcm9tZXRlciwgYXMgd2VsbCBhcyB0aGUgYXZlcmFnZXMgb2YgZWFjaCBvZiB0aGUgdmFyaWFibGVzIHRoYXQgbWFrZSB1cCB0aGUgaW5kZXguClRoZSBgbWVhbmAgY29tbWFuZCBpcyB1c2VkIGZvciB0aGUgYXZlcmFnZSBhbmQgdGhlYG5hLnJtID0gVGAgc3BlY2lmaWNhdGlvbiBpcyB1c2VkIHRvIHRlbGwgdGhlIGNvbW1hbmQgbm90IHRvIHRha2UgaW50byBhY2NvdW50IHRoZSBtaXNzaW5nIHZhbHVlcyBvZiB0aGVzZSB2YXJpYWJsZXMuClRoZXNlIHN0YXRpc3RpY3Mgd2lsbCBiZSBzZWVuIGluIG1vcmUgZGV0YWlsIGluIG90aGVyIGRvY3VtZW50cy4KCmBgYHtyIGFwb3lvIGFsIHNpc3RlbWEgMjAxOC8xOX0KbWVhbihsYXBvcDE4JGFwb3lvLCBuYS5ybT1UKQptZWFuKGxhcG9wMTgkYjFyZWMsIG5hLnJtPVQpICNjb3VydHMgZ3VhcmFudGVlIGZhaXIgdHJpYWwKbWVhbihsYXBvcDE4JGIycmVjLCBuYS5ybT1UKSAjUmVzcGVjdCBmb3IgaW5zdGl0dXRpb25zCm1lYW4obGFwb3AxOCRiM3JlYywgbmEucm09VCkgI0Jhc2ljIHJpZ2h0cyBhcmUgcHJvdGVjdGVkCm1lYW4obGFwb3AxOCRiNHJlYywgbmEucm09VCkgI1ByaWRlIGluIHRoZSBwb2xpdGljYWwgc3lzdGVtCm1lYW4obGFwb3AxOCRiNnJlYywgbmEucm09VCkgI1RoZSBwb2xpdGljYWwgc3lzdGVtIHNob3VsZCBiZSBzdXBwb3J0ZWQKYGBgCgpUaGVzZSByZXN1bHRzIGFyZSB0aG9zZSBzaG93biBpbiBGaWd1cmUgMi4xIGZvciB0aGUgMjAxOC8xOSByb3VuZC4KIVtdKEdyYWYyLjEucG5nKXt3aWR0aD0iNjI5In0KCiMgQ2FsY3VsYXRpbmcgYSB2YXJpYWJsZSBieSBjb25kaWNpb25hbCB3YXkKClNvbWV0aW1lcyB0aGUgY2FsY3VsYXRpb24gb2YgYSB2YXJpYWJsZSBkb2VzIG5vdCBvbmx5IHJlcXVpcmUgdGhlIG51bWVyaWNhbCB0cmFuc2Zvcm1hdGlvbiBvZiB0aGUgb3JpZ2luYWwgdmFyaWFibGUsIGJ1dCB0aGUgdmFsdWVzIG9mIHRoZSBuZXcgdmFyaWFibGUgZGVwZW5kIG9uIHRoZSB2YWx1ZXMgb2Ygb3RoZXIgdmFyaWFibGVzLgpGb3IgZXhhbXBsZSwgdGhlIGNoYXB0ZXIgIlNvY2lhbCBuZXR3b3JrcyBhbmQgcG9saXRpY2FsIGF0dGl0dWRlcyIgb2YgdGhlIHJlcG9ydCAiVGhlIFB1bHNlIG9mIERlbW9jcmFjeSIgcHJlc2VudHMgdGhlIHJlc3VsdHMgZm9yIHRoZSB2YXJpYWJsZXMgIldoYXRzQXBwIHVzZXIiLCAiVHdpdHRlciB1c2VyIiBhbmQgIkZhY2Vib29rIHVzZXIiLgpUbyBjYWxjdWxhdGUgdGhlc2UgdmFyaWFibGVzLCBmb290bm90ZSA3IG9mIHRoaXMgY2hhcHRlciBpbmRpY2F0ZXM6ICJGb3IgZWFjaCBwbGF0Zm9ybSwgdXNlcnMgYXJlIGlkZW50aWZpZWQgd2l0aCBhIGNvbWJpbmF0aW9uIG9mIHR3byBzZXRzIG9mIHF1ZXN0aW9ucy4gRmlyc3QsIHRob3NlIHdobyByZXNwb25kIHBvc2l0aXZlbHkgdG8gdGhlIHF1ZXN0aW9ucyBhcmUgaWRlbnRpZmllZCBhcyB1c2VycywgU01FRElBMSAvIFNNRURJQTQgLyBTTUVESUE3LiBEbyB5b3UgaGF2ZSBhIEZhY2Vib29rIC8gVHdpdHRlciAvIFdoYXRzYXBwIGFjY291bnQ/IFRoZW4sIHRob3NlIHdobyBhbnN3ZXIibmV2ZXIiIHRvIHRoZSBmb2xsb3dpbmcgcXVlc3Rpb25zLCBTTUVESUEyIC8gU01FRElBNSAvIFNNRURJQTgsIGFyZSByZWNvZGVkIGFzIG5vbi11c2Vycy4gSG93IG9mdGVuIGRvIHlvdSB2aWV3IGNvbnRlbnQgb24gRmFjZWJvb2sgLyBUd2l0dGVyIC8gV2hhdHNhcHAgPyAiIChwLiA2NCkuCgohW10oc21lZGlhLnBuZyl7d2lkdGg9IjQ2NiJ9CgpUaGF0IGlzLCB0aGUgdXNlciBpcyBub3Qgb25seSB0aGUgb25lIHdobyBoYXMgYW4gYWNjb3VudCAoU01FRElBMSA9IDEpLCBidXQgdGhlIG9uZSB3aG8gdXNlcyBpdCB3aXRoIGEgY2VydGFpbiBmcmVxdWVuY3kgKFNNRURJQTIgPSAxLCAyLCAzLCA0KS4KSW4gdGhpcyB3YXksIHRoZSBub24tdXNlciBjYW4gaGF2ZSBhbiBhY2NvdW50LCBidXQgbmV2ZXIgdXNlIGl0LgpUaGVyZWZvcmUsIHRoZSB2YXJpYWJsZSAidXNlciIgZGVwZW5kcyBvbiB0aGUgdmFsdWVzIG9mIDIgdmFyaWFibGVzLgpUaGUgZW5jb2RpbmcgcnVsZSB0aGF0IGZvbGxvd3MgaXM6CgotICAgRmFjZWJvb2sgdXNlciA9IDEgKGhlL3NoZSBpcyBhIHVzZXIpIHNpIFNNRURJQTEgPSAxIChoZS9zaGUgaGFzIGFuIGFjY291bnQpIHkgU01FRElBMiBcPD0gNCAoaGUvc2hlIHVzZXMgaXQgd2l0aCBzb21lIGZyZXF1ZW5jeSkKCi0gICBGYWNlYm9vayB1c2VyID0gMCAoaGUvc2hlIGlzIG5vdCBhIHVzZXIpIHNpIFNNRURJQTIgPSAyIChoZS9zaGUgZG9lc27CtHQgaGF2ZSBhbiBhY2NvdW50KSBvIFNNRURJQTIgPSA1ICggaGUvc2hlIGhhcyBhbiBhY2NvdW50IGJ1dCBuZXZlciB1c2VzIGl0KQoKVGhpcyBydWxlIHRyYW5zZm9ybXMgaW50byB0aGUgZm9sbG93aW5nIFIgc3ludGF4LCB3aGljaCB1c2VzIHRoZSBgw6xmZWxzZWAgY29tbWFuZC4KVGhpcyBzeW50YXggaW5jbHVkZXMgdGhlIGNvbmRpdGlvbiB0byBhc3NpZ24gdmFsdWVzIG9mIDEgdG8gYSBuZXcgdmFyaWFibGUgYW5kIGFzc2lnbnMgYWxsIG90aGVyIG9ic2VydmF0aW9ucyB0aGUgdmFsdWUgb2YgMC4KVGhlc2UgbmV3IHZhcmlhYmxlcyBhcmUgZGVzY3JpYmVkIHVzaW5nIHRoZSBgdGFibGVgIGNvbW1hbmQgdG8gZ2VuZXJhdGUgdGhlIGFic29sdXRlIGZyZXF1ZW5jaWVzLHRoZSBgcHJvcC50YWJsZWAgY29tbWFuZCBmb3IgdGhlIHJlbGF0aXZlIGZyZXF1ZW5jaWVzIGFuZCB0aGUgYHJvdW5kYCBjb21tYW5kIHRvIHJvdW5kIHRoZSBkZWNpbWFscy4KVGhlc2UgY29tbWFuZHMgd2lsbCBiZSBzZWVuIGluIG1vcmUgZGV0YWlsIGluIHRoZSBmb2xsb3dpbmcgZG9jdW1lbnRzLgoKYGBge3IgdXN1YXJpb3MsIGVjaG89VFJVRSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGFwb3AxOCRmYl91c2VyIDwtIGlmZWxzZShsYXBvcDE4JHNtZWRpYTE9PTEgJiBsYXBvcDE4JHNtZWRpYTI8PTQsIDEsIDApCmxhcG9wMTgkdHdfdXNlciA8LSBpZmVsc2UobGFwb3AxOCRzbWVkaWE0PT0xICYgbGFwb3AxOCRzbWVkaWE1PD00LCAxLCAwKQpsYXBvcDE4JHdhX3VzZXIgPC0gaWZlbHNlKGxhcG9wMTgkc21lZGlhNz09MSAmIGxhcG9wMTgkc21lZGlhODw9NCwgMSwgMCkKcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDE4JGZiX3VzZXIpKSoxMDAsIDEpCnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AxOCR0d191c2VyKSkqMTAwLCAxKQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkd2FfdXNlcikpKjEwMCwgMSkKYGBgCgpUaGVzZSByZXN1bHRzIGFyZSB0aG9zZSBwcmVzZW50ZWQgaW4gR3JhcGggMy4xIG9mIHRoZSByZXBvcnQgaW4gdGhlIGZvcm0gb2YgcGllIGNoYXJ0cy4KVGhlc2UgdHlwZXMgb2YgZ3JhcGhzIHdpbGwgYmUgc2VlbiBpbiB0aGUgbmV4dCBzZWN0aW9uLgoKIVtdKEdyYWYzLjEucG5nKXt3aWR0aD0iMzIzIn0KCiMgRGVzaWduIGVmZmVjdCBvYnNlcnZhdGlvbgoKQm90aCB0aGUgcmVzdWx0cyBmb3Igc3lzdGVtIHN1cHBvcnQgYW5kIHRob3NlIG9mIHNvY2lhbCBuZXR3b3JrIHVzZXJzIGRpZmZlciBmcm9tIHRob3NlIHRoYXQgYXBwZWFyIGluIHRoZSByZXBvcnQgZm9yIHR3byByZWFzb25zLgpGaXJzdCwgdG8gc3VwcG9ydCB0aGUgc3lzdGVtLCBiZWNhdXNlICJWYWx1ZXMgb3ZlciB0aW1lIGFyZSBjYWxjdWxhdGVkIGluY2x1ZGluZyBvbmx5IHRoZSBjb3VudHJpZXMgdGhhdCB0aGUgQW1lcmljYXMgQmFyb21ldGVyIGhhcyBzdHVkaWVkIHJlZ3VsYXJseSBzaW5jZSAyMDA2OiBBcmdlbnRpbmEsIEJyYXppbCwgQm9saXZpYSwgQ2hpbGUsIENvbG9tYmlhLCBDb3N0YSBSaWNhICwgRG9taW5pY2FuIFJlcHVibGljLCBFY3VhZG9yLCBFbCBTYWx2YWRvciwgR3VhdGVtYWxhLCBIb25kdXJhcywgSmFtYWljYSwgTWV4aWNvLCBOaWNhcmFndWEsIFBhbmFtYSwgUGFyYWd1YXksIFBlcnUsIFVydWd1YXkiIChwLjQ2KS4KVGhlIGNvZGUgb25seSBmaWx0ZXJzIHRoZSBsYXN0IHJvdW5kLCB3aGljaCBpbmNsdWRlcyBjb3VudHJpZXMgdGhhdCBhcmUgbm90IG9uIHRoYXQgbGlzdCwgc3VjaCBhcyB0aGUgVW5pdGVkIFN0YXRlcyBvciBDYW5hZGEuCk9uIHRoZSBvdGhlciBoYW5kLCB0aGUgY2FsY3VsYXRpb25zIHJlcG9ydGVkIGluIHRoZSBwdWJsaWNhdGlvbiBpbmNsdWRlIHRoZSB1c2Ugb2YgZXhwYW5zaW9uIGZhY3RvcnMsIHdoaWNoIGhhdmUgbm90IGJlZW4gaW5jbHVkZWQgaW4gdGhlc2UgY2FsY3VsYXRpb25zLCBidXQgd2hpY2ggd2lsbCBiZSBpbmNvcnBvcmF0ZWQgaW4gb3RoZXIgZG9jdW1lbnRzIChzZWUgW2hlcmVdKGh0dHBzOi8vcnB1YnMuY29tL2FydHVyb19tYWxkb25hZG8vNzI4NjI2KSkuCgojIFN1bW1hcnkKCkluIHRoaXMgZG9jdW1lbnQgd2UgaGF2ZSBzZWVuIHRoZSBiYXNpYyBlbGVtZW50cyBvZiBkYXRhIG1hbmlwdWxhdGlvbiBhbmQgdHJhbnNmb3JtYXRpb24gdXNpbmcgdGhlIEFtZXJpY2FzIEJhcm9tZXRlci4KQSB2YXJpYWJsZSBoYXMgYmVlbiByZWNvZGVkIHVzaW5nIHRoZSBgcmVjb2RlYCBjb21tYW5kLCBjYXNlcyBoYXZlIGJlZW4gc2VsZWN0ZWQgdXNpbmcgYHN1YnNldGAgYW5kIGEgbmV3IHZhcmlhYmxlIGhhcyBiZWVuIGNhbGN1bGF0ZWQgYWxnZWJyYWljYWxseSBhbmQgd2l0aCB0aGUgYGlmZWxzZWAgY29tbWFuZC4K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Manipulation.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

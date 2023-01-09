@@ -1,0 +1,290 @@
+---
+title: "Data management using the Americas Barometer"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: flatly
+    #code_folding: hide
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+```
+
+```{css color, echo=FALSE}
+.columns {display: flex;}
+h1 {color: #3366CC;}
+```
+
+# Introduction
+
+This document will cover basic aspects of data management, such as recoding a variable, selecting data, and calculating a new variable.
+At the end, there is a note about the statistical calculations considering the design effect.
+
+# About the database
+
+The data that we are going to use should be cited as follows: Source: Barometer of the Americas by the Latin American Public Opinion Project (LAPOP), wwww.LapopSurveys.org.
+
+In this document a registered database is loaded.
+This database is hosted in the "materials_edu" repository of LAPOP's GitHub account.
+Through the library `rio` and the command `import`, this database can be imported from this repository, using the following code.
+The database is imported into the object "lapop18".
+
+```{r base}
+library(rio)
+lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+```
+
+It is necessary to clarify that this database, imported from a SPSS file, loads the variables as numeric type ("num").
+
+# Recoding a variable
+
+In this section we will use the report "The Pulse of Democracy", available [here](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf).
+This report presents the results on support for democracy in the Americas.
+These results are based on the ING4 variable in the database.
+This variable is phrased as follows: ING4.
+*Changing the subject again, democracy may have problems, but it is better than any other form of government. To what extent do you agree or disagree with this statement?*
+
+As the report indicates "the interviewees evaluate this phrase giving an answer that goes from 1 to 7, where 1 means"strongly disagree"and 7 means "strongly agree"(p.11). To see the distribution of responses to this variable, you can use the `table` command.
+
+```{r describir ing4}
+table(lapop18$ing4)
+```
+
+In this way, the observations (absolute frequencies) are calculated for each value of the variable The report indicates the form of recoding: "The responses are considered in the portion of the scale that indicates agreement, that is, the values from 5 to 7, to indicate the percentage that supports democracy" (p.11) .
+That is, the original variable ING4, on a scale of 1-7, has to be recoded into a new variable, following the next rule:
+
+1.  Values between 1-4 of ING4 become 0 in a new variable ing4r
+2.  Values between 5-7 of ING4 become 1 in a new variable ing4r
+
+An example of how this recoded data is presented in the report can be seen in Graph 1.2.
+This shows the percentage of citizens who support democracy by country.
+That is, the percentage of interviewees who answered between 5 and 7 to the ING4 question in each country is shown.
+According to the recoding proposed, this graph would represent the percentage of interviewees who register a 1 in the recoded variable.
+
+![](Graf1.2.png){width="350"}
+
+To recode a variable in R there are several ways.
+One of the most efficient ways to do this is by using the `recode` command from the`car` package.
+The `dplyr` package has a`recode` command that can confuse R.
+To avoid confusion we will use the `car :: recode` syntax for recoding, that is, to specify that the `recode` command from the `car` package be used and not from another.
+The recoded variable is saved as "lapop18  \$ ing4rec".
+Then the `table` command is used to describe this new variable.
+
+```{r recodificación}
+library(car)
+lapop18$ing4rec <- car::recode(lapop18$ing4, "1:4=0; 5:7=1")
+table(lapop18$ing4rec)
+```
+
+If the observations between 1 and 4 of the original variable (1699 + 1470 + 3003 + 6089) are added, we see that it is the result that is obtained in the value 0 of the new variable (12261), as it was written in the recoding.
+It should also be noted that the database in the Environment now has one more variable, totaling 85 variables.
+
+# Case selection
+
+The report indicates that "Figure 1.2 shows the percentage of people in each country who express support for democracy in 2018/19. Support for democracy ranges from a minimum of 45% in Honduras to a maximum of 76.2% in Uruguay" (p.11).
+
+To replicate these results about Honduras and about Uruguay for 2018/19, the data from these two countries could be selected.
+According to the questionnaire, which can be seen $$here$$ (<https://www.vanderbilt.edu/lapop/ab2018/AB2018-v12.0-Spa-190131_W.pdf>), Honduras is country 4 and Uruguay is country 14 of the variable "pais", which has also been imported as a numeric variable.
+
+![](pais.png){width="552"}
+
+Selection of cases in R can be done in multiple ways.
+One way is to use the brackets $$  $$.
+Another way is using the `subset` command.
+With this command we select the observations of these countries and save this selection in a new dataframe "lapop2" using this last command (additionally a comment is included, which is marked with  #, which includes the syntax if you want to do it with []) .
+The "or" operator is included, denoted in R by " \|".
+In this way, it is indicated that the observations of Honduras or Uruguay (`pais == 4 | pais == 14`) be selected.
+
+```{r seleccionar Hon y Uru}
+# lapop2 <- lapop18[lapop18$pais == 4 | lapop18$pais==14, ]
+lapop2 <- subset(lapop18, pais==4 | pais==14)
+table(lapop2$pais)
+```
+
+The new dataframe "lapop2" has 3141 observations and 85 variables.
+The description of the variable "pais" shows that it only includes the cases of Honduras (2) and Uruguay (14).
+With this selection of data, you can calculate the percentages (relative frequencies) using the command `prop.table`.
+This command gives us the relative frequencies (in values between 0 and 1) of a table of frequencies calculated with `table`.
+These relative frequencies are multiplied by 100 to reproduce the percentage in each country.
+In this case, the [] are used to make the selection of cases from each country.
+
+```{r porcentajes}
+prop.table(table(lapop2$ing4rec[lapop2$pais==4]))*100
+prop.table(table(lapop2$ing4rec[lapop2$pais==14]))*100
+```
+
+These results are percentages (between 0 and 100), but include many decimal places.
+To round to a decimal, as shown in Graph 1.2, you can use the `round` command, where all the previous syntax is nested.
+In this command, in addition, you have to specify the number of decimal places you want, which in this case is 1.
+
+```{r redondear}
+round(prop.table(table(lapop2$ing4rec[lapop2$pais==4]))*100, 1)
+round(prop.table(table(lapop2$ing4rec[lapop2$pais==14]))*100, 1)
+```
+
+With this code, the results of the countries have been reproduced at the ends of FIgure 1.2 of the report.
+
+The report also indicates that the United States and Canada are excluded from the calculations.
+The database loaded as "lapop18" includes all the countries in the round.
+To exclude these two countries, you have to select the countries that are NOT the US.
+and Canada.
+This new selection can be saved in a new dataframe or it can be overwritten in the original dataframe, as it is done in this case because the exclusion of these countries is for all the calculations that follow.
+According to the questionnaire, the US has the code 40 and Canada, the code 41 in the variable "country".
+To exclude them, countries with a code of less than 40 (or 35 or less) must be included.
+For this we can again use the `subset` command.
+
+```{r eliminar USA y Canadá}
+lapop18 <- subset(lapop18, pais<=35)
+```
+
+It can be observed in the Environment that the observations of the "lapop18" dataframe are reduced after running this code, since the observations of interviewees in these two countries have been eliminated.
+The number of observations goes from 31,050 to 28,042, a number that coincides with that of the database in .RData format that we used in the previous module and that we indicated that it did not include these countries.
+
+# Calculating a variable
+
+A frequent LAPOP practice with the Americas Barometer data is the rescaling of variables.
+The report's chapter on democratic legitimacy provides examples of this rescaling with variables related to support for the system.
+To calculate this system support index, we work with a set of five variables:
+
+B1.
+*To what extent do you think the courts of (country) guarantee a fair trial?* $$Probe: If you believe that the courts do not guarantee justice at all, choose number 1; if you think the courts guarantee justice a lot, choose number 7 or choose a score in between$$.
+
+B2.
+*To what extent do you respect the political institutions of (country)?*
+
+B3.
+*To what extent do you think the basic rights of the citizen are well protected by the political system of (country)?*
+
+B4.
+*To what extent are you proud to live under the political system of (country)?*
+
+B6.
+*To what extent do you think the political system of (country) should be supported?*
+
+As the report indicates "For each question, the original scale from 1 (" Not at all ") to 7 (" Much ") is recoded on a scale from 0 to 100, in such a way that 0 indicates the lowest level of support for the political system. and 100 is the maximum level of support for the political system. This new scale follows the typical LAPOP recoding and can be interpreted as a measure of support in units, or degrees, on a continuous scale ranging from 0 to 100"(p. 34).
+To check the original scale of these variables, you can describe these variables using the `table` command.
+
+```{r describir}
+table(lapop18$b1)
+table(lapop18$b2)
+table(lapop18$b3)
+table(lapop18$b4)
+table(lapop18$b6)
+```
+
+It is observed that indeed all the variables run on a scale from 1 to 7.
+To rescale a variable from an original scale from 1 to 7 to another from 0 to 100, the first thing to do is subtract 1 unit, so the variable would have a scale of 0 to 6, then divide it by 6, with which would vary between 0 and 1 and, finally, multiply it by 100.
+this is:
+
+Rescaled variable = ((original variable -1)/6)\*100
+
+```{r calcular}
+lapop18$b1rec <- ((lapop18$b1-1)/6)*100
+lapop18$b2rec <- ((lapop18$b2-1)/6)*100
+lapop18$b3rec <- ((lapop18$b3-1)/6)*100
+lapop18$b4rec <- ((lapop18$b4-1)/6)*100
+lapop18$b6rec <- ((lapop18$b6-1)/6)*100
+table(lapop18$b1rec)
+```
+
+With this transformation, it is observed that the 4,089 interviewees who scored 1 in question B1 now have a score of 0.
+The 4,067 who scored 2 now have a score of 16.67, that is 2-1=1/6=0.1667\*100=16.67.
+This same operation could be done with the `car :: recode` command, following the following recoding rule:
+
+-   Value of 1 in original variable is recoded as 0 in new variable
+-   Value of 2 in original variable is recoded as 16.67 in new variable
+-   Value of 3 in original variable is recoded as 33.33 in new variable
+-   Value of 4 in original variable is recoded as 50 in new variable
+-   Value of 5 in original variable is recoded as 66.67 in new variable
+-   Value of 6 in original variable is recoded as 83.33 in new variable
+-   Value of 7 in original variable is recoded as 100 in new variable
+
+This way of recoding, however, is not very efficient.
+It is simpler to use the formula to calculate the recoding.
+To calculate the system support index, the report indicates that "The system support index is the average of five questions: B1, B2, B3, B4 and B6" (p.46).
+In other words, with the rescaled variables, the average of these five variables has to be calculated for each individual (that is, in each row of the database).
+This could be done by calculating the average manually.
+
+System support = (b1rec + b2rec + b3rec + b4rec + b6rec)/5
+
+In R we have the `rowMeans` command that is used to calculate averages of certain columns for each row.
+The syntax `[, 86:90]` indicates that the average calculation will be performed by rows for all rows and using columns 86 to 90 of the "lapop18" dataframe (the calculation could be done for some particular rows by defining `[ row_n: row_m, 86:90]`).
+This average is saved in a new variable "support", which is described.
+
+```{r apoyo al sistema}
+lapop18$apoyo <- rowMeans(lapop18[,86:90])
+table(lapop18$apoyo)
+```
+
+With this index, it is possible to calculate the support for the average system for the last round of the AmericasBarometer, as well as the averages of each of the variables that make up the index.
+The `mean` command is used for the average and the`na.rm = T` specification is used to tell the command not to take into account the missing values of these variables.
+These statistics will be seen in more detail in other documents.
+
+```{r apoyo al sistema 2018/19}
+mean(lapop18$apoyo, na.rm=T)
+mean(lapop18$b1rec, na.rm=T) #courts guarantee fair trial
+mean(lapop18$b2rec, na.rm=T) #Respect for institutions
+mean(lapop18$b3rec, na.rm=T) #Basic rights are protected
+mean(lapop18$b4rec, na.rm=T) #Pride in the political system
+mean(lapop18$b6rec, na.rm=T) #The political system should be supported
+```
+
+These results are those shown in Figure 2.1 for the 2018/19 round.
+![](Graf2.1.png){width="629"}
+
+# Calculating a variable by condicional way
+
+Sometimes the calculation of a variable does not only require the numerical transformation of the original variable, but the values of the new variable depend on the values of other variables.
+For example, the chapter "Social networks and political attitudes" of the report "The Pulse of Democracy" presents the results for the variables "WhatsApp user", "Twitter user" and "Facebook user".
+To calculate these variables, footnote 7 of this chapter indicates: "For each platform, users are identified with a combination of two sets of questions. First, those who respond positively to the questions are identified as users, SMEDIA1 / SMEDIA4 / SMEDIA7. Do you have a Facebook / Twitter / Whatsapp account? Then, those who answer"never" to the following questions, SMEDIA2 / SMEDIA5 / SMEDIA8, are recoded as non-users. How often do you view content on Facebook / Twitter / Whatsapp ? " (p. 64).
+
+![](smedia.png){width="466"}
+
+That is, the user is not only the one who has an account (SMEDIA1 = 1), but the one who uses it with a certain frequency (SMEDIA2 = 1, 2, 3, 4).
+In this way, the non-user can have an account, but never use it.
+Therefore, the variable "user" depends on the values of 2 variables.
+The encoding rule that follows is:
+
+-   Facebook user = 1 (he/she is a user) si SMEDIA1 = 1 (he/she has an account) y SMEDIA2 \<= 4 (he/she uses it with some frequency)
+
+-   Facebook user = 0 (he/she is not a user) si SMEDIA2 = 2 (he/she doesn´t have an account) o SMEDIA2 = 5 ( he/she has an account but never uses it)
+
+This rule transforms into the following R syntax, which uses the `ìfelse` command.
+This syntax includes the condition to assign values of 1 to a new variable and assigns all other observations the value of 0.
+These new variables are described using the `table` command to generate the absolute frequencies,the `prop.table` command for the relative frequencies and the `round` command to round the decimals.
+These commands will be seen in more detail in the following documents.
+
+```{r usuarios, echo=TRUE, message=FALSE, warning=FALSE}
+lapop18$fb_user <- ifelse(lapop18$smedia1==1 & lapop18$smedia2<=4, 1, 0)
+lapop18$tw_user <- ifelse(lapop18$smedia4==1 & lapop18$smedia5<=4, 1, 0)
+lapop18$wa_user <- ifelse(lapop18$smedia7==1 & lapop18$smedia8<=4, 1, 0)
+round(prop.table(table(lapop18$fb_user))*100, 1)
+round(prop.table(table(lapop18$tw_user))*100, 1)
+round(prop.table(table(lapop18$wa_user))*100, 1)
+```
+
+These results are those presented in Graph 3.1 of the report in the form of pie charts.
+These types of graphs will be seen in the next section.
+
+![](Graf3.1.png){width="323"}
+
+# Design effect observation
+
+Both the results for system support and those of social network users differ from those that appear in the report for two reasons.
+First, to support the system, because "Values over time are calculated including only the countries that the Americas Barometer has studied regularly since 2006: Argentina, Brazil, Bolivia, Chile, Colombia, Costa Rica , Dominican Republic, Ecuador, El Salvador, Guatemala, Honduras, Jamaica, Mexico, Nicaragua, Panama, Paraguay, Peru, Uruguay" (p.46).
+The code only filters the last round, which includes countries that are not on that list, such as the United States or Canada.
+On the other hand, the calculations reported in the publication include the use of expansion factors, which have not been included in these calculations, but which will be incorporated in other documents (see [here](https://rpubs.com/arturo_maldonado/728626)).
+
+# Summary
+
+In this document we have seen the basic elements of data manipulation and transformation using the Americas Barometer.
+A variable has been recoded using the `recode` command, cases have been selected using `subset` and a new variable has been calculated algebraically and with the `ifelse` command.

@@ -15,7 +15,7 @@ navbar:
     - text: "Initial steps"
       menu:
       - text: "Data manipulation"
-        href: Manipulacion.html
+        href: Manipulation.html
       - text: "Survey weights"
         href: Expansion.html
     - text: "Describing and plotting data"
