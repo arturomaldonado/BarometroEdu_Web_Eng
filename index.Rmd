@@ -1,0 +1,80 @@
+---
+title: "Using AmericasBarometer data"
+output: 
+  html_document:
+    theme: flatly
+---
+
+```{=html}
+<style type="text/css">
+.title {
+  display: none;
+}
+
+#getting-started img {
+  margin-right: 10px;
+}
+
+</style>
+```
+<div class="row" style="padding-top: 30px;">
+
+::: col-sm-6
+# **Using AmericasBarometer data**
+
+You will find in this web modules where AmericasBarometer data is used in R and RStudio. The analyses replicate results shown in several reports produced by LAPOP. These results give an outlook of how to use our data to produce statistical results.
+
+# Topics
+
+## Preparation
+
+1.  [Installing R and RStudio](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/install.html)
+
+2.  [Basic procedures](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/basic.html)
+
+3.  [Importing datasets](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/dataset.html)
+
+## Initial steps
+
+1.  [Data manipulation](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Manipulation.html)
+
+2.  [Survey weights](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Weights.html)
+
+## Describing and plotting data
+
+1.  [Descriptive statistics: nominal variables](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives.html)
+
+2.  [Descriptive statistics: ordinal variables](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives2.html)
+
+3.  [Descriptive statistics: numerical variables](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives3.html)
+
+## Basic inference
+
+1.  [Confidence intervals](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/CI.html)
+
+2.  [Compararing 2 means](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/ttest.html)
+
+3.  [Comparing more than 2 means](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/anova.html)
+
+4.  [Crosstables and chi-square analysis](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/chi.html)
+
+## Modeling {.col-sm-6}
+
+1.  [Correlation](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/correlation.html)
+
+2.  [Simple linear regresion](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion1.html)
+
+3.  [Multiple linear regresion](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion2.html)
+
+4.  [Logistic regresion](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/logit.html)
+
+## Extras
+
+1.  [Maps using AmericasBarometer data](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/maps.html)
+:::
+
+::: col-sm-6
+### [The Latin American Public Opinion Project](https://www.vanderbilt.edu/lapop/)
+
+<a href = "https://www.vanderbilt.edu/lapop/"> ![](images/logo.png) </a>
+:::
