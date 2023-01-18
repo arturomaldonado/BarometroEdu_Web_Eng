@@ -34,7 +34,7 @@ You will find in this web modules where AmericasBarometer data is used in R and 
 
 3.  [Importing datasets](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/dataset.html)
 
-## Initial steps
+## First steps
 
 1.  [Data manipulation](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Manipulation.html)
 

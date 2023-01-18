@@ -1,0 +1,174 @@
+---
+title: "Survey weights using the AmericasBarometer data"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: flatly
+    #code_folding: hide
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
+```
+
+```{css color, echo=FALSE}
+.columns {display: flex;}
+h1 {color: #3366CC;}
+```
+
+# Introduction
+
+This section will explain how to introduce survey weights in statistical calculations using the AmericasBarometer datasets.
+We will continue what was worked on in the "Data Manipulation" document, available [here](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Manipulation.html).
+
+# About the dataset
+
+The data that we are going to use should be cited as follows: Source: AmericasBarometer by the Latin American Public Opinion Project (LAPOP), wwww.LapopSurveys.org.
+In order to reproduce these calculations, this section starts from scratch, reloading the dataset from the "materials_edu" repository of LAPOP's GitHub account.
+We suggested to clean the Environment of any other previous dataframe.
+This can be done with the broom.
+
+We use the library `rio` and the command `import` to import this dataset again from the beginning from this repository.
+
+```{r base}
+library(rio)
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+lapop18 = subset(lapop18, pais<=35)
+```
+
+We also load the dataset for the 2021 round.
+
+```{r base 21}
+lapop21 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData")
+```
+
+# About the use of survey weights
+
+When a researcher opens a dataset in any statistical software, it assumes that the data comes from a simple random sample.
+When working with public opinion data, such as the AmericasBarometer data, the sample design is not a simple random sampling, but a multistage probabilistic design, with stratifications, clusterization, and quotas.
+As indicated in the technical report of the 2018/19 round of the AmericasBarometer, available [here](https://www.vanderbilt.edu/lapop/ab2018/AmericasBarometer_2018-19_Technical_Report_W_102919.pdf), the samples in each country were designed using a multi-stage probabilistic design (with household-level quotas for most countries), and were stratified by major regions in the country, size of the municipality, and by urban and rural areas within the municipalities.
+This complex sampling design has to be incorporated into the calculations.
+On certain occasions, if it is not incorporated, it can lead to differences in the results.
+A more detailed explanation on the use of survey weights and the potential consequences of not using them with the AmericasBarometer data can be read in Methodological Note 007 (Castorena, 2021), available [aquí](https://www.vanderbilt.edu/lapop/insights/IMN007en.pdf).
+This Methodological Note describes three scenarios of uses of expansion factors:
+
+1.  Post-stratification adjustment: when the sample is not self-weighted and deviates from certain important sociodemographic characteristics. In the datasets, this characteristic is adjusted with the variable "stratopri".
+2.  Adjustment for oversampling: when the sample includes an oversample of subpopulations of interest. In the datasets, this characteristic is adjusted with the variable "wt".
+3.  Adjustment of multiple surveys: when analyzing data from several countries or different rounds. The weighting variable in the database is "weight1500", which standardizes the samples from each country to 1,500 observations.
+
+# Consequences of not using survey weights
+
+As the Methodological Note indicates, "unweighted analyzes may result in biased estimates" (p.9).
+For example, we replicated the results on support for democracy in Honduras (45%) and Uruguay (76.2%) in the section of Data Manipulation, for which the recoded variable was calculated and described.
+
+```{r manipulation, message=FALSE, warning=FALSE}
+library(car)
+lapop18$ing4rec <- car::recode(lapop18$ing4, "1:4=0; 5:7=1")
+table(lapop18$ing4rec)
+```
+
+In this dataframe, the distribution of support for democracy in these two countries can be calculated and the rounded percentages can be reported.
+
+```{r Honduras and Uruguay}
+round(prop.table(table(lapop18$ing4rec[lapop18$pais==4]))*100, 1)
+round(prop.table(table(lapop18$ing4rec[lapop18$pais==14]))*100, 1)
+```
+
+We observed that these results are the same as those that appear in Figure 1.2 of the report "The Pulse of Democracy" (p.12), available [here](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_10.13.19.pdf).
+This is to be expected because, as Table 5 of the Methodological Note indicates, both countries have a self-weighted sample design, so these calculations, which do not include the design, coincide with those of the report, which do include the survey weights into the calculations.
+
+A different case is that of Brazil, which, according to the Methodological Note, has a weighted sample design, so it would require using a survey weight to adjust the oversample in the design.
+If the descriptive of support for democracy in Brazil is calculated without including the expansion factor, a different result is obtained from that of the report.
+
+```{r Brazil}
+round(prop.table(table(lapop18$ing4rec[lapop18$pais==15]))*100, 1)
+```
+
+In this calculation we obtain 59.8%, while we observe 60.0% in Figure 1.2 of the report.
+This difference is due to the fact that the `table` and the `prop.table` commands do not include the survey weights.
+
+# Including survey weights
+
+Some libraries and commands in R allow the inclusion of a weight variable in calculations.
+The `descr` package, for example, includes several commands, such as `compmeans` or `crosstab` that allow this weight inclusion.
+To reproduce the data shown in Figure 1.2 of the report, you can use the `compmeans` command that allows you to calculate the mean of a variable (such as ing4rec, whose mean is equal to the proportion) by groups of a factor variable, such as "pais", weighting the results by a variable, such as "weight1500".
+The `plot = FALSE` specification is added to disable plot production.
+
+```{r weighted ing4rec, message=FALSE, warning=FALSE}
+library(descr)
+compmeans(lapop18$ing4rec, lapop18$pais, lapop18$weight1500, plot=FALSE)
+```
+
+According to these results, we see that Brazil (country = 15) has a support for democracy of 0.599975.
+If we transform this number into a percentage, approaching 1 decimal place, we reproduce the value of 60% that is observed in Figure 1.2 of the report.
+Not only that, but it is also observed that for the rest of the countries, the data is replicated.
+For example, this table shows a support for democracy of 0.6272307 for Mexico (country = 1), or, in a percentage close to 1 decimal, 62.7%, equal to the data in the report.
+
+Another way to replicate the results incorporating survey weights is using the `survey` package, a package specially developed to work with complex sample designs.
+The Methodological Note includes an appendix with the STATA code to use the survey weights in the AmericasBarometer data.
+Here we will do the same in R, for which we will use the `svydesign` command (similar to the svyset command in STATA).
+With this command a new object called "lapop.design18" is created, which stores the information of the variables contained in the dataframe, including a specified survey weight in the calculations.
+Therefore, if a new variable is created later, this command would have to be run again so that this "lapop.design" object includes this new variable.
+
+This sampling design not only depends of the "weight1500" variable, but also of variables that define strata "estratopri" and sampling primary unit "upm".
+
+```{r weight with survey, message=FALSE, warning=FALSE}
+#install.packages("survey") To install the package you must use this code
+library(survey)
+lapop.design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
+```
+
+Once the data is created with the weight included in the object "lapop.design18", we can use the native commands of the `survey` package to make calculations.
+For example, to calculate the mean of the variable "ing4rec" (support for democracy) in the entire dataset for the 2018/19 round, we use the command `svymean`.
+
+```{r mean with survey}
+svymean(~ing4rec, lapop.design18, na.rm=T)
+```
+
+In this way, the value of the last row of results of the `compmeans` command is reproduced, which corresponds to the mean of the entire sample.
+That is, the same result is being found in both ways.
+To reproduce the results by country, you can use the `svyby` command that allows you to find results (such as the mean, using `svymean`) of a variable ("ing4rec"), by values of other variable ("pais").
+
+```{r mean by country with survey}
+svyby(~ing4rec, ~pais, design=lapop.design18, svymean, na.rm=T)
+```
+
+In this case, we see that this table is exactly the same as the one reported with `compmeans`, since both use the same survey weight.
+
+In the same way, results of Figure 1.1 of the report The Pulse of Democracy for the 2021 round are not equal to those obtained in the previous section.
+For example, results for support for democracy by country without using survey weights indicate that Mexico has 65.2% of respondents that support democracy, while the figure in the report indicate 63%.
+Uruguay shows 80% of support for democracy in the report, while unweighted results indicate 84.5%.
+
+To replicate results in Figure 1.1, we follow a similar procedure to that used in the 2018/19 round.
+First, we recode the variable and then use the `compmeans` command.
+
+```{r ing4rec 21}
+lapop21$ing4rec = car::recode(lapop21$ing4, "1:4=0; 5:7=1")
+compmeans(lapop21$ing4rec, lapop21$pais, lapop21$weight1500, plot = F)
+```
+
+We can also produce a new object called "lapop.design21", which saves information of variables into this dataset, including a survey weight.
+The command `svydesign` does not accept that variables that define the design have missing values "NA".
+The dataset of the 2021 round has 10 NAs in the variable "weight1500" and 1426 NAs in the variable "estratopri".
+To be able to create an design object, we have to drop these observations with missing values.
+The dataset with these deleted observations is saved in a new dataframe "lapop21a".
+The command `svydesign` uses this dataframe.
+
+```{r survey 21}
+lapop21a = subset(lapop21, !is.na(estratopri))
+lapop21a = subset(lapop21a, !is.na(weight1500))
+lapop.design21 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop21a)
+svyby(~ing4rec, ~pais, design=lapop.design21, svymean, na.rm=T)
+```
+
+In this way, we have seen two ways to incorporate the sampling design effect in the basic calculations with the AmericasBarometer data.
+Later, we will see the inclusion of the survey weights in other more complex calculations, such as the calculation of confidence intervals or regressions.
+In these documents we will frist work with the unweighted version, and then we will present the complex version, including the survey weights in the calculations.

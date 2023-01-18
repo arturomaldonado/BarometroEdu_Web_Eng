@@ -1,5 +1,5 @@
 ---
-title: "Data manipulation using the Americas Barometer"
+title: "Data manipulation using the AmericasBarometer data"
 output:
   html_document:
     toc: true
@@ -31,7 +31,7 @@ At the end, there is a note about the statistical calculations considering the d
 
 # About the AmericasBarometer datasets
 
-The data that we are going to use should be cited as follows: Source: Barometer of the Americas by the Latin American Public Opinion Project (LAPOP), wwww.LapopSurveys.org.
+The data that we are going to use should be cited as follows: Source: AmericasBarometer by the Latin American Public Opinion Project (LAPOP), wwww.LapopSurveys.org.
 
 In this section a dataset is loaded.
 This dataset is hosted in the "materials_edu" repository of LAPOP's GitHub account.
@@ -150,7 +150,7 @@ The report for the 2018/19 wave indicates "Figure 1.2 displays the percent of in
 For replicating these results about Honduras and Uruguay for the 2018/19 round, we can select observations for these two countries.
 According to the questionnaire, available HERE, Honduras is coded as 4 and Uruguay as 14 in variable "pais", that is imported as a numeric variable.
 
-We include the operator "or", that is written as \"\|\" in R.
+We include the operator "or", that is written as "\|" in R.
 In this way, we can select observations from Honduras or Uruguay using `pais==4 | pais==14`.
 The description of variable "pais" shows that it includes only observations for Honduras (2) and Uruguay (14).
 
@@ -304,7 +304,7 @@ These results are those shown in Figure 2.1 for the 2018/19 round.
 
 Sometimes the calculation of a variable does not only require the numerical transformation of the original variable, but the values of the new variable depend on the values of other variables.
 For example, the chapter "Social networks and political attitudes" of the report "The Pulse of Democracy" presents the results for the variables "WhatsApp user", "Twitter user" and "Facebook user".
-To calculate these variables, footnote 7 of this chapter indicates: "For each platform, we identify users with a combination of two sets of survey questions. First, we identify users as those who respond positively to the questions, SMEDIA1/SMEDIA4/SMEDIA7. Do you have a Facebook/Twitter/WhatsApp account? Then, we recode as non-users those who respond "never" to the follow-up questions, SMEDIA2/SMEDIA5/SMEDIA8. How often do you see content on Facebook/Twitter/WhatsApp?" (p. 64).
+To calculate these variables, footnote 7 of this chapter indicates: "For each platform, we identify users with a combination of two sets of survey questions. First, we identify users as those who respond positively to the questions, SMEDIA1/SMEDIA4/SMEDIA7. Do you have a Facebook/Twitter/WhatsApp account? Then, we recode as non-users those who respond"never" to the follow-up questions, SMEDIA2/SMEDIA5/SMEDIA8. How often do you see content on Facebook/Twitter/WhatsApp?" (p. 64).
 
 ![](smedia.png){width="531"}
 

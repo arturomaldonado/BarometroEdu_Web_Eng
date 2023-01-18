@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Survey weights using the AmericasBarometer data</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LAPOP_edu</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="instalando.html">Installing R and RStudio</a>
+    </li>
+    <li>
+      <a href="basica.html">Basic procedures</a>
+    </li>
+    <li>
+      <a href="bases.html">Importing datasets</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    First steps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Manipulation.html">Data manipulation</a>
+    </li>
+    <li>
+      <a href="Expansion.html">Survey weights</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Describing and plotting data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Descriptivos.html">Descriptive statistics: nominal variables</a>
+    </li>
+    <li>
+      <a href="Descriptivos2.html">Descriptive statistics: ordinal variables</a>
+    </li>
+    <li>
+      <a href="Descriptivos3.html">Descriptive statistics: numerical variables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Basic inference
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="IC.html">Confidence intervals</a>
+    </li>
+    <li>
+      <a href="pruebat.html">Compararing 2 means</a>
+    </li>
+    <li>
+      <a href="anova.html">Comparing more than 2 means</a>
+    </li>
+    <li>
+      <a href="chi.html">Crosstables and chi-square analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="correlacion.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regresion1.html">Simple linear regresion</a>
+    </li>
+    <li>
+      <a href="regresion2.html">Multiple linear regresion</a>
+    </li>
+    <li>
+      <a href="logit.html">Logistic regresion</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapas.html">Maps</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Contact</a>
+</li>
+<li>
+  <a href="https://arturomaldonado.github.io/BarometroEdu_Web/index.html">Spanish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Survey weights using the AmericasBarometer
+data</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This section will explain how to introduce survey weights in
+statistical calculations using the AmericasBarometer datasets. We will
+continue what was worked on in the “Data Manipulation” document,
+available <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Manipulation.html">here</a>.</p>
+</div>
+<div id="about-the-dataset" class="section level1">
+<h1>About the dataset</h1>
+<p>The data that we are going to use should be cited as follows: Source:
+AmericasBarometer by the Latin American Public Opinion Project (LAPOP),
+wwww.LapopSurveys.org. In order to reproduce these calculations, this
+section starts from scratch, reloading the dataset from the
+“materials_edu” repository of LAPOP’s GitHub account. We suggested to
+clean the Environment of any other previous dataframe. This can be done
+with the broom.</p>
+<p>We use the library <code>rio</code> and the command
+<code>import</code> to import this dataset again from the beginning from
+this repository.</p>
+<pre class="r"><code>library(rio)
+lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)
+lapop18 = subset(lapop18, pais&lt;=35)</code></pre>
+<p>We also load the dataset for the 2021 round.</p>
+<pre class="r"><code>lapop21 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData&quot;)</code></pre>
+</div>
+<div id="about-the-use-of-survey-weights" class="section level1">
+<h1>About the use of survey weights</h1>
+<p>When a researcher opens a dataset in any statistical software, it
+assumes that the data comes from a simple random sample. When working
+with public opinion data, such as the AmericasBarometer data, the sample
+design is not a simple random sampling, but a multistage probabilistic
+design, with stratifications, clusterization, and quotas. As indicated
+in the technical report of the 2018/19 round of the AmericasBarometer,
+available <a
+href="https://www.vanderbilt.edu/lapop/ab2018/AmericasBarometer_2018-19_Technical_Report_W_102919.pdf">here</a>,
+the samples in each country were designed using a multi-stage
+probabilistic design (with household-level quotas for most countries),
+and were stratified by major regions in the country, size of the
+municipality, and by urban and rural areas within the municipalities.
+This complex sampling design has to be incorporated into the
+calculations. On certain occasions, if it is not incorporated, it can
+lead to differences in the results. A more detailed explanation on the
+use of survey weights and the potential consequences of not using them
+with the AmericasBarometer data can be read in Methodological Note 007
+(Castorena, 2021), available <a
+href="https://www.vanderbilt.edu/lapop/insights/IMN007en.pdf">aquí</a>.
+This Methodological Note describes three scenarios of uses of expansion
+factors:</p>
+<ol style="list-style-type: decimal">
+<li>Post-stratification adjustment: when the sample is not self-weighted
+and deviates from certain important sociodemographic characteristics. In
+the datasets, this characteristic is adjusted with the variable
+“stratopri”.</li>
+<li>Adjustment for oversampling: when the sample includes an oversample
+of subpopulations of interest. In the datasets, this characteristic is
+adjusted with the variable “wt”.</li>
+<li>Adjustment of multiple surveys: when analyzing data from several
+countries or different rounds. The weighting variable in the database is
+“weight1500”, which standardizes the samples from each country to 1,500
+observations.</li>
+</ol>
+</div>
+<div id="consequences-of-not-using-survey-weights"
+class="section level1">
+<h1>Consequences of not using survey weights</h1>
+<p>As the Methodological Note indicates, “unweighted analyzes may result
+in biased estimates” (p.9). For example, we replicated the results on
+support for democracy in Honduras (45%) and Uruguay (76.2%) in the
+section of Data Manipulation, for which the recoded variable was
+calculated and described.</p>
+<pre class="r"><code>library(car)
+lapop18$ing4rec &lt;- car::recode(lapop18$ing4, &quot;1:4=0; 5:7=1&quot;)
+table(lapop18$ing4rec)</code></pre>
+<pre><code>## 
+##     0     1 
+## 11463 15623</code></pre>
+<p>In this dataframe, the distribution of support for democracy in these
+two countries can be calculated and the rounded percentages can be
+reported.</p>
+<pre class="r"><code>round(prop.table(table(lapop18$ing4rec[lapop18$pais==4]))*100, 1)</code></pre>
+<pre><code>## 
+##  0  1 
+## 55 45</code></pre>
+<pre class="r"><code>round(prop.table(table(lapop18$ing4rec[lapop18$pais==14]))*100, 1)</code></pre>
+<pre><code>## 
+##    0    1 
+## 23.8 76.2</code></pre>
+<p>We observed that these results are the same as those that appear in
+Figure 1.2 of the report “The Pulse of Democracy” (p.12), available <a
+href="https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_10.13.19.pdf">here</a>.
+This is to be expected because, as Table 5 of the Methodological Note
+indicates, both countries have a self-weighted sample design, so these
+calculations, which do not include the design, coincide with those of
+the report, which do include the survey weights into the
+calculations.</p>
+<p>A different case is that of Brazil, which, according to the
+Methodological Note, has a weighted sample design, so it would require
+using a survey weight to adjust the oversample in the design. If the
+descriptive of support for democracy in Brazil is calculated without
+including the expansion factor, a different result is obtained from that
+of the report.</p>
+<pre class="r"><code>round(prop.table(table(lapop18$ing4rec[lapop18$pais==15]))*100, 1)</code></pre>
+<pre><code>## 
+##    0    1 
+## 40.2 59.8</code></pre>
+<p>In this calculation we obtain 59.8%, while we observe 60.0% in Figure
+1.2 of the report. This difference is due to the fact that the
+<code>table</code> and the <code>prop.table</code> commands do not
+include the survey weights.</p>
+</div>
+<div id="including-survey-weights" class="section level1">
+<h1>Including survey weights</h1>
+<p>Some libraries and commands in R allow the inclusion of a weight
+variable in calculations. The <code>descr</code> package, for example,
+includes several commands, such as <code>compmeans</code> or
+<code>crosstab</code> that allow this weight inclusion. To reproduce the
+data shown in Figure 1.2 of the report, you can use the
+<code>compmeans</code> command that allows you to calculate the mean of
+a variable (such as ing4rec, whose mean is equal to the proportion) by
+groups of a factor variable, such as “pais”, weighting the results by a
+variable, such as “weight1500”. The <code>plot = FALSE</code>
+specification is added to disable plot production.</p>
+<pre class="r"><code>library(descr)
+compmeans(lapop18$ing4rec, lapop18$pais, lapop18$weight1500, plot=FALSE)</code></pre>
+<pre><code>## Mean value of &quot;lapop18$ing4rec&quot; according to &quot;lapop18$pais&quot;
+##            Mean     N Std. Dev.
+## 1     0.6272307  1436 0.4837099
+## 2     0.4888451  1432 0.5000501
+## 3     0.5856655  1454 0.4927762
+## 4     0.4501005  1436 0.4976772
+## 5     0.5153743  1451 0.4999359
+## 6     0.7235940  1457 0.4473736
+## 7     0.5380612  1479 0.4987179
+## 8     0.5978999  1460 0.4904899
+## 9     0.5443122  1479 0.4982010
+## 10    0.4914110  1454 0.5000983
+## 11    0.4926471  1475 0.5001155
+## 12    0.5121786  1463 0.5000225
+## 13    0.6387097  1419 0.4805438
+## 14    0.7619359  1451 0.4260454
+## 15    0.5999750  1470 0.4900697
+## 17    0.7110368  1468 0.4534353
+## 21    0.5922659  1458 0.4915818
+## 23    0.5118871  1334 0.5000461
+## Total 0.5771191 26078 0.4940263</code></pre>
+<p>According to these results, we see that Brazil (country = 15) has a
+support for democracy of 0.599975. If we transform this number into a
+percentage, approaching 1 decimal place, we reproduce the value of 60%
+that is observed in Figure 1.2 of the report. Not only that, but it is
+also observed that for the rest of the countries, the data is
+replicated. For example, this table shows a support for democracy of
+0.6272307 for Mexico (country = 1), or, in a percentage close to 1
+decimal, 62.7%, equal to the data in the report.</p>
+<p>Another way to replicate the results incorporating survey weights is
+using the <code>survey</code> package, a package specially developed to
+work with complex sample designs. The Methodological Note includes an
+appendix with the STATA code to use the survey weights in the
+AmericasBarometer data. Here we will do the same in R, for which we will
+use the <code>svydesign</code> command (similar to the svyset command in
+STATA). With this command a new object called “lapop.design18” is
+created, which stores the information of the variables contained in the
+dataframe, including a specified survey weight in the calculations.
+Therefore, if a new variable is created later, this command would have
+to be run again so that this “lapop.design” object includes this new
+variable.</p>
+<p>This sampling design not only depends of the “weight1500” variable,
+but also of variables that define strata “estratopri” and sampling
+primary unit “upm”.</p>
+<pre class="r"><code>#install.packages(&quot;survey&quot;) To install the package you must use this code
+library(survey)
+lapop.design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)</code></pre>
+<p>Once the data is created with the weight included in the object
+“lapop.design18”, we can use the native commands of the
+<code>survey</code> package to make calculations. For example, to
+calculate the mean of the variable “ing4rec” (support for democracy) in
+the entire dataset for the 2018/19 round, we use the command
+<code>svymean</code>.</p>
+<pre class="r"><code>svymean(~ing4rec, lapop.design18, na.rm=T)</code></pre>
+<pre><code>##            mean     SE
+## ing4rec 0.57712 0.0032</code></pre>
+<p>In this way, the value of the last row of results of the
+<code>compmeans</code> command is reproduced, which corresponds to the
+mean of the entire sample. That is, the same result is being found in
+both ways. To reproduce the results by country, you can use the
+<code>svyby</code> command that allows you to find results (such as the
+mean, using <code>svymean</code>) of a variable (“ing4rec”), by values
+of other variable (“pais”).</p>
+<pre class="r"><code>svyby(~ing4rec, ~pais, design=lapop.design18, svymean, na.rm=T)</code></pre>
+<pre><code>##    pais   ing4rec         se
+## 1     1 0.6272307 0.01245940
+## 2     2 0.4888451 0.01358318
+## 3     3 0.5856655 0.01267273
+## 4     4 0.4501005 0.01197688
+## 5     5 0.5153743 0.01419558
+## 6     6 0.7235940 0.01512205
+## 7     7 0.5380612 0.01372306
+## 8     8 0.5978999 0.01212261
+## 9     9 0.5443122 0.01357881
+## 10   10 0.4914110 0.01374835
+## 11   11 0.4926471 0.01337323
+## 12   12 0.5121786 0.01624846
+## 13   13 0.6387097 0.01161029
+## 14   14 0.7619359 0.01240878
+## 15   15 0.5999750 0.01556882
+## 17   17 0.7110368 0.01415857
+## 21   21 0.5922659 0.01050698
+## 23   23 0.5118871 0.01325745</code></pre>
+<p>In this case, we see that this table is exactly the same as the one
+reported with <code>compmeans</code>, since both use the same survey
+weight.</p>
+<p>In the same way, results of Figure 1.1 of the report The Pulse of
+Democracy for the 2021 round are not equal to those obtained in the
+previous section. For example, results for support for democracy by
+country without using survey weights indicate that Mexico has 65.2% of
+respondents that support democracy, while the figure in the report
+indicate 63%. Uruguay shows 80% of support for democracy in the report,
+while unweighted results indicate 84.5%.</p>
+<p>To replicate results in Figure 1.1, we follow a similar procedure to
+that used in the 2018/19 round. First, we recode the variable and then
+use the <code>compmeans</code> command.</p>
+<pre class="r"><code>lapop21$ing4rec = car::recode(lapop21$ing4, &quot;1:4=0; 5:7=1&quot;)
+compmeans(lapop21$ing4rec, lapop21$pais, lapop21$weight1500, plot = F)</code></pre>
+<pre><code>## Mean value of &quot;La democracia es mejor que cualquier otra forma de gobierno&quot; 
+## according to &quot;País&quot;
+##            Mean     N Std. Dev.
+## 1     0.6319034  1450 0.4824541
+## 2     0.5194371  1397 0.4998009
+## 3     0.7251405  1460 0.4465964
+## 4     0.4876840  1425 0.5000237
+## 5     0.6269484  1464 0.4837809
+## 6     0.7142359  1476 0.4519307
+## 7     0.6120172  1471 0.4874563
+## 8     0.5299566  1471 0.4992716
+## 9     0.6317680  1483 0.4824875
+## 10    0.6097236  1462 0.4879791
+## 11    0.4992388  1490 0.5001672
+## 12    0.4997591  1453 0.5001720
+## 13    0.6758364  1469 0.4682209
+## 14    0.7997897  1479 0.4002930
+## 15    0.6666251  1479 0.4715787
+## 17    0.6885568  1479 0.4632402
+## 21    0.6151482  1450 0.4867282
+## 22    0.4551642   903 0.4982617
+## 23    0.5699446  1324 0.4952707
+## 24    0.6583942   680 0.4745972
+## 40    0.7439125  1498 0.4366164
+## 41    0.7338750  1500 0.4420778
+## Total 0.6256306 30764 0.4839675</code></pre>
+<p>We can also produce a new object called “lapop.design21”, which saves
+information of variables into this dataset, including a survey weight.
+The command <code>svydesign</code> does not accept that variables that
+define the design have missing values “NA”. The dataset of the 2021
+round has 10 NAs in the variable “weight1500” and 1426 NAs in the
+variable “estratopri”. To be able to create an design object, we have to
+drop these observations with missing values. The dataset with these
+deleted observations is saved in a new dataframe “lapop21a”. The command
+<code>svydesign</code> uses this dataframe.</p>
+<pre class="r"><code>lapop21a = subset(lapop21, !is.na(estratopri))
+lapop21a = subset(lapop21a, !is.na(weight1500))
+lapop.design21 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop21a)
+svyby(~ing4rec, ~pais, design=lapop.design21, svymean, na.rm=T)</code></pre>
+<pre><code>##    pais   ing4rec          se
+## 1     1 0.6316272 0.010566603
+## 2     2 0.5199516 0.011260850
+## 3     3 0.7256456 0.009307515
+## 4     4 0.4871786 0.011431643
+## 5     5 0.6269559 0.011877269
+## 6     6 0.7156601 0.009841549
+## 7     7 0.6114910 0.010348017
+## 8     8 0.5291314 0.011788637
+## 9     9 0.6319269 0.010361710
+## 10   10 0.6096981 0.010533582
+## 11   11 0.4987885 0.011084079
+## 12   12 0.4997387 0.011035268
+## 13   13 0.6762073 0.010349583
+## 14   14 0.7997897 0.009234862
+## 15   15 0.6667058 0.012588648
+## 17   17 0.6883720 0.010656950
+## 21   21 0.6143721 0.011124695
+## 22   22 0.4487836 0.015521089
+## 23   23 0.5698944 0.010519540
+## 24   24 0.6610324 0.017120055
+## 40   40 0.7439125 0.015649932
+## 41   41 0.7338750 0.011610860</code></pre>
+<p>In this way, we have seen two ways to incorporate the sampling design
+effect in the basic calculations with the AmericasBarometer data. Later,
+we will see the inclusion of the survey weights in other more complex
+calculations, such as the calculation of confidence intervals or
+regressions. In these documents we will frist work with the unweighted
+version, and then we will present the complex version, including the
+survey weights in the calculations.</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3VydmV5IHdlaWdodHMgdXNpbmcgdGhlIEFtZXJpY2FzQmFyb21ldGVyIGRhdGEiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGZsYXRseQogICAgI2NvZGVfZm9sZGluZzogaGlkZQplZGl0b3Jfb3B0aW9uczogCiAgbWFya2Rvd246IAogICAgd3JhcDogc2VudGVuY2UKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KG1lc3NhZ2U9RkFMU0Usd2FybmluZz1GQUxTRSwgY2FjaGU9VFJVRSkKYGBgCgpgYGB7Y3NzIGNvbG9yLCBlY2hvPUZBTFNFfQouY29sdW1ucyB7ZGlzcGxheTogZmxleDt9CmgxIHtjb2xvcjogIzMzNjZDQzt9CmBgYAoKIyBJbnRyb2R1Y3Rpb24KClRoaXMgc2VjdGlvbiB3aWxsIGV4cGxhaW4gaG93IHRvIGludHJvZHVjZSBzdXJ2ZXkgd2VpZ2h0cyBpbiBzdGF0aXN0aWNhbCBjYWxjdWxhdGlvbnMgdXNpbmcgdGhlIEFtZXJpY2FzQmFyb21ldGVyIGRhdGFzZXRzLgpXZSB3aWxsIGNvbnRpbnVlIHdoYXQgd2FzIHdvcmtlZCBvbiBpbiB0aGUgIkRhdGEgTWFuaXB1bGF0aW9uIiBkb2N1bWVudCwgYXZhaWxhYmxlIFtoZXJlXShodHRwczovL2FydHVyb21hbGRvbmFkby5naXRodWIuaW8vQmFyb21ldHJvRWR1X1dlYl9FbmcvTWFuaXB1bGF0aW9uLmh0bWwpLgoKIyBBYm91dCB0aGUgZGF0YXNldAoKVGhlIGRhdGEgdGhhdCB3ZSBhcmUgZ29pbmcgdG8gdXNlIHNob3VsZCBiZSBjaXRlZCBhcyBmb2xsb3dzOiBTb3VyY2U6IEFtZXJpY2FzQmFyb21ldGVyIGJ5IHRoZSBMYXRpbiBBbWVyaWNhbiBQdWJsaWMgT3BpbmlvbiBQcm9qZWN0IChMQVBPUCksIHd3d3cuTGFwb3BTdXJ2ZXlzLm9yZy4KSW4gb3JkZXIgdG8gcmVwcm9kdWNlIHRoZXNlIGNhbGN1bGF0aW9ucywgdGhpcyBzZWN0aW9uIHN0YXJ0cyBmcm9tIHNjcmF0Y2gsIHJlbG9hZGluZyB0aGUgZGF0YXNldCBmcm9tIHRoZSAibWF0ZXJpYWxzX2VkdSIgcmVwb3NpdG9yeSBvZiBMQVBPUCdzIEdpdEh1YiBhY2NvdW50LgpXZSBzdWdnZXN0ZWQgdG8gY2xlYW4gdGhlIEVudmlyb25tZW50IG9mIGFueSBvdGhlciBwcmV2aW91cyBkYXRhZnJhbWUuClRoaXMgY2FuIGJlIGRvbmUgd2l0aCB0aGUgYnJvb20uCgpXZSB1c2UgdGhlIGxpYnJhcnkgYHJpb2AgYW5kIHRoZSBjb21tYW5kIGBpbXBvcnRgIHRvIGltcG9ydCB0aGlzIGRhdGFzZXQgYWdhaW4gZnJvbSB0aGUgYmVnaW5uaW5nIGZyb20gdGhpcyByZXBvc2l0b3J5LgoKYGBge3IgYmFzZX0KbGlicmFyeShyaW8pCmxhcG9wMTggPSBpbXBvcnQoImh0dHBzOi8vcmF3LmdpdGh1Yi5jb20vbGFwb3AtY2VudHJhbC9tYXRlcmlhbHNfZWR1L21haW4vTEFQT1BfQUJfTWVyZ2VfMjAxOF92MS4wLnNhdiIpCmxhcG9wMTggPSBzdWJzZXQobGFwb3AxOCwgcGFpczw9MzUpCmBgYAoKV2UgYWxzbyBsb2FkIHRoZSBkYXRhc2V0IGZvciB0aGUgMjAyMSByb3VuZC4KCmBgYHtyIGJhc2UgMjF9CmxhcG9wMjEgPSBpbXBvcnQoImh0dHBzOi8vcmF3LmdpdGh1Yi5jb20vbGFwb3AtY2VudHJhbC9tYXRlcmlhbHNfZWR1L21haW4vbGFwb3AyMS5SRGF0YSIpCmBgYAoKIyBBYm91dCB0aGUgdXNlIG9mIHN1cnZleSB3ZWlnaHRzCgpXaGVuIGEgcmVzZWFyY2hlciBvcGVucyBhIGRhdGFzZXQgaW4gYW55IHN0YXRpc3RpY2FsIHNvZnR3YXJlLCBpdCBhc3N1bWVzIHRoYXQgdGhlIGRhdGEgY29tZXMgZnJvbSBhIHNpbXBsZSByYW5kb20gc2FtcGxlLgpXaGVuIHdvcmtpbmcgd2l0aCBwdWJsaWMgb3BpbmlvbiBkYXRhLCBzdWNoIGFzIHRoZSBBbWVyaWNhc0Jhcm9tZXRlciBkYXRhLCB0aGUgc2FtcGxlIGRlc2lnbiBpcyBub3QgYSBzaW1wbGUgcmFuZG9tIHNhbXBsaW5nLCBidXQgYSBtdWx0aXN0YWdlIHByb2JhYmlsaXN0aWMgZGVzaWduLCB3aXRoIHN0cmF0aWZpY2F0aW9ucywgY2x1c3Rlcml6YXRpb24sIGFuZCBxdW90YXMuCkFzIGluZGljYXRlZCBpbiB0aGUgdGVjaG5pY2FsIHJlcG9ydCBvZiB0aGUgMjAxOC8xOSByb3VuZCBvZiB0aGUgQW1lcmljYXNCYXJvbWV0ZXIsIGF2YWlsYWJsZSBbaGVyZV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDE4L0FtZXJpY2FzQmFyb21ldGVyXzIwMTgtMTlfVGVjaG5pY2FsX1JlcG9ydF9XXzEwMjkxOS5wZGYpLCB0aGUgc2FtcGxlcyBpbiBlYWNoIGNvdW50cnkgd2VyZSBkZXNpZ25lZCB1c2luZyBhIG11bHRpLXN0YWdlIHByb2JhYmlsaXN0aWMgZGVzaWduICh3aXRoIGhvdXNlaG9sZC1sZXZlbCBxdW90YXMgZm9yIG1vc3QgY291bnRyaWVzKSwgYW5kIHdlcmUgc3RyYXRpZmllZCBieSBtYWpvciByZWdpb25zIGluIHRoZSBjb3VudHJ5LCBzaXplIG9mIHRoZSBtdW5pY2lwYWxpdHksIGFuZCBieSB1cmJhbiBhbmQgcnVyYWwgYXJlYXMgd2l0aGluIHRoZSBtdW5pY2lwYWxpdGllcy4KVGhpcyBjb21wbGV4IHNhbXBsaW5nIGRlc2lnbiBoYXMgdG8gYmUgaW5jb3Jwb3JhdGVkIGludG8gdGhlIGNhbGN1bGF0aW9ucy4KT24gY2VydGFpbiBvY2Nhc2lvbnMsIGlmIGl0IGlzIG5vdCBpbmNvcnBvcmF0ZWQsIGl0IGNhbiBsZWFkIHRvIGRpZmZlcmVuY2VzIGluIHRoZSByZXN1bHRzLgpBIG1vcmUgZGV0YWlsZWQgZXhwbGFuYXRpb24gb24gdGhlIHVzZSBvZiBzdXJ2ZXkgd2VpZ2h0cyBhbmQgdGhlIHBvdGVudGlhbCBjb25zZXF1ZW5jZXMgb2Ygbm90IHVzaW5nIHRoZW0gd2l0aCB0aGUgQW1lcmljYXNCYXJvbWV0ZXIgZGF0YSBjYW4gYmUgcmVhZCBpbiBNZXRob2RvbG9naWNhbCBOb3RlIDAwNyAoQ2FzdG9yZW5hLCAyMDIxKSwgYXZhaWxhYmxlIFthcXXDrV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvaW5zaWdodHMvSU1OMDA3ZW4ucGRmKS4KVGhpcyBNZXRob2RvbG9naWNhbCBOb3RlIGRlc2NyaWJlcyB0aHJlZSBzY2VuYXJpb3Mgb2YgdXNlcyBvZiBleHBhbnNpb24gZmFjdG9yczoKCjEuICBQb3N0LXN0cmF0aWZpY2F0aW9uIGFkanVzdG1lbnQ6IHdoZW4gdGhlIHNhbXBsZSBpcyBub3Qgc2VsZi13ZWlnaHRlZCBhbmQgZGV2aWF0ZXMgZnJvbSBjZXJ0YWluIGltcG9ydGFudCBzb2Npb2RlbW9ncmFwaGljIGNoYXJhY3RlcmlzdGljcy4gSW4gdGhlIGRhdGFzZXRzLCB0aGlzIGNoYXJhY3RlcmlzdGljIGlzIGFkanVzdGVkIHdpdGggdGhlIHZhcmlhYmxlICJzdHJhdG9wcmkiLgoyLiAgQWRqdXN0bWVudCBmb3Igb3ZlcnNhbXBsaW5nOiB3aGVuIHRoZSBzYW1wbGUgaW5jbHVkZXMgYW4gb3ZlcnNhbXBsZSBvZiBzdWJwb3B1bGF0aW9ucyBvZiBpbnRlcmVzdC4gSW4gdGhlIGRhdGFzZXRzLCB0aGlzIGNoYXJhY3RlcmlzdGljIGlzIGFkanVzdGVkIHdpdGggdGhlIHZhcmlhYmxlICJ3dCIuCjMuICBBZGp1c3RtZW50IG9mIG11bHRpcGxlIHN1cnZleXM6IHdoZW4gYW5hbHl6aW5nIGRhdGEgZnJvbSBzZXZlcmFsIGNvdW50cmllcyBvciBkaWZmZXJlbnQgcm91bmRzLiBUaGUgd2VpZ2h0aW5nIHZhcmlhYmxlIGluIHRoZSBkYXRhYmFzZSBpcyAid2VpZ2h0MTUwMCIsIHdoaWNoIHN0YW5kYXJkaXplcyB0aGUgc2FtcGxlcyBmcm9tIGVhY2ggY291bnRyeSB0byAxLDUwMCBvYnNlcnZhdGlvbnMuCgojIENvbnNlcXVlbmNlcyBvZiBub3QgdXNpbmcgc3VydmV5IHdlaWdodHMKCkFzIHRoZSBNZXRob2RvbG9naWNhbCBOb3RlIGluZGljYXRlcywgInVud2VpZ2h0ZWQgYW5hbHl6ZXMgbWF5IHJlc3VsdCBpbiBiaWFzZWQgZXN0aW1hdGVzIiAocC45KS4KRm9yIGV4YW1wbGUsIHdlIHJlcGxpY2F0ZWQgdGhlIHJlc3VsdHMgb24gc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGluIEhvbmR1cmFzICg0NSUpIGFuZCBVcnVndWF5ICg3Ni4yJSkgaW4gdGhlIHNlY3Rpb24gb2YgRGF0YSBNYW5pcHVsYXRpb24sIGZvciB3aGljaCB0aGUgcmVjb2RlZCB2YXJpYWJsZSB3YXMgY2FsY3VsYXRlZCBhbmQgZGVzY3JpYmVkLgoKYGBge3IgbWFuaXB1bGF0aW9uLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KGNhcikKbGFwb3AxOCRpbmc0cmVjIDwtIGNhcjo6cmVjb2RlKGxhcG9wMTgkaW5nNCwgIjE6ND0wOyA1Ojc9MSIpCnRhYmxlKGxhcG9wMTgkaW5nNHJlYykKYGBgCgpJbiB0aGlzIGRhdGFmcmFtZSwgdGhlIGRpc3RyaWJ1dGlvbiBvZiBzdXBwb3J0IGZvciBkZW1vY3JhY3kgaW4gdGhlc2UgdHdvIGNvdW50cmllcyBjYW4gYmUgY2FsY3VsYXRlZCBhbmQgdGhlIHJvdW5kZWQgcGVyY2VudGFnZXMgY2FuIGJlIHJlcG9ydGVkLgoKYGBge3IgSG9uZHVyYXMgYW5kIFVydWd1YXl9CnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AxOCRpbmc0cmVjW2xhcG9wMTgkcGFpcz09NF0pKSoxMDAsIDEpCnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AxOCRpbmc0cmVjW2xhcG9wMTgkcGFpcz09MTRdKSkqMTAwLCAxKQpgYGAKCldlIG9ic2VydmVkIHRoYXQgdGhlc2UgcmVzdWx0cyBhcmUgdGhlIHNhbWUgYXMgdGhvc2UgdGhhdCBhcHBlYXIgaW4gRmlndXJlIDEuMiBvZiB0aGUgcmVwb3J0ICJUaGUgUHVsc2Ugb2YgRGVtb2NyYWN5IiAocC4xMiksIGF2YWlsYWJsZSBbaGVyZV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDE4LzIwMTgtMTlfQW1lcmljYXNCYXJvbWV0ZXJfUmVnaW9uYWxfUmVwb3J0XzEwLjEzLjE5LnBkZikuClRoaXMgaXMgdG8gYmUgZXhwZWN0ZWQgYmVjYXVzZSwgYXMgVGFibGUgNSBvZiB0aGUgTWV0aG9kb2xvZ2ljYWwgTm90ZSBpbmRpY2F0ZXMsIGJvdGggY291bnRyaWVzIGhhdmUgYSBzZWxmLXdlaWdodGVkIHNhbXBsZSBkZXNpZ24sIHNvIHRoZXNlIGNhbGN1bGF0aW9ucywgd2hpY2ggZG8gbm90IGluY2x1ZGUgdGhlIGRlc2lnbiwgY29pbmNpZGUgd2l0aCB0aG9zZSBvZiB0aGUgcmVwb3J0LCB3aGljaCBkbyBpbmNsdWRlIHRoZSBzdXJ2ZXkgd2VpZ2h0cyBpbnRvIHRoZSBjYWxjdWxhdGlvbnMuCgpBIGRpZmZlcmVudCBjYXNlIGlzIHRoYXQgb2YgQnJhemlsLCB3aGljaCwgYWNjb3JkaW5nIHRvIHRoZSBNZXRob2RvbG9naWNhbCBOb3RlLCBoYXMgYSB3ZWlnaHRlZCBzYW1wbGUgZGVzaWduLCBzbyBpdCB3b3VsZCByZXF1aXJlIHVzaW5nIGEgc3VydmV5IHdlaWdodCB0byBhZGp1c3QgdGhlIG92ZXJzYW1wbGUgaW4gdGhlIGRlc2lnbi4KSWYgdGhlIGRlc2NyaXB0aXZlIG9mIHN1cHBvcnQgZm9yIGRlbW9jcmFjeSBpbiBCcmF6aWwgaXMgY2FsY3VsYXRlZCB3aXRob3V0IGluY2x1ZGluZyB0aGUgZXhwYW5zaW9uIGZhY3RvciwgYSBkaWZmZXJlbnQgcmVzdWx0IGlzIG9idGFpbmVkIGZyb20gdGhhdCBvZiB0aGUgcmVwb3J0LgoKYGBge3IgQnJhemlsfQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkaW5nNHJlY1tsYXBvcDE4JHBhaXM9PTE1XSkpKjEwMCwgMSkKYGBgCgpJbiB0aGlzIGNhbGN1bGF0aW9uIHdlIG9idGFpbiA1OS44JSwgd2hpbGUgd2Ugb2JzZXJ2ZSA2MC4wJSBpbiBGaWd1cmUgMS4yIG9mIHRoZSByZXBvcnQuClRoaXMgZGlmZmVyZW5jZSBpcyBkdWUgdG8gdGhlIGZhY3QgdGhhdCB0aGUgYHRhYmxlYCBhbmQgdGhlIGBwcm9wLnRhYmxlYCBjb21tYW5kcyBkbyBub3QgaW5jbHVkZSB0aGUgc3VydmV5IHdlaWdodHMuCgojIEluY2x1ZGluZyBzdXJ2ZXkgd2VpZ2h0cwoKU29tZSBsaWJyYXJpZXMgYW5kIGNvbW1hbmRzIGluIFIgYWxsb3cgdGhlIGluY2x1c2lvbiBvZiBhIHdlaWdodCB2YXJpYWJsZSBpbiBjYWxjdWxhdGlvbnMuClRoZSBgZGVzY3JgIHBhY2thZ2UsIGZvciBleGFtcGxlLCBpbmNsdWRlcyBzZXZlcmFsIGNvbW1hbmRzLCBzdWNoIGFzIGBjb21wbWVhbnNgIG9yIGBjcm9zc3RhYmAgdGhhdCBhbGxvdyB0aGlzIHdlaWdodCBpbmNsdXNpb24uClRvIHJlcHJvZHVjZSB0aGUgZGF0YSBzaG93biBpbiBGaWd1cmUgMS4yIG9mIHRoZSByZXBvcnQsIHlvdSBjYW4gdXNlIHRoZSBgY29tcG1lYW5zYCBjb21tYW5kIHRoYXQgYWxsb3dzIHlvdSB0byBjYWxjdWxhdGUgdGhlIG1lYW4gb2YgYSB2YXJpYWJsZSAoc3VjaCBhcyBpbmc0cmVjLCB3aG9zZSBtZWFuIGlzIGVxdWFsIHRvIHRoZSBwcm9wb3J0aW9uKSBieSBncm91cHMgb2YgYSBmYWN0b3IgdmFyaWFibGUsIHN1Y2ggYXMgInBhaXMiLCB3ZWlnaHRpbmcgdGhlIHJlc3VsdHMgYnkgYSB2YXJpYWJsZSwgc3VjaCBhcyAid2VpZ2h0MTUwMCIuClRoZSBgcGxvdCA9IEZBTFNFYCBzcGVjaWZpY2F0aW9uIGlzIGFkZGVkIHRvIGRpc2FibGUgcGxvdCBwcm9kdWN0aW9uLgoKYGBge3Igd2VpZ2h0ZWQgaW5nNHJlYywgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShkZXNjcikKY29tcG1lYW5zKGxhcG9wMTgkaW5nNHJlYywgbGFwb3AxOCRwYWlzLCBsYXBvcDE4JHdlaWdodDE1MDAsIHBsb3Q9RkFMU0UpCmBgYAoKQWNjb3JkaW5nIHRvIHRoZXNlIHJlc3VsdHMsIHdlIHNlZSB0aGF0IEJyYXppbCAoY291bnRyeSA9IDE1KSBoYXMgYSBzdXBwb3J0IGZvciBkZW1vY3JhY3kgb2YgMC41OTk5NzUuCklmIHdlIHRyYW5zZm9ybSB0aGlzIG51bWJlciBpbnRvIGEgcGVyY2VudGFnZSwgYXBwcm9hY2hpbmcgMSBkZWNpbWFsIHBsYWNlLCB3ZSByZXByb2R1Y2UgdGhlIHZhbHVlIG9mIDYwJSB0aGF0IGlzIG9ic2VydmVkIGluIEZpZ3VyZSAxLjIgb2YgdGhlIHJlcG9ydC4KTm90IG9ubHkgdGhhdCwgYnV0IGl0IGlzIGFsc28gb2JzZXJ2ZWQgdGhhdCBmb3IgdGhlIHJlc3Qgb2YgdGhlIGNvdW50cmllcywgdGhlIGRhdGEgaXMgcmVwbGljYXRlZC4KRm9yIGV4YW1wbGUsIHRoaXMgdGFibGUgc2hvd3MgYSBzdXBwb3J0IGZvciBkZW1vY3JhY3kgb2YgMC42MjcyMzA3IGZvciBNZXhpY28gKGNvdW50cnkgPSAxKSwgb3IsIGluIGEgcGVyY2VudGFnZSBjbG9zZSB0byAxIGRlY2ltYWwsIDYyLjclLCBlcXVhbCB0byB0aGUgZGF0YSBpbiB0aGUgcmVwb3J0LgoKQW5vdGhlciB3YXkgdG8gcmVwbGljYXRlIHRoZSByZXN1bHRzIGluY29ycG9yYXRpbmcgc3VydmV5IHdlaWdodHMgaXMgdXNpbmcgdGhlIGBzdXJ2ZXlgIHBhY2thZ2UsIGEgcGFja2FnZSBzcGVjaWFsbHkgZGV2ZWxvcGVkIHRvIHdvcmsgd2l0aCBjb21wbGV4IHNhbXBsZSBkZXNpZ25zLgpUaGUgTWV0aG9kb2xvZ2ljYWwgTm90ZSBpbmNsdWRlcyBhbiBhcHBlbmRpeCB3aXRoIHRoZSBTVEFUQSBjb2RlIHRvIHVzZSB0aGUgc3VydmV5IHdlaWdodHMgaW4gdGhlIEFtZXJpY2FzQmFyb21ldGVyIGRhdGEuCkhlcmUgd2Ugd2lsbCBkbyB0aGUgc2FtZSBpbiBSLCBmb3Igd2hpY2ggd2Ugd2lsbCB1c2UgdGhlIGBzdnlkZXNpZ25gIGNvbW1hbmQgKHNpbWlsYXIgdG8gdGhlIHN2eXNldCBjb21tYW5kIGluIFNUQVRBKS4KV2l0aCB0aGlzIGNvbW1hbmQgYSBuZXcgb2JqZWN0IGNhbGxlZCAibGFwb3AuZGVzaWduMTgiIGlzIGNyZWF0ZWQsIHdoaWNoIHN0b3JlcyB0aGUgaW5mb3JtYXRpb24gb2YgdGhlIHZhcmlhYmxlcyBjb250YWluZWQgaW4gdGhlIGRhdGFmcmFtZSwgaW5jbHVkaW5nIGEgc3BlY2lmaWVkIHN1cnZleSB3ZWlnaHQgaW4gdGhlIGNhbGN1bGF0aW9ucy4KVGhlcmVmb3JlLCBpZiBhIG5ldyB2YXJpYWJsZSBpcyBjcmVhdGVkIGxhdGVyLCB0aGlzIGNvbW1hbmQgd291bGQgaGF2ZSB0byBiZSBydW4gYWdhaW4gc28gdGhhdCB0aGlzICJsYXBvcC5kZXNpZ24iIG9iamVjdCBpbmNsdWRlcyB0aGlzIG5ldyB2YXJpYWJsZS4KClRoaXMgc2FtcGxpbmcgZGVzaWduIG5vdCBvbmx5IGRlcGVuZHMgb2YgdGhlICJ3ZWlnaHQxNTAwIiB2YXJpYWJsZSwgYnV0IGFsc28gb2YgdmFyaWFibGVzIHRoYXQgZGVmaW5lIHN0cmF0YSAiZXN0cmF0b3ByaSIgYW5kIHNhbXBsaW5nIHByaW1hcnkgdW5pdCAidXBtIi4KCmBgYHtyIHdlaWdodCB3aXRoIHN1cnZleSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KI2luc3RhbGwucGFja2FnZXMoInN1cnZleSIpIFRvIGluc3RhbGwgdGhlIHBhY2thZ2UgeW91IG11c3QgdXNlIHRoaXMgY29kZQpsaWJyYXJ5KHN1cnZleSkKbGFwb3AuZGVzaWduMTggPSBzdnlkZXNpZ24oaWRzID0gfnVwbSwgc3RyYXRhID0gfmVzdHJhdG9wcmksIHdlaWdodHMgPSB+d2VpZ2h0MTUwMCwgbmVzdD1UUlVFLCBkYXRhPWxhcG9wMTgpCmBgYAoKT25jZSB0aGUgZGF0YSBpcyBjcmVhdGVkIHdpdGggdGhlIHdlaWdodCBpbmNsdWRlZCBpbiB0aGUgb2JqZWN0ICJsYXBvcC5kZXNpZ24xOCIsIHdlIGNhbiB1c2UgdGhlIG5hdGl2ZSBjb21tYW5kcyBvZiB0aGUgYHN1cnZleWAgcGFja2FnZSB0byBtYWtlIGNhbGN1bGF0aW9ucy4KRm9yIGV4YW1wbGUsIHRvIGNhbGN1bGF0ZSB0aGUgbWVhbiBvZiB0aGUgdmFyaWFibGUgImluZzRyZWMiIChzdXBwb3J0IGZvciBkZW1vY3JhY3kpIGluIHRoZSBlbnRpcmUgZGF0YXNldCBmb3IgdGhlIDIwMTgvMTkgcm91bmQsIHdlIHVzZSB0aGUgY29tbWFuZCBgc3Z5bWVhbmAuCgpgYGB7ciBtZWFuIHdpdGggc3VydmV5fQpzdnltZWFuKH5pbmc0cmVjLCBsYXBvcC5kZXNpZ24xOCwgbmEucm09VCkKYGBgCgpJbiB0aGlzIHdheSwgdGhlIHZhbHVlIG9mIHRoZSBsYXN0IHJvdyBvZiByZXN1bHRzIG9mIHRoZSBgY29tcG1lYW5zYCBjb21tYW5kIGlzIHJlcHJvZHVjZWQsIHdoaWNoIGNvcnJlc3BvbmRzIHRvIHRoZSBtZWFuIG9mIHRoZSBlbnRpcmUgc2FtcGxlLgpUaGF0IGlzLCB0aGUgc2FtZSByZXN1bHQgaXMgYmVpbmcgZm91bmQgaW4gYm90aCB3YXlzLgpUbyByZXByb2R1Y2UgdGhlIHJlc3VsdHMgYnkgY291bnRyeSwgeW91IGNhbiB1c2UgdGhlIGBzdnlieWAgY29tbWFuZCB0aGF0IGFsbG93cyB5b3UgdG8gZmluZCByZXN1bHRzIChzdWNoIGFzIHRoZSBtZWFuLCB1c2luZyBgc3Z5bWVhbmApIG9mIGEgdmFyaWFibGUgKCJpbmc0cmVjIiksIGJ5IHZhbHVlcyBvZiBvdGhlciB2YXJpYWJsZSAoInBhaXMiKS4KCmBgYHtyIG1lYW4gYnkgY291bnRyeSB3aXRoIHN1cnZleX0Kc3Z5YnkofmluZzRyZWMsIH5wYWlzLCBkZXNpZ249bGFwb3AuZGVzaWduMTgsIHN2eW1lYW4sIG5hLnJtPVQpCmBgYAoKSW4gdGhpcyBjYXNlLCB3ZSBzZWUgdGhhdCB0aGlzIHRhYmxlIGlzIGV4YWN0bHkgdGhlIHNhbWUgYXMgdGhlIG9uZSByZXBvcnRlZCB3aXRoIGBjb21wbWVhbnNgLCBzaW5jZSBib3RoIHVzZSB0aGUgc2FtZSBzdXJ2ZXkgd2VpZ2h0LgoKSW4gdGhlIHNhbWUgd2F5LCByZXN1bHRzIG9mIEZpZ3VyZSAxLjEgb2YgdGhlIHJlcG9ydCBUaGUgUHVsc2Ugb2YgRGVtb2NyYWN5IGZvciB0aGUgMjAyMSByb3VuZCBhcmUgbm90IGVxdWFsIHRvIHRob3NlIG9idGFpbmVkIGluIHRoZSBwcmV2aW91cyBzZWN0aW9uLgpGb3IgZXhhbXBsZSwgcmVzdWx0cyBmb3Igc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGJ5IGNvdW50cnkgd2l0aG91dCB1c2luZyBzdXJ2ZXkgd2VpZ2h0cyBpbmRpY2F0ZSB0aGF0IE1leGljbyBoYXMgNjUuMiUgb2YgcmVzcG9uZGVudHMgdGhhdCBzdXBwb3J0IGRlbW9jcmFjeSwgd2hpbGUgdGhlIGZpZ3VyZSBpbiB0aGUgcmVwb3J0IGluZGljYXRlIDYzJS4KVXJ1Z3VheSBzaG93cyA4MCUgb2Ygc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGluIHRoZSByZXBvcnQsIHdoaWxlIHVud2VpZ2h0ZWQgcmVzdWx0cyBpbmRpY2F0ZSA4NC41JS4KClRvIHJlcGxpY2F0ZSByZXN1bHRzIGluIEZpZ3VyZSAxLjEsIHdlIGZvbGxvdyBhIHNpbWlsYXIgcHJvY2VkdXJlIHRvIHRoYXQgdXNlZCBpbiB0aGUgMjAxOC8xOSByb3VuZC4KRmlyc3QsIHdlIHJlY29kZSB0aGUgdmFyaWFibGUgYW5kIHRoZW4gdXNlIHRoZSBgY29tcG1lYW5zYCBjb21tYW5kLgoKYGBge3IgaW5nNHJlYyAyMX0KbGFwb3AyMSRpbmc0cmVjID0gY2FyOjpyZWNvZGUobGFwb3AyMSRpbmc0LCAiMTo0PTA7IDU6Nz0xIikKY29tcG1lYW5zKGxhcG9wMjEkaW5nNHJlYywgbGFwb3AyMSRwYWlzLCBsYXBvcDIxJHdlaWdodDE1MDAsIHBsb3QgPSBGKQpgYGAKCldlIGNhbiBhbHNvIHByb2R1Y2UgYSBuZXcgb2JqZWN0IGNhbGxlZCAibGFwb3AuZGVzaWduMjEiLCB3aGljaCBzYXZlcyBpbmZvcm1hdGlvbiBvZiB2YXJpYWJsZXMgaW50byB0aGlzIGRhdGFzZXQsIGluY2x1ZGluZyBhIHN1cnZleSB3ZWlnaHQuClRoZSBjb21tYW5kIGBzdnlkZXNpZ25gIGRvZXMgbm90IGFjY2VwdCB0aGF0IHZhcmlhYmxlcyB0aGF0IGRlZmluZSB0aGUgZGVzaWduIGhhdmUgbWlzc2luZyB2YWx1ZXMgIk5BIi4KVGhlIGRhdGFzZXQgb2YgdGhlIDIwMjEgcm91bmQgaGFzIDEwIE5BcyBpbiB0aGUgdmFyaWFibGUgIndlaWdodDE1MDAiIGFuZCAxNDI2IE5BcyBpbiB0aGUgdmFyaWFibGUgImVzdHJhdG9wcmkiLgpUbyBiZSBhYmxlIHRvIGNyZWF0ZSBhbiBkZXNpZ24gb2JqZWN0LCB3ZSBoYXZlIHRvIGRyb3AgdGhlc2Ugb2JzZXJ2YXRpb25zIHdpdGggbWlzc2luZyB2YWx1ZXMuClRoZSBkYXRhc2V0IHdpdGggdGhlc2UgZGVsZXRlZCBvYnNlcnZhdGlvbnMgaXMgc2F2ZWQgaW4gYSBuZXcgZGF0YWZyYW1lICJsYXBvcDIxYSIuClRoZSBjb21tYW5kIGBzdnlkZXNpZ25gIHVzZXMgdGhpcyBkYXRhZnJhbWUuCgpgYGB7ciBzdXJ2ZXkgMjF9CmxhcG9wMjFhID0gc3Vic2V0KGxhcG9wMjEsICFpcy5uYShlc3RyYXRvcHJpKSkKbGFwb3AyMWEgPSBzdWJzZXQobGFwb3AyMWEsICFpcy5uYSh3ZWlnaHQxNTAwKSkKbGFwb3AuZGVzaWduMjEgPSBzdnlkZXNpZ24oaWRzID0gfnVwbSwgc3RyYXRhID0gfmVzdHJhdG9wcmksIHdlaWdodHMgPSB+d2VpZ2h0MTUwMCwgbmVzdD1UUlVFLCBkYXRhPWxhcG9wMjFhKQpzdnlieSh+aW5nNHJlYywgfnBhaXMsIGRlc2lnbj1sYXBvcC5kZXNpZ24yMSwgc3Z5bWVhbiwgbmEucm09VCkKYGBgCgpJbiB0aGlzIHdheSwgd2UgaGF2ZSBzZWVuIHR3byB3YXlzIHRvIGluY29ycG9yYXRlIHRoZSBzYW1wbGluZyBkZXNpZ24gZWZmZWN0IGluIHRoZSBiYXNpYyBjYWxjdWxhdGlvbnMgd2l0aCB0aGUgQW1lcmljYXNCYXJvbWV0ZXIgZGF0YS4KTGF0ZXIsIHdlIHdpbGwgc2VlIHRoZSBpbmNsdXNpb24gb2YgdGhlIHN1cnZleSB3ZWlnaHRzIGluIG90aGVyIG1vcmUgY29tcGxleCBjYWxjdWxhdGlvbnMsIHN1Y2ggYXMgdGhlIGNhbGN1bGF0aW9uIG9mIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIG9yIHJlZ3Jlc3Npb25zLgpJbiB0aGVzZSBkb2N1bWVudHMgd2Ugd2lsbCBmcmlzdCB3b3JrIHdpdGggdGhlIHVud2VpZ2h0ZWQgdmVyc2lvbiwgYW5kIHRoZW4gd2Ugd2lsbCBwcmVzZW50IHRoZSBjb21wbGV4IHZlcnNpb24sIGluY2x1ZGluZyB0aGUgc3VydmV5IHdlaWdodHMgaW4gdGhlIGNhbGN1bGF0aW9ucy4K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Expansion.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

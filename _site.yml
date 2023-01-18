@@ -12,7 +12,7 @@ navbar:
         href: basica.html
       - text: "Importing datasets"
         href: bases.html
-    - text: "Initial steps"
+    - text: "First steps"
       menu:
       - text: "Data manipulation"
         href: Manipulation.html
