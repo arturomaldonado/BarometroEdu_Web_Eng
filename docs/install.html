@@ -11,7 +11,7 @@
 
 
 
-<title>Using AmericasBarometer data</title>
+<title>Installing R and RStudio</title>
 
 <script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -219,6 +222,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -226,6 +292,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -368,125 +444,96 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Using AmericasBarometer data</h1>
+<h1 class="title toc-ignore">Installing R and RStudio</h1>
 
 </div>
 
 
 <style type="text/css">
-.title {
-  display: none;
-}
-
-#getting-started img {
-  margin-right: 10px;
-}
-
+.columns {display: flex;}
+h1 {color: #3366CC;}
 </style>
-<div class="row" style="padding-top: 30px;">
-
-<div class="col-sm-6">
-<div id="using-americasbarometer-data" class="section level1">
-<h1><strong>Using AmericasBarometer data</strong></h1>
-<p>You will find in this web modules where AmericasBarometer data is
-used in R and RStudio. The analyses replicate results shown in several
-reports produced by LAPOP. These results give an outlook of how to use
-our data to produce statistical results.</p>
+<div id="how-to-install-r-and-rstudio" class="section level1">
+<h1>How to install R and RStudio?</h1>
+<p><a href="http://www.r-project.org">R</a> is a license-free software
+that can be used to statistical analysis, data visualization, among
+other uses. In this case, we use them to analyze public opinion data, in
+particular, AmricasBarometer data from the Latin American Public Opinion
+Project, <a href="https://www.vanderbilt.edu/lapop/">LAPOP Lab</a>. R
+can be downloaded from its own repository: <a
+href="https://cran.r-project.org"
+class="uri">https://cran.r-project.org</a>.</p>
+<p>Other freeware is <a href="http://www.rstudio.com">RStudio</a>, which
+is a graphic interface IDE for R. In these links, both programs can be
+downloaded. First, you should download R and then RStudio. Both have
+versions for Windows, IOS and Linux.</p>
 </div>
-<div id="topics" class="section level1">
-<h1>Topics</h1>
-<div id="preparation" class="section level2">
-<h2>Preparation</h2>
+<div id="rstudio" class="section level1">
+<h1>RStudio</h1>
+<p>After installation, users can open RStudio. No need to open R.
+RStudio´s main screen is divided in four panels.</p>
+<p><img src="console.png" /></p>
+<ul>
+<li><p>R Script / RMarkdown file: this panel shows programming objects.
+For example, a R script file (*.R) or an RMarkdown file (*.Rmd), among
+other extensions. Basically, these files work to write code and save in
+files.</p></li>
+<li><p>Objects: this panel shows four tabs. The most relevant is the
+first on. It shows the environment. All objects (such as datasets,
+vectors, lists, functions, etc.) uploaded or created are shown in this
+tab.</p></li>
+<li><p>Console: we can write code lines in this panel, even though this
+code is not saved. Code run in some script or Markdown is processed here
+and results are shown. The tab Console shows the working directory.
+Files produced in RStudio are saved in this working directory.</p></li>
+<li><p>Files/Plots/Packages/Help/Viewer/Presentation panel: The File tab
+shows files that are in the working directory. The Plots tab shows
+produced visualizations. The Packaged tab shows all packages loaded in
+R. Active packaged are shown with a check mark. We can seek resources in
+R, such as manuals, web pages for each library, documentations for each
+command in the Help tab.</p></li>
+</ul>
+</div>
+<div id="projects" class="section level1">
+<h1>Projects</h1>
+<p>An arrow in the console figure above shows the name of the current
+project. In this case, the project is called “BarometroEdu_Web_Eng”. The
+idea of setting a project is having all objects (scripts, RMarkdown
+files, datasets, plts, etc.) in a single directory.</p>
+<p>To create a project, you can select the File menu (upper left, near
+the RStudio name) and select “New Project”. When you click this option,
+the following window appears.</p>
+<p><img src="projects_new.png" width="409" /></p>
+<p>You can choose a new directory or an existing one in this window.
+Also, there is an option for version control, that you can link to
+GitHub, for example.</p>
+<p>Once selected a new directory or an existing one, all files you
+create or want to use should be in this directory. For example, a
+dataset called “lapop21.dta” can be called directly by its name without
+specifying all directories and sub directories in which this dataset
+is.</p>
+<p>If you create a sub directory “base” within the working directory,
+you only have to specify “base/lapop21.dta” in the coding.</p>
+</div>
+<div id="resources" class="section level1">
+<h1>Resources</h1>
 <ol style="list-style-type: decimal">
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/install.html">Installing
-R and RStudio</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/basic.html">Basic
-procedures</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/dataset.html">Importing
-datasets</a></p></li>
+<li><p>Google is the main source to get help for every problem you may
+have in R. Remember that in R you can obtain the same results using
+different means.</p></li>
+<li><p><a href="https://stackoverflow.com">Stackoverflow</a> is a
+specialized public platoform where you surely find an entry in which
+someone else may have the same question you have and that question may
+be answered by a lot of people. Take into account that R may have
+multiple responses for the same question, that is, multiple ways to
+solve the same operation.</p></li>
 </ol>
-</div>
-<div id="first-steps" class="section level2">
-<h2>First steps</h2>
-<ol style="list-style-type: decimal">
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Manipulation.html">Data
-manipulation</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Weights.html">Survey
-weights</a></p></li>
-</ol>
-</div>
-<div id="describing-and-plotting-data" class="section level2">
-<h2>Describing and plotting data</h2>
-<ol style="list-style-type: decimal">
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives.html">Descriptive
-statistics: nominal variables</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives2.html">Descriptive
-statistics: ordinal variables</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives3.html">Descriptive
-statistics: numerical variables</a></p></li>
-</ol>
-</div>
-<div id="basic-inference" class="section level2">
-<h2>Basic inference</h2>
-<ol style="list-style-type: decimal">
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/CI.html">Confidence
-intervals</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/ttest.html">Compararing
-2 means</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/anova.html">Comparing
-more than 2 means</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/chi.html">Crosstables
-and chi-square analysis</a></p></li>
-</ol>
-</div>
-<div id="modeling" class="section level2 col-sm-6">
-<h2 class="col-sm-6">Modeling</h2>
-<ol style="list-style-type: decimal">
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/correlation.html">Correlation</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion1.html">Simple
-linear regresion</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion2.html">Multiple
-linear regresion</a></p></li>
-<li><p><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/logit.html">Logistic
-regresion</a></p></li>
-</ol>
-</div>
-<div id="extras" class="section level2">
-<h2>Extras</h2>
-<ol style="list-style-type: decimal">
-<li><a
-href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/maps.html">Maps
-using AmericasBarometer data</a></li>
-</ol>
-</div>
-</div>
-</div>
-<div id="the-latin-american-public-opinion-project"
-class="section level3 col-sm-6">
-<h3><a href="https://www.vanderbilt.edu/lapop/">The Latin American
-Public Opinion Project</a></h3>
-<p><a href = "https://www.vanderbilt.edu/lapop/"> <img
-src="images/logo.png" /> </a></p>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -519,6 +566,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

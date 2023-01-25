@@ -7,7 +7,7 @@ navbar:
     - text: "Preparation"
       menu:
       - text: "Installing R and RStudio"
-        href: instalando.html
+        href: install.html
       - text: "Basic procedures"
         href: basica.html
       - text: "Importing datasets"
