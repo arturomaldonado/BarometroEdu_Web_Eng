@@ -21,11 +21,11 @@ navbar:
     - text: "Describing and plotting data"
       menu:
       - text: "Descriptive statistics: nominal variables"
-        href: Descriptivos.html
+        href: Descriptives.html
       - text: "Descriptive statistics: ordinal variables"
-        href: Descriptivos2.html
+        href: Descriptives2.html
       - text: "Descriptive statistics: numerical variables"
-        href: Descriptivos3.html
+        href: Descriptives3.html
     - text: "Basic inference"
       menu:
       - text: "Confidence intervals"
