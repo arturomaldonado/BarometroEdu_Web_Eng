@@ -406,7 +406,7 @@ Unlike the previous option, in "df" there is the percentage data, so it should n
 For this reason also in the `geom_bar` specification, now instead of requiring the calculation of the percentage, it is only indicated to replicate the data (with `stat="identity"`) from `aes`.
 Finally, in this case we add the text layer to include the percentages in each column, with the `geom_text` specification.
 
-```{r ggbar4}
+```{r }
 ggplot(df, aes(x=smedia1r, y=per))+
   geom_bar(stat="identity",  width=0.5)+
   geom_text(aes(label=paste(per, "%", sep="")), color="black", vjust=-0.5)+

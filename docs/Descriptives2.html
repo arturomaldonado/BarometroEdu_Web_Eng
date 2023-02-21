@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Descriptive statistics using the AmericasBarometer (2)</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LAPOP_edu</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="install.html">Installing R and RStudio</a>
+    </li>
+    <li>
+      <a href="basic.html">Basic procedures</a>
+    </li>
+    <li>
+      <a href="bases.html">Importing datasets</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    First steps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Manipulation.html">Data manipulation</a>
+    </li>
+    <li>
+      <a href="Expansion.html">Survey weights</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Describing and plotting data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Descriptives.html">Descriptive statistics: nominal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives2.html">Descriptive statistics: ordinal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives3.html">Descriptive statistics: numerical variables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Basic inference
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="IC.html">Confidence intervals</a>
+    </li>
+    <li>
+      <a href="pruebat.html">Compararing 2 means</a>
+    </li>
+    <li>
+      <a href="anova.html">Comparing more than 2 means</a>
+    </li>
+    <li>
+      <a href="chi.html">Crosstables and chi-square analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="correlacion.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regresion1.html">Simple linear regresion</a>
+    </li>
+    <li>
+      <a href="regresion2.html">Multiple linear regresion</a>
+    </li>
+    <li>
+      <a href="logit.html">Logistic regresion</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapas.html">Maps</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Contact</a>
+</li>
+<li>
+  <a href="https://arturomaldonado.github.io/BarometroEdu_Web/index.html">Spanish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Descriptive statistics using the
+AmericasBarometer (2)</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this section we will continue to use the regional report “The
+Pulse of Democracy”, available <a
+href="https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf">here</a>,
+where the main findings of the 2018/19 round of the AmericasBarometer
+are presented. One of the sections of this report reports data on social
+networks and political attitudes. This section presents data on the use
+of the Internet and the use of social networks, in general and by
+country. In this case we are going to work with the frequency of use of
+social networks. In this section we are going to descriptively analyze
+these variables on the frequency of use of social networks, ordinal
+variables (or factor variables, in the language of R).</p>
+</div>
+<div id="about-the-dataset" class="section level1">
+<h1>About the dataset</h1>
+<p>The data we are going to use should be cited as follows: Source:
+AmericasBarometer by the Latin American Public Opinion Project (LAPOP),
+wwww.LapopSurveys.org. This document reloads a trimmed database. To
+reproduce the results shown in this section, you must clean the
+Environment.</p>
+<p>This database is hosted in the “materials_edu” repository of the
+LAPOP account on GitHub. Using the <code>rio</code> library and the
+<code>import</code> command, we can import this database from this
+repository. In addition, the data from countries with codes less than or
+equal to 35 are selected, that is, the observations of the United States
+and Canada are eliminated.</p>
+<pre class="r"><code>library(rio)
+lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)
+lapop18 = subset(lapop18, pais&lt;=35)</code></pre>
+<p>We also load data from the 2021 round.</p>
+<pre class="r"><code>lapop21 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData&quot;)
+lapop21 = subset(lapop21, pais&lt;=35)</code></pre>
+</div>
+<div id="describing-and-plotting-variables" class="section level1">
+<h1>Describing and plotting variables</h1>
+<p>In the section on descriptive statistics, which can be seen <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives.html">here</a>,
+we worked with nominal variables, with dichotomous response options
+(Yes/No). In this document we will work with politomic ordinal
+variables.</p>
+</div>
+<div id="votes-are-correctly-counted" class="section level1">
+<h1>Votes are correctly counted</h1>
+<p>In this section, we use the variable COUNTFAIR1. Votes are counted
+correctly and fairly. Would you say it happens always, sometimes or
+never? Figure 2.5 of the report The Pulse of Democracy, available <a
+href="https://www.vanderbilt.edu/lapop/ab2021/2021_LAPOP_AmericasBarometer_2021_Pulse_of_Democracy_SPA.pdf">here</a>,
+shows results of this variable by country.</p>
+<p><img src="Figure2.5.png" width="544" /></p>
+<p>In the same way as with nominal variables, these ordinal variables
+have to be declared as “factor” in new variables.</p>
+<pre class="r"><code>library(haven)
+lapop21$countfair1r = as.factor(lapop21$countfair1)</code></pre>
+<p>Then, these variables have to be labelled. We can create a basic
+descriptive table with the command <code>table</code>.</p>
+<pre class="r"><code>levels(lapop21$countfair1r) = c(&quot;Always&quot;, &quot;Sometimes&quot;, &quot;Never&quot;)
+table(lapop21$countfair1r)</code></pre>
+<pre><code>## 
+##    Always Sometimes     Never 
+##      3477      5235      1698</code></pre>
+<p>To calculate tables with percentages, rounded to one decimal place,
+we use <code>prop.table</code> and <code>round</code>. Again, these
+percentages are not the same as those presented in the report because
+these calculations do not include factor weights.</p>
+<pre class="r"><code>round(prop.table(table(lapop21$countfair1r)), 3)*100</code></pre>
+<pre><code>## 
+##    Always Sometimes     Never 
+##      33.4      50.3      16.3</code></pre>
+<p>As we mention in the previous section, we can plot this variable
+using the command <code>barplot</code>.</p>
+<pre class="r"><code>barplot(prop.table(table(lapop21$countfair1r))*100)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/unnamed-chunk-4-1.png" /><!-- --></p>
+<p>Other option is create this plot using the library
+<code>ggplot</code>. One option is working with the dataset from
+scratch. The following code, however, shows a big bar with the
+percentage of missing values. This is because this question was applied
+to a split sample. The dataset records NA to the other half of those who
+do not answer this question.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data=lapop21, aes(x=countfair1r))+
+  geom_bar(aes(y=..prop..*100, group=1), width=0.5)+
+  labs(x=&quot;Votes are counted correctly&quot;, y=&quot;Percentage&quot;, 
+       caption=&quot;AmericasBarometer by LAPOP, 2021&quot;)+
+  coord_cartesian(ylim=c(0, 100))</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/unnamed-chunk-5-1.png" /><!-- --></p>
+<p>To prevent that the figure shows a bar for NAs, these observations
+should be filtered before producing the graph. In the same manner as the
+previous section, we can filter the NAs for the variable “countfair1”
+with the command <code>subset</code> and the specification
+<code>!is.na</code>.</p>
+<pre class="r"><code>ggplot(data=subset(lapop21, !is.na(countfair1r)), aes(x=countfair1r))+
+  geom_bar(aes(y=..prop..*100, group=1), width=0.5)+
+  labs(x=&quot;Votes are counted correctly&quot;, y=&quot;Percentage&quot;, 
+       caption=&quot;AmericasBarometer by LAPOP, 2021&quot;)+
+  coord_cartesian(ylim=c(0, 60))</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/unnamed-chunk-6-1.png" /><!-- --></p>
+<p>Other option, that simplify the code, is to create a frequency table
+of this variable with the command <code>table</code> and
+<code>prop.table</code>. This table is rounded to one decimal place with
+the command <code>round</code> and is saved as a dataframe with the
+command <code>as.data.frame</code> in an object “count”. This table
+records two columns, the first is called “Var1” with the labels of the
+variables and the second is called “Freq” and stores the
+percentages.</p>
+<pre class="r"><code>count = as.data.frame(round(prop.table(table(lapop21$countfair1r)), 3)*100)
+count</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Always","2":"33.4"},{"1":"Sometimes","2":"50.3"},{"1":"Never","2":"16.3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We can use this table “count” to produce a bar plot with the command
+<code>ggplot</code>. The specification <code>aes</code> defines that the
+values of the column “Var1” are presented in the X axis and the values
+of the column “Freq” are shown in the Y axis. We define a simple bar
+plot, using the command <code>geom_bar( )</code>, where internally we
+define the width of bars. We define labels of axis and the “caption”
+with the specification <code>labs</code>.</p>
+<pre class="r"><code>ggplot(data=count, aes(x=Var1, y=Freq))+
+  geom_bar(stat=&quot;identity&quot;, width=0.5)+
+  geom_text(aes(label=paste(Freq, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=3)+
+  labs(x=&quot;Votes are counted correctly&quot;, y=&quot;Percentage&quot;, 
+       caption=&quot;AmericasBarometer by LAPOP, 2021&quot;)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/unnamed-chunk-8-1.png" /><!-- --></p>
+<p>Figure 2.5 shows a stacked bar with information for each country.
+First, we present a stacked bar plot using all observation of the 2021
+round of the AmericasBarometer, that is including all countries. To
+produce a stacked horizontal bar, we use the variable “Freq”, now in the
+X axis. We use the option <code>fill</code> to divive this bar by values
+of the variable “Var1”. Because Y axis does not show a variable, we
+define as <code>" "</code>. In the same way as we change the variables
+in the axis, we can also change the labels in <code>labs</code>. In this
+specification we change the label of the legend with
+<code>fill</code>.</p>
+<pre class="r"><code>ggplot(data=count, aes(x=Freq, y=&quot;&quot;, fill=Var1))+
+  geom_bar(stat=&quot;identity&quot;, width=0.3)+
+  geom_text(aes(label=paste(Freq, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=3)+
+  labs(x=&quot;Percentage&quot;, y=&quot;&quot;, fill=&quot;Votes are counted correctly&quot;,  
+       caption=&quot;AmericasBarometer by LAPOP, 2021&quot;)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/unnamed-chunk-9-1.png" /><!-- --></p>
+<p>To replicate the comparative graph by country, we have to create a
+contingency table between variable “countfair1” and “pais”. This
+crosstable is saved in an object “count_country”. We should note that
+the dataframe creates a row for each value of “countfair” in each
+country. In this way, we have 3 option x 20 countries = 60 rows.</p>
+<pre class="r"><code>count_country = as.data.frame(round(prop.table(table(lapop21$pais, lapop21$countfair1r), 1), 3)*100)
+count_country</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Var2"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"Always","3":"NaN"},{"1":"2","2":"Always","3":"NaN"},{"1":"3","2":"Always","3":"NaN"},{"1":"4","2":"Always","3":"NaN"},{"1":"5","2":"Always","3":"26.2"},{"1":"6","2":"Always","3":"52.3"},{"1":"7","2":"Always","3":"27.6"},{"1":"8","2":"Always","3":"18.1"},{"1":"9","2":"Always","3":"21.5"},{"1":"10","2":"Always","3":"24.5"},{"1":"11","2":"Always","3":"25.1"},{"1":"12","2":"Always","3":"25.9"},{"1":"13","2":"Always","3":"64.1"},{"1":"14","2":"Always","3":"80.0"},{"1":"15","2":"Always","3":"48.1"},{"1":"17","2":"Always","3":"31.5"},{"1":"21","2":"Always","3":"25.2"},{"1":"22","2":"Always","3":"NaN"},{"1":"23","2":"Always","3":"17.9"},{"1":"24","2":"Always","3":"17.0"},{"1":"1","2":"Sometimes","3":"NaN"},{"1":"2","2":"Sometimes","3":"NaN"},{"1":"3","2":"Sometimes","3":"NaN"},{"1":"4","2":"Sometimes","3":"NaN"},{"1":"5","2":"Sometimes","3":"49.4"},{"1":"6","2":"Sometimes","3":"40.2"},{"1":"7","2":"Sometimes","3":"57.1"},{"1":"8","2":"Sometimes","3":"50.4"},{"1":"9","2":"Sometimes","3":"59.1"},{"1":"10","2":"Sometimes","3":"59.2"},{"1":"11","2":"Sometimes","3":"61.1"},{"1":"12","2":"Sometimes","3":"48.3"},{"1":"13","2":"Sometimes","3":"30.1"},{"1":"14","2":"Sometimes","3":"16.9"},{"1":"15","2":"Sometimes","3":"35.7"},{"1":"17","2":"Sometimes","3":"51.0"},{"1":"21","2":"Sometimes","3":"60.1"},{"1":"22","2":"Sometimes","3":"NaN"},{"1":"23","2":"Sometimes","3":"67.9"},{"1":"24","2":"Sometimes","3":"65.1"},{"1":"1","2":"Never","3":"NaN"},{"1":"2","2":"Never","3":"NaN"},{"1":"3","2":"Never","3":"NaN"},{"1":"4","2":"Never","3":"NaN"},{"1":"5","2":"Never","3":"24.4"},{"1":"6","2":"Never","3":"7.5"},{"1":"7","2":"Never","3":"15.4"},{"1":"8","2":"Never","3":"31.5"},{"1":"9","2":"Never","3":"19.4"},{"1":"10","2":"Never","3":"16.3"},{"1":"11","2":"Never","3":"13.8"},{"1":"12","2":"Never","3":"25.8"},{"1":"13","2":"Never","3":"5.8"},{"1":"14","2":"Never","3":"3.0"},{"1":"15","2":"Never","3":"16.1"},{"1":"17","2":"Never","3":"17.5"},{"1":"21","2":"Never","3":"14.7"},{"1":"22","2":"Never","3":"NaN"},{"1":"23","2":"Never","3":"14.2"},{"1":"24","2":"Never","3":"17.8"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We calculate data for each value of the variable “pais” in this
+table, even when there is no data in the variable “countfair” because
+this question was not fielded in a country. For this reason, we have to
+drop rows of countries where we could not record information. We can do
+this with the specification <code>[-c(rows), ]</code>. After that, we
+can create a vector with the names of countries. This list of countries
+is repeated three times (15 remaining countries x 3 options). This
+vector is added to the dataframe in a column “country”.</p>
+<pre class="r"><code>count_country = count_country[-c(1:4,18,21:24,38,41:44,58),]
+country = c(&quot;Nicaragua&quot;, &quot;Costa Rica&quot;, &quot;Panama&quot;, &quot;Colombia&quot;, &quot;Ecuador&quot;, &quot;Bolivia&quot;, &quot;Peru&quot;,
+        &quot;Paraguay&quot;, &quot;Chile&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, &quot;Argentina&quot;, &quot;Dom. Rep.&quot;, &quot;Jamaica&quot;, &quot;Guyana&quot;,
+        &quot;Nicaragua&quot;, &quot;Costa Rica&quot;, &quot;Panama&quot;, &quot;Colombia&quot;, &quot;Ecuador&quot;, &quot;Bolivia&quot;, &quot;Peru&quot;,
+        &quot;Paraguay&quot;, &quot;Chile&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, &quot;Argentina&quot;, &quot;Dom. Rep.&quot;, &quot;Jamaica&quot;, &quot;Guyana&quot;,
+        &quot;Nicaragua&quot;, &quot;Costa Rica&quot;, &quot;Panama&quot;, &quot;Colombia&quot;, &quot;Ecuador&quot;, &quot;Bolivia&quot;, &quot;Peru&quot;,
+        &quot;Paraguay&quot;, &quot;Chile&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, &quot;Argentina&quot;, &quot;Dom. Rep.&quot;,&quot;Jamaica&quot;, &quot;Guyana&quot;)
+count_country$country = country
+count_country</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Var2"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["country"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"5","2":"Always","3":"26.2","4":"Nicaragua","_rn_":"5"},{"1":"6","2":"Always","3":"52.3","4":"Costa Rica","_rn_":"6"},{"1":"7","2":"Always","3":"27.6","4":"Panama","_rn_":"7"},{"1":"8","2":"Always","3":"18.1","4":"Colombia","_rn_":"8"},{"1":"9","2":"Always","3":"21.5","4":"Ecuador","_rn_":"9"},{"1":"10","2":"Always","3":"24.5","4":"Bolivia","_rn_":"10"},{"1":"11","2":"Always","3":"25.1","4":"Peru","_rn_":"11"},{"1":"12","2":"Always","3":"25.9","4":"Paraguay","_rn_":"12"},{"1":"13","2":"Always","3":"64.1","4":"Chile","_rn_":"13"},{"1":"14","2":"Always","3":"80.0","4":"Uruguay","_rn_":"14"},{"1":"15","2":"Always","3":"48.1","4":"Brazil","_rn_":"15"},{"1":"17","2":"Always","3":"31.5","4":"Argentina","_rn_":"16"},{"1":"21","2":"Always","3":"25.2","4":"Dom. Rep.","_rn_":"17"},{"1":"23","2":"Always","3":"17.9","4":"Jamaica","_rn_":"19"},{"1":"24","2":"Always","3":"17.0","4":"Guyana","_rn_":"20"},{"1":"5","2":"Sometimes","3":"49.4","4":"Nicaragua","_rn_":"25"},{"1":"6","2":"Sometimes","3":"40.2","4":"Costa Rica","_rn_":"26"},{"1":"7","2":"Sometimes","3":"57.1","4":"Panama","_rn_":"27"},{"1":"8","2":"Sometimes","3":"50.4","4":"Colombia","_rn_":"28"},{"1":"9","2":"Sometimes","3":"59.1","4":"Ecuador","_rn_":"29"},{"1":"10","2":"Sometimes","3":"59.2","4":"Bolivia","_rn_":"30"},{"1":"11","2":"Sometimes","3":"61.1","4":"Peru","_rn_":"31"},{"1":"12","2":"Sometimes","3":"48.3","4":"Paraguay","_rn_":"32"},{"1":"13","2":"Sometimes","3":"30.1","4":"Chile","_rn_":"33"},{"1":"14","2":"Sometimes","3":"16.9","4":"Uruguay","_rn_":"34"},{"1":"15","2":"Sometimes","3":"35.7","4":"Brazil","_rn_":"35"},{"1":"17","2":"Sometimes","3":"51.0","4":"Argentina","_rn_":"36"},{"1":"21","2":"Sometimes","3":"60.1","4":"Dom. Rep.","_rn_":"37"},{"1":"23","2":"Sometimes","3":"67.9","4":"Jamaica","_rn_":"39"},{"1":"24","2":"Sometimes","3":"65.1","4":"Guyana","_rn_":"40"},{"1":"5","2":"Never","3":"24.4","4":"Nicaragua","_rn_":"45"},{"1":"6","2":"Never","3":"7.5","4":"Costa Rica","_rn_":"46"},{"1":"7","2":"Never","3":"15.4","4":"Panama","_rn_":"47"},{"1":"8","2":"Never","3":"31.5","4":"Colombia","_rn_":"48"},{"1":"9","2":"Never","3":"19.4","4":"Ecuador","_rn_":"49"},{"1":"10","2":"Never","3":"16.3","4":"Bolivia","_rn_":"50"},{"1":"11","2":"Never","3":"13.8","4":"Peru","_rn_":"51"},{"1":"12","2":"Never","3":"25.8","4":"Paraguay","_rn_":"52"},{"1":"13","2":"Never","3":"5.8","4":"Chile","_rn_":"53"},{"1":"14","2":"Never","3":"3.0","4":"Uruguay","_rn_":"54"},{"1":"15","2":"Never","3":"16.1","4":"Brazil","_rn_":"55"},{"1":"17","2":"Never","3":"17.5","4":"Argentina","_rn_":"56"},{"1":"21","2":"Never","3":"14.7","4":"Dom. Rep.","_rn_":"57"},{"1":"23","2":"Never","3":"14.2","4":"Jamaica","_rn_":"59"},{"1":"24","2":"Never","3":"17.8","4":"Guyana","_rn_":"60"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>With this dataframe “count_country”, we have the elements to
+replicate the figure with stacked bars by country. In the specification
+<code>aes</code>, we define that percentages are in X axis, countries in
+Y axis and that each bar is divided by column “Var2”.</p>
+<pre class="r"><code>ggplot(data=count_country, aes(x=Freq, y=country, fill=Var2))+
+  geom_bar(stat=&quot;identity&quot;, width=0.3)+
+  geom_text(aes(label=paste(Freq, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=2)+
+  labs(x=&quot;Percentage&quot;, y=&quot;Country&quot;, fill=&quot;Votes are counted correctly&quot;,  
+       caption=&quot;AmericasBarometer by LAPOP, 2021&quot;)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/unnamed-chunk-12-1.png" /><!-- --></p>
+</div>
+<div id="frequency-of-use-of-social-networks" class="section level1">
+<h1>Frequency of use of social networks</h1>
+<p>The 2018/19 round evaluates the use of social networks and includes
+variables to measure the use of Facebook, Twitter and Whatsapp: SMEDIA2
+measures the use of Facebook. How often do you view content on Facebook?
+SMEDIA5.How often do you see content on Twitter? and SMEDIA8. How often
+do you use Whatsapp? These variables have as response options:</p>
+<ol style="list-style-type: decimal">
+<li>Daily</li>
+<li>A few times a week</li>
+<li>A few times a month</li>
+<li>A few times a year</li>
+<li>Never</li>
+</ol>
+<p>In the same way as with nominal variables, these variables have to be
+declared as “factor” in new variables.</p>
+<pre class="r"><code>lapop18$smedia2r = as.factor(lapop18$smedia2)
+lapop18$smedia5r = as.factor(lapop18$smedia5)
+lapop18$smedia8r = as.factor(lapop18$smedia8)</code></pre>
+<p>Footnote 15 of the report indicates that “interviewees who report
+never seeing content on Facebook and Twitter, and who indicate that they
+never use Whatsapp, are considered non-users of these social networks”
+(p. 64). For this reason, Figure 3.3 of frequency of use of social
+networks (page 57) only includes the categories “Daily”, “Some times a
+week”, “Some times a month” and “Some times a year”. The category
+“Never” is excluded.</p>
+<p><img src="Figure3.3.JPG" width="463" /></p>
+<p>In the new variables we are going to declare the value 5,
+corresponding to “never”, as “NA”, that is, as a missing value in R.</p>
+<pre class="r"><code>library(car)
+lapop18$smedia2r = car::recode(lapop18$smedia2r, &quot;5=NA&quot;)
+lapop18$smedia5r = car::recode(lapop18$smedia5r, &quot;5=NA&quot;)
+lapop18$smedia8r = car::recode(lapop18$smedia8r, &quot;5=NA&quot;)</code></pre>
+<p>Then, these variables have to be labeled and the basic descriptive
+tables generated, with the command <code>table</code>.</p>
+<pre class="r"><code>levels(lapop18$smedia2r) &lt;- c(&quot;Daily&quot;, &quot;A few times a week&quot;, 
+                            &quot;A few times a month&quot;, &quot;A few times a year&quot;)
+levels(lapop18$smedia5r) &lt;- c(&quot;Daily&quot;, &quot;A few times a week&quot;, 
+                            &quot;A few times a month&quot;, &quot;A few times a year&quot;)
+levels(lapop18$smedia8r) &lt;- c(&quot;Daily&quot;, &quot;A few times a week&quot;, 
+                            &quot;A few times a month&quot;, &quot;A few times a year&quot;)
+table(lapop18$smedia2r)</code></pre>
+<pre><code>## 
+##               Daily  A few times a week A few times a month  A few times a year 
+##                8633                4927                1286                 282</code></pre>
+<pre class="r"><code>table(lapop18$smedia5r)</code></pre>
+<pre><code>## 
+##               Daily  A few times a week A few times a month  A few times a year 
+##                 795                 728                 422                 193</code></pre>
+<pre class="r"><code>table(lapop18$smedia8r)</code></pre>
+<pre><code>## 
+##               Daily  A few times a week A few times a month  A few times a year 
+##               14151                2646                 495                  50</code></pre>
+<p>To calculate tables with percentages, rounded to a decimal place, we
+use <code>prop.table</code> and <code>round</code>. Again, these
+percentages are not exactly the same as those presented in the report
+because these calculations do not include survey weights.</p>
+<pre class="r"><code>round(prop.table(table(lapop18$smedia2r)), 3)*100</code></pre>
+<pre><code>## 
+##               Daily  A few times a week A few times a month  A few times a year 
+##                57.1                32.6                 8.5                 1.9</code></pre>
+<pre class="r"><code>round(prop.table(table(lapop18$smedia5r)), 3)*100</code></pre>
+<pre><code>## 
+##               Daily  A few times a week A few times a month  A few times a year 
+##                37.2                34.1                19.7                 9.0</code></pre>
+<pre class="r"><code>round(prop.table(table(lapop18$smedia8r)), 3)*100</code></pre>
+<pre><code>## 
+##               Daily  A few times a week A few times a month  A few times a year 
+##                81.6                15.3                 2.9                 0.3</code></pre>
+<p>To present all the data in a joint table, the table of each social
+network is saved in a new R object (named after each social network).
+Then all of these partial tables, containing the same answer choices,
+are joined as rows with the <code>rbind</code> command. This new joint
+table is saved as a new dataframe “table”.</p>
+<pre class="r"><code>Facebook = round(prop.table(table(lapop18$smedia2r)), 3)*100
+Twitter = round(prop.table(table(lapop18$smedia5r)), 3)*100
+Whatsapp = round(prop.table(table(lapop18$smedia8r)), 3)*100
+table = as.data.frame(rbind(Facebook, Twitter, Whatsapp))
+table</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Daily"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["A few times a week"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["A few times a month"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["A few times a year"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"57.1","2":"32.6","3":"8.5","4":"1.9","_rn_":"Facebook"},{"1":"37.2","2":"34.1","3":"19.7","4":"9.0","_rn_":"Twitter"},{"1":"81.6","2":"15.3","3":"2.9","4":"0.3","_rn_":"Whatsapp"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>To get a better presentation of the table, you can use the
+<code>kable</code> command from the <code>knitr</code> package or the
+<code>formattable</code> command from the <code>knitr</code>
+package.</p>
+<pre class="r"><code>library(knitr)
+kable(head(table), format=&quot;markdown&quot;, digits=1)</code></pre>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="8%" />
+<col width="26%" />
+<col width="27%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Daily</th>
+<th align="right">A few times a week</th>
+<th align="right">A few times a month</th>
+<th align="right">A few times a year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Facebook</td>
+<td align="right">57.1</td>
+<td align="right">32.6</td>
+<td align="right">8.5</td>
+<td align="right">1.9</td>
+</tr>
+<tr class="even">
+<td align="left">Twitter</td>
+<td align="right">37.2</td>
+<td align="right">34.1</td>
+<td align="right">19.7</td>
+<td align="right">9.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Whatsapp</td>
+<td align="right">81.6</td>
+<td align="right">15.3</td>
+<td align="right">2.9</td>
+<td align="right">0.3</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>library(formattable)
+formattable(table)</code></pre>
+<table class="table table-condensed">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Daily
+</th>
+<th style="text-align:right;">
+A few times a week
+</th>
+<th style="text-align:right;">
+A few times a month
+</th>
+<th style="text-align:right;">
+A few times a year
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Facebook
+</td>
+<td style="text-align:right;">
+57.1
+</td>
+<td style="text-align:right;">
+32.6
+</td>
+<td style="text-align:right;">
+8.5
+</td>
+<td style="text-align:right;">
+1.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Twitter
+</td>
+<td style="text-align:right;">
+37.2
+</td>
+<td style="text-align:right;">
+34.1
+</td>
+<td style="text-align:right;">
+19.7
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Whatsapp
+</td>
+<td style="text-align:right;">
+81.6
+</td>
+<td style="text-align:right;">
+15.3
+</td>
+<td style="text-align:right;">
+2.9
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>To graph this variable we are not going to follow the same procedure
+as in the previous section. In this section we are going to work
+directly from the table created with the percentages of the three social
+networks. This table has each social network in the rows and the answer
+options in the columns. In order to graph this data, it is required that
+the social networks are in the columns and the answer options in the
+rows, so first we are going to transpose this table. We do this
+procedure using the <code>data.table</code> library and the
+<code>transpose</code> command. We save these transposed data in a new
+table “table_tr”.</p>
+<p>This command transposes the data, but leaves the rows and columns
+unnamed. Columns are first named with the command <code>colnames</code>
+using the row names of “table”. The rows are then named with the command
+<code>rownames</code> using the column names of “table”.</p>
+<p>Finally, we require a column inside “table_tr” that contains the
+response labels of the smedia questions. These labels are like row
+names. To include them as one more variable, add a variable
+“tabla_tr$lab” to which the names of the rows are assigned with
+<code>row.names</code>.</p>
+<pre class="r"><code>library(data.table)
+table_tr = transpose(table)
+colnames(table_tr) = rownames(table)
+rownames(table_tr) = colnames(table)
+table_tr$lab &lt;- rownames(table_tr)
+table_tr</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Facebook"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Twitter"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Whatsapp"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lab"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"57.1","2":"37.2","3":"81.6","4":"Daily","_rn_":"Daily"},{"1":"32.6","2":"34.1","3":"15.3","4":"A few times a week","_rn_":"A few times a week"},{"1":"8.5","2":"19.7","3":"2.9","4":"A few times a month","_rn_":"A few times a month"},{"1":"1.9","2":"9.0","3":"0.3","4":"A few times a year","_rn_":"A few times a year"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Second, the <code>ggplot2</code> library is activated to plot the
+data stored in “table_tr” with the command <code>ggplot</code>. Within
+this command it is specified that this command is going to work with the
+dataframe “table_tr” (and not with lapop18), <code>data=table_tr</code>.
+The “aesthetic” is specified: the X axis will not include a variable,
+the Y axis will show the “Facebook” information from the dataframe
+“table_tr”, and <code>fill=lab</code> indicates that data will be
+divided by categories of the variable stored in “lab”.</p>
+<p>Then the <code>geom_bar</code> layer is added to indicate that it
+will be graphed in bars of width (<code>width = 1</code>) and that the
+bar will replicate what is specified in the aesthetic
+(<code>stat="identity"</code>). With <code>geom_text</code> you add the
+labels of the data, with the percentage symbol, and you specify the
+position of the text with <code>position=position_stack(…)</code> and
+the size with <code>size=3</code>. With <code>coord_polar</code> you
+transform the bars into a pie chart. Finally, the “theme” is defined
+with <code>theme_void</code> indicating a white background and the
+legend tag is modified with <code>scale_fill_discrete</code>.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data=table_tr, aes(x=&quot;&quot;, y=Facebook, fill=lab))+
+  geom_bar(width=1, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(Facebook, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=3)+
+  coord_polar(&quot;y&quot;, start=0)+
+  theme_void()+
+  scale_fill_discrete(name=&quot;Frequency of use of Facebook&quot;)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/pie%20chart-1.png" /><!-- --></p>
+<p>In figure 3.3 of the report “The Pulse of Democracy” a circular
+“donna” type graph is presented. To exactly reproduce this type of
+graph, a few details of the above syntax have to be accommodated. We set
+“x=2” in the “aesthetics” and set limits on the X axis, between 0.5 and
+2.5, so that when the axis is rotated, the “hole” inside the circle is
+created.</p>
+<pre class="r"><code>ggplot(data=table_tr, aes(x=2, y=Facebook, fill=lab))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(Facebook, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=3)+
+  coord_polar(&quot;y&quot;)+
+  theme_void()+
+  scale_fill_discrete(name=&quot;Frequency of use of Facebook&quot;)+
+   labs(title=&quot;How often do you view content on Facebook?&quot;, 
+        caption=&quot;AmericasBarometer by LAPOP, 2018/19&quot;)+
+  xlim(0.5, 2.5)</code></pre>
+<p><img src="Descriptives2_files/figure-html/dona-1.png" /><!-- --></p>
+<p>To replicate the bar chart, some modifications are made to the code
+above. For example, in “aesthetics”, it is now indicated that the
+variable “smedia2r” goes on the X axis and the percentage “per” goes on
+the Y axis. In addition, the specification of polar coordinates is
+eliminated. We can add a title to the chart, axis labels, and a caption
+with the specification <code>labs</code>. Finally, the Y axis is defined
+between 0 and 60 with the <code>coord_cartesian</code> specification. An
+important point is that this graph can also be saved in an object in R,
+which we will call “plot1”</p>
+<pre class="r"><code>plot1 &lt;- ggplot(table_tr, aes(x=lab, y=Facebook))+
+  geom_bar(stat=&quot;identity&quot;,  width=0.5)+
+  geom_text(aes(label=paste(Facebook, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;black&quot;, vjust=-0.5)+
+  labs(title=&quot;Frequency of use of social networks&quot;, x=&quot;Frequency of use of Facebook&quot;, 
+       y=&quot;Percentage&quot;, caption=&quot;AmericaBarometer by LAPOP, 2018/19&quot;)+
+  coord_cartesian(ylim=c(0, 60))
+plot1</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/bar%20graphic-1.png" /><!-- --></p>
+<p>Saving a chart to an object allows us to later add more layers or
+enhancements to the chart. The plot above, for example, has the
+“Frequency of use” labels on a single line, so they could overlap.</p>
+<p>To improve this visualization, these labels can be tilted, but if you
+want to maintain the horizontality to facilitate reading, what you can
+do is separate the long labels into two or more lines. This can be done,
+for example, by creating a vector with the new labels. Long tags can be
+broken into lines by including <code>\n</code> between the texts you
+want to break. Then a new layer can be added to the object “plot1” to
+replace the labels with the new ones divided into lines. This is done
+with the specification <code>scale_x_discrete</code> where we define to
+use the labels in the new vector.</p>
+<pre class="r"><code>etiq &lt;- c(&quot;Daily&quot;, &quot;A few times\n a week&quot;, &quot;A few times\n a month&quot;, 
+          &quot;A few times\n a year&quot;)
+plot1 +  scale_x_discrete(labels=etiq)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/overlapping%20labels-1.png" /><!-- --></p>
+<p>This makes the graph more readable. So far, we have replicated the
+tables and graphs that were used with the nominal variables, now using
+ordinal variables. If you want to replicate the pie chart of the other
+social networks, you can run the same code, but change the social
+network column. For Twitter, for example, you would have.</p>
+<pre class="r"><code>plot2 &lt;- ggplot(data=table_tr, aes(x=2, y=Twitter, fill=lab))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(Twitter, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=3)+
+  coord_polar(&quot;y&quot;)+
+  theme_void()+
+  scale_fill_discrete(name=&quot;Frequency of Twitter use&quot;)+
+  labs(title=&quot;How often you view content on Twitter&quot;, caption=&quot;Americas Barometer by LAPOP, 2018/19&quot;)+
+  xlim(0.5, 2.5)
+plot2</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/Twitter%20graph-1.png" /><!-- --></p>
+</div>
+<div id="cross-tables" class="section level1">
+<h1>Cross tables</h1>
+<p>Table 3.1 (page 55) of the report “The Pulse of Democracy” shows the
+percentages of use of social networks by country. Then, on page 56,
+there is a table with the percentage of social network users by
+sociodemographic characteristics, for example, urban/rural, male,
+average age, average wealth, and years of study.</p>
+<p><img src="Table%203.1.JPG" width="397" /></p>
+<p>We will start by replicating the general data on the use of social
+networks that is reported in Table 3.1. To replicate this table, you
+must first define the variable “country” and the variables for the use
+of social networks (smedia1, smedia4 and smedia7).</p>
+<pre class="r"><code>lapop18$smedia1r = as.factor(lapop18$smedia1)
+lapop18$smedia4r = as.factor(lapop18$smedia4)
+lapop18$smedia7r = as.factor(lapop18$smedia7)
+levels(lapop18$smedia1r) = c(&quot;Yes&quot;, &quot;No&quot;)
+levels(lapop18$smedia4r) = c(&quot;Yes&quot;, &quot;No&quot;)
+levels(lapop18$smedia7r) = c(&quot;Yes&quot;, &quot;No&quot;)
+lapop18$pais = as.factor(lapop18$pais)
+levels(lapop18$pais) = c(&quot;México&quot;, &quot;Guatemala&quot;, &quot;El Salvador&quot;, &quot;Honduras&quot;,
+                        &quot;Nicaragua&quot;,&quot;Costa Rica&quot;, &quot;Panamá&quot;, &quot;Colombia&quot;, 
+                        &quot;Ecuador&quot;, &quot;Bolivia&quot;, &quot;Perú&quot;, &quot;Paraguay&quot;, 
+                        &quot;Chile&quot;, &quot;Uruguay&quot;, &quot;Brasil&quot;, &quot;Argentina&quot;, 
+                        &quot;Rep. Dom.&quot;, &quot;Jamaica&quot;)
+table(lapop18$pais) #Country</code></pre>
+<pre><code>## 
+##      México   Guatemala El Salvador    Honduras   Nicaragua  Costa Rica 
+##        1580        1596        1511        1560        1547        1501 
+##      Panamá    Colombia     Ecuador     Bolivia        Perú    Paraguay 
+##        1559        1663        1533        1682        1521        1515 
+##       Chile     Uruguay      Brasil   Argentina   Rep. Dom.     Jamaica 
+##        1638        1581        1498        1528        1516        1513</code></pre>
+<pre class="r"><code>table(lapop18$smedia1r) #Facebook</code></pre>
+<pre><code>## 
+##   Yes    No 
+## 15389 11573</code></pre>
+<p>However, the variable “user” of each social network is calculated as
+a condition of two variables, as seen in the document on data
+manipulation, with the following code.</p>
+<pre class="r"><code>lapop18$fb_user = ifelse(lapop18$smedia1==1 &amp; lapop18$smedia2&lt;=4, 1, 0)
+lapop18$tw_user = ifelse(lapop18$smedia4==1 &amp; lapop18$smedia5&lt;=4, 1, 0)
+lapop18$wa_user = ifelse(lapop18$smedia7==1 &amp; lapop18$smedia8&lt;=4, 1, 0)</code></pre>
+<p>These variables are plotted in the report in Figure 3.1. To reproduce
+this data, you can describe these variables.</p>
+<pre class="r"><code>prop.table(table(lapop18$fb_user))*100</code></pre>
+<pre><code>## 
+##       0       1 
+## 43.8289 56.1711</code></pre>
+<pre class="r"><code>prop.table(table(lapop18$tw_user))*100</code></pre>
+<pre><code>## 
+##         0         1 
+## 92.056769  7.943231</code></pre>
+<pre class="r"><code>prop.table(table(lapop18$wa_user))*100</code></pre>
+<pre><code>## 
+##        0        1 
+## 35.76561 64.23439</code></pre>
+<p>As in previous graphs, with this data a dataframe can be created that
+would be used to make the circular graphs shown in the report.</p>
+<p>To replicate the table of use of social networks by country, first,
+bivariate tables are created with the percentage of those who use and
+the percentage of those who do not use each social network in each
+country. These tables are stored in R objects. These objects are then
+merged using the commands <code>cbind</code> to bind the columns and
+<code>as.data.frame</code> to bind the tables as a dataframe. This table
+also presents the percentages of those who do not use these social
+networks. To present a table that includes only those who do use social
+networks, columns are eliminated, using the specification
+<code>[, c(-1,-3,-5)]</code>, which indicates that we want to eliminate
+columns 1 , 3 and 5. Finally, the dataframe columns are renamed.</p>
+<pre class="r"><code>fbcountry = round(prop.table(table(lapop18$pais, lapop18$fb_user), 1), 3)*100
+twcountry = round(prop.table(table(lapop18$pais, lapop18$tw_user), 1), 3)*100
+whcountry = round(prop.table(table(lapop18$pais, lapop18$wa_user), 1), 3)*100
+tablecountry = as.data.frame(cbind(fbcountry, twcountry, whcountry))
+tablecountry = tablecountry[, c(-1,-3,-5)]
+varnames = c(&quot;Use facebook&quot;, &quot;Use Twitter&quot;, &quot;Use Whatsapp&quot;)
+colnames(tablecountry) = varnames
+tablecountry</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Use facebook"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Use Twitter"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Use Whatsapp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"47.9","2":"7.6","3":"55.1","_rn_":"México"},{"1":"43.2","2":"6.5","3":"47.6","_rn_":"Guatemala"},{"1":"56.2","2":"6.7","3":"56.0","_rn_":"El Salvador"},{"1":"44.6","2":"4.8","3":"46.9","_rn_":"Honduras"},{"1":"48.1","2":"5.8","3":"47.7","_rn_":"Nicaragua"},{"1":"66.6","2":"8.0","3":"81.6","_rn_":"Costa Rica"},{"1":"34.6","2":"5.8","3":"56.7","_rn_":"Panamá"},{"1":"60.0","2":"10.7","3":"63.5","_rn_":"Colombia"},{"1":"66.9","2":"11.2","3":"60.2","_rn_":"Ecuador"},{"1":"57.9","2":"5.6","3":"63.5","_rn_":"Bolivia"},{"1":"61.4","2":"7.6","3":"58.6","_rn_":"Perú"},{"1":"60.5","2":"8.0","3":"69.2","_rn_":"Paraguay"},{"1":"62.9","2":"9.2","3":"75.5","_rn_":"Chile"},{"1":"66.5","2":"9.8","3":"80.0","_rn_":"Uruguay"},{"1":"59.2","2":"7.9","3":"74.9","_rn_":"Brasil"},{"1":"67.3","2":"12.9","3":"78.9","_rn_":"Argentina"},{"1":"61.9","2":"9.5","3":"68.2","_rn_":"Rep. Dom."},{"1":"45.9","2":"4.5","3":"68.1","_rn_":"Jamaica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>To have a better presentation of the table, there are two
+alternatives: the first with the <code>knitr</code> library and the
+other with the <code>formattable</code> library.</p>
+<pre class="r"><code>library(knitr)
+kable(head(tablecountry), format=&quot;markdown&quot;, digits=1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Use facebook</th>
+<th align="right">Use Twitter</th>
+<th align="right">Use Whatsapp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">México</td>
+<td align="right">47.9</td>
+<td align="right">7.6</td>
+<td align="right">55.1</td>
+</tr>
+<tr class="even">
+<td align="left">Guatemala</td>
+<td align="right">43.2</td>
+<td align="right">6.5</td>
+<td align="right">47.6</td>
+</tr>
+<tr class="odd">
+<td align="left">El Salvador</td>
+<td align="right">56.2</td>
+<td align="right">6.7</td>
+<td align="right">56.0</td>
+</tr>
+<tr class="even">
+<td align="left">Honduras</td>
+<td align="right">44.6</td>
+<td align="right">4.8</td>
+<td align="right">46.9</td>
+</tr>
+<tr class="odd">
+<td align="left">Nicaragua</td>
+<td align="right">48.1</td>
+<td align="right">5.8</td>
+<td align="right">47.7</td>
+</tr>
+<tr class="even">
+<td align="left">Costa Rica</td>
+<td align="right">66.6</td>
+<td align="right">8.0</td>
+<td align="right">81.6</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>library(formattable)
+formattable(tablecountry)</code></pre>
+<table class="table table-condensed">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Use facebook
+</th>
+<th style="text-align:right;">
+Use Twitter
+</th>
+<th style="text-align:right;">
+Use Whatsapp
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+México
+</td>
+<td style="text-align:right;">
+47.9
+</td>
+<td style="text-align:right;">
+7.6
+</td>
+<td style="text-align:right;">
+55.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Guatemala
+</td>
+<td style="text-align:right;">
+43.2
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+47.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+El Salvador
+</td>
+<td style="text-align:right;">
+56.2
+</td>
+<td style="text-align:right;">
+6.7
+</td>
+<td style="text-align:right;">
+56.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Honduras
+</td>
+<td style="text-align:right;">
+44.6
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+46.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nicaragua
+</td>
+<td style="text-align:right;">
+48.1
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+<td style="text-align:right;">
+47.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Costa Rica
+</td>
+<td style="text-align:right;">
+66.6
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+81.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Panamá
+</td>
+<td style="text-align:right;">
+34.6
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+<td style="text-align:right;">
+56.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Colombia
+</td>
+<td style="text-align:right;">
+60.0
+</td>
+<td style="text-align:right;">
+10.7
+</td>
+<td style="text-align:right;">
+63.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ecuador
+</td>
+<td style="text-align:right;">
+66.9
+</td>
+<td style="text-align:right;">
+11.2
+</td>
+<td style="text-align:right;">
+60.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bolivia
+</td>
+<td style="text-align:right;">
+57.9
+</td>
+<td style="text-align:right;">
+5.6
+</td>
+<td style="text-align:right;">
+63.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Perú
+</td>
+<td style="text-align:right;">
+61.4
+</td>
+<td style="text-align:right;">
+7.6
+</td>
+<td style="text-align:right;">
+58.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Paraguay
+</td>
+<td style="text-align:right;">
+60.5
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+69.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chile
+</td>
+<td style="text-align:right;">
+62.9
+</td>
+<td style="text-align:right;">
+9.2
+</td>
+<td style="text-align:right;">
+75.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Uruguay
+</td>
+<td style="text-align:right;">
+66.5
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+<td style="text-align:right;">
+80.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brasil
+</td>
+<td style="text-align:right;">
+59.2
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+<td style="text-align:right;">
+74.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Argentina
+</td>
+<td style="text-align:right;">
+67.3
+</td>
+<td style="text-align:right;">
+12.9
+</td>
+<td style="text-align:right;">
+78.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rep. Dom.
+</td>
+<td style="text-align:right;">
+61.9
+</td>
+<td style="text-align:right;">
+9.5
+</td>
+<td style="text-align:right;">
+68.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jamaica
+</td>
+<td style="text-align:right;">
+45.9
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+68.1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="crosstables-with-sociodemographic-variables"
+class="section level1">
+<h1>Crosstables with sociodemographic variables</h1>
+<p>On page 56 of the report “The pulse of democracy” the results of the
+crosstable between the variables use of social networks and
+sociodemographic variables such as urban/rural, gender, age, wealth and
+years of education are presented.</p>
+<p><img src="Table%203.2.JPG" width="672" /></p>
+<p>The variable “q1” records the gender of the interviewee. This
+variable is encoded as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Man</li>
+<li>Woman</li>
+</ol>
+<p>To calculate a “dummy” variable called “man”, such that male is 1 and
+female is 0, one way to do it is algebraically (2-variable q1). In this
+way, now the men maintain the value 1 (2-1) and the women become 0
+(2-2). In this case, the new variable “man” is created as a numeric
+variable. We are going to keep the variable as “num” so that, further
+down, we can calculate the mean of this variable (something that cannot
+be done with a variable declared as a factor).</p>
+<pre class="r"><code>lapop18$men &lt;- 2-lapop18$q1
+table(lapop18$men)</code></pre>
+<pre><code>## 
+##     0     1 
+## 14084 13943</code></pre>
+<p>The urban/rural variable is named “ur” in the database and is encoded
+as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Urban</li>
+<li>Rural</li>
+</ol>
+<p>In the same way as with gender, the formula 2- variable ur is used,
+but this variable is converted into a factor and is labeled.</p>
+<pre class="r"><code>lapop18$urban &lt;- 2-lapop18$ur
+lapop18$urban = as.factor(lapop18$urban)
+levels(lapop18$urban) &lt;- c(&quot;Rural&quot;, &quot;Urban&quot;)
+table(lapop18$urban)</code></pre>
+<pre><code>## 
+## Rural Urban 
+##  8089 19953</code></pre>
+<p>The crosstables of the use of social networks by some of the
+sociodemographic variables will be presented, to better understand how
+the general table is constructed. For example, the report shows in Table
+3.2, after the general population column, the columns for WhatsApp users
+and non-users (variable “wa_user”) and in the rows, the first
+corresponds to urban (variable “urban”, where 0 is rural and 1 urban).
+It is presented that among WhatsApp users, 76.7% are urban and among
+non-users, 62% are urban. These data are generated with the
+<code>table</code> command that allows you to make a contingency table
+of 2 variables. In this case it should be noted that each variable has a
+title. So the command is
+<code>table(title1 = var1, title2 = var2)</code>. Then, the
+<code>prop.table</code> command is used so that the observations are not
+displayed, but the percentages. This command allows you to calculate the
+percentages of the total (the default option), of the rows and of the
+columns. To calculate on columns you must specify
+<code>prop.table(table(...), 2)</code>. If you wanted the percentage
+over the rows, the code would be <code>prop.table(table(...), 1)</code>.
+This table can be saved as a dataframe with the
+<code>as.data.frame</code> command in a new object “t1”.</p>
+<pre class="r"><code>t1 = as.data.frame(round(prop.table(table(Urban = lapop18$urban, User = lapop18$wa_user), 2)*100, 1))
+t1</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Urban"],"name":[1],"type":["fct"],"align":["left"]},{"label":["User"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Rural","2":"0","3":"37.9"},{"1":"Urban","2":"0","3":"62.1"},{"1":"Rural","2":"1","3":"23.3"},{"1":"Urban","2":"1","3":"76.7"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The rows corresponding to “Urban” in this table reproduce the data in
+Table 3.2: 62.1% are urban among non-Whatsapp users and 76.7% are urban
+among users.</p>
+<p>Now the table will be presented between Facebook users (variable
+“fb_user”) and men (variable “men”), but presenting only the percentages
+used in the table and now using the code style of the Tidyverse, using
+the “pipe” operator. The first thing is to define the variable “fb_user”
+as a factor and label it. Then, the <code>subset</code> command is used
+to filter the missing cases on the “fb_user” variable. Then the results
+are requested to be grouped by categories of the variable “fb_user”.
+With the <code>summarise</code> command, the average of the “man”
+variable is saved in the “man” column, with the <code>mean</code>
+command that includes the specification <code>na.rm=T</code> so as not
+to include missing values in the calculation. In this case, it takes
+advantage of the fact that the variable “men” is a dummy variable, in
+such a way that the average corresponds to the proportion of men.</p>
+<pre class="r"><code>lapop18$fb_user = as.factor(lapop18$fb_user)
+levels(lapop18$fb_user) = c(&quot;No user&quot;, &quot;User&quot;)
+library(tidyverse)
+table1 = subset(lapop18, !is.na(fb_user)) %&gt;% #To not include the NA group of Facebook users
+  group_by(fb_user) %&gt;%
+  dplyr::summarise(Men=mean(men, na.rm=T)*100) #na.rm=T is included because man has NAs
+table1</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["fb_user"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Men"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"No user","2":"49.89404"},{"1":"User","2":"49.68915"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>These are the percentages for Facebook users, in the row of the Male
+variable in Table 3.2. That is, among non-users, 49.9% are men and among
+users this percentage is 49.7%. So far we have replicated some results
+from Table 3.2. The other data can continue to be reconstructed through
+combinations of the social network user variables and the
+sociodemographic variables.</p>
+</div>
+<div id="two-variable-bar-chart" class="section level1">
+<h1>Two-Variable Bar Chart</h1>
+<p>The cross between WhatsApp users and the urban variable can also be
+seen in a grouped bar graph. The first thing we will do is define the
+variable “wa_user” as a factor and label it. Then, it is required to
+create a table with the grouped data. The “t1” dataframe created earlier
+can be used, but here we will again use the “pipe” operator to recreate
+the data.</p>
+<p>For this, it is grouped both by use of WhatsApp and by urban/rural,
+that is, in four combinations. In each subgroup the n is calculated.
+Since the % have to be calculated for each group of “wa_user”, it is
+grouped again and the % of each subgroup is calculated, in such a way
+that the percentages add up to 100% in each subgroup of “wa_user”.</p>
+<pre class="r"><code>lapop18$wa_user = as.factor(lapop18$wa_user)
+levels(lapop18$wa_user) = c(&quot;No user&quot;, &quot;User&quot;)
+face &lt;- subset(lapop18, !is.na(wa_user)) %&gt;% #!is.na is used so that NAs are not reported in the table
+  group_by(wa_user, urban) %&gt;% #groups are configured
+  dplyr::count() %&gt;% #n is calculated
+  group_by(wa_user) %&gt;% #It is grouped by WhatsApp user
+  dplyr::mutate(percentage = round(n/sum(n), 3)*100) #The percentage is calculated in each WhatsApp group
+face</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["wa_user"],"name":[1],"type":["fct"],"align":["left"]},{"label":["urban"],"name":[2],"type":["fct"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["percentage"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"No user","2":"Rural","3":"3661","4":"37.9"},{"1":"No user","2":"Urban","3":"5995","4":"62.1"},{"1":"User","2":"Rural","3":"4037","4":"23.3"},{"1":"User","2":"Urban","3":"13305","4":"76.7"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The data in this new table is exactly the same as in “t1”. With the
+table ready, use the <code>ggplot</code> command, defining “wa_user” to
+be the variable on the X axis, the Y axis to be the percentage, and the
+subgroups to be formed by the variable “urban” with the
+<code>fill</code> specification. . The <code>dodge</code> specification
+is used in <code>geom_bar</code> to have the bars separated by each
+group.</p>
+<pre class="r"><code>ggplot(data=face, aes(x=wa_user, y=percentage, fill=urban, ymax=100))+
+  geom_bar(position=&quot;dodge&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(percentage, &quot;%&quot;, sep=&quot;&quot;)), 
+            position=position_dodge(width=0.9), vjust=-0.25)+
+  ylab(&quot;Percentage&quot;)+
+  xlab(&quot;Whatsapp user&quot;)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/grouped%20graphics-1.png" /><!-- --></p>
+<p>If we wanted to make the graph with stacked bars, we would have to
+change the <code>position="stack"</code> specification in
+<code>geom_bar</code> and the <code>position=position_stack()</code>
+specification in <code>geom_text</code>.</p>
+<pre class="r"><code>ggplot(data=face, aes(x=wa_user, y=percentage, fill=urban, ymax=100))+
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(percentage, &quot;%&quot;, sep=&quot;&quot;)), 
+            position=position_stack(), vjust=2.5)+
+  ylab(&quot;Percentage&quot;)+
+  xlab(&quot;Whatsapp user&quot;)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/stacked%20bars-1.png" /><!-- --></p>
+<p>In both cases, the light blue bars indicate the percentages reported
+in table 3.2 of the report and correspond to the proportion of people
+living in urban areas between users and non-users.</p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this document we have worked with ordinal categorical variables,
+such as the frequency of use of social networks. The use of contingency
+tables of two categorical variables and the creation of grouped bar
+graphs for 2 variables have also been introduced.</p>
+</div>
+<div id="calculations-including-survey-weights" class="section level1">
+<h1>Calculations including survey weights</h1>
+<div id="example-using-the-2021-dataset" class="section level2">
+<h2>Example using the 2021 dataset</h2>
+<p>With the data of the 2021 wave of the AmericasBarometer, we have
+calculated the percentages of the variable that gauges whether the votes
+are counted correctly. The figure we have produced is for the total
+sample; it means, for all the countries. The Figure 2.5 of the report
+The Pulse of Democracy presents results for each country.</p>
+<p>If we calculate percentages with the commands <code>table</code> and
+<code>prop.table</code>, we would get different results from those show
+in the Figure. For example, Nicaragua, country 5, display that 26% of
+citizens in this country indicate that votes are always counted
+correctly, 49% indicate that votes are sometimes counted correctly, and
+24.4% that voter are never counted correctly. However, the figure shows
+that 29% indicate that votes are never counted correctly in Nicaragua,
+45% that sometimes, and 25% that always. These percentages do not match
+those produced with these commands.</p>
+<pre class="r"><code>round(prop.table(table(lapop21$pais, lapop21$countfair1r), 1), 3)*100</code></pre>
+<pre><code>##     
+##      Always Sometimes Never
+##   1                        
+##   2                        
+##   3                        
+##   4                        
+##   5    26.2      49.4  24.4
+##   6    52.3      40.2   7.5
+##   7    27.6      57.1  15.4
+##   8    18.1      50.4  31.5
+##   9    21.5      59.1  19.4
+##   10   24.5      59.2  16.3
+##   11   25.1      61.1  13.8
+##   12   25.9      48.3  25.8
+##   13   64.1      30.1   5.8
+##   14   80.0      16.9   3.0
+##   15   48.1      35.7  16.1
+##   17   31.5      51.0  17.5
+##   21   25.2      60.1  14.7
+##   22                       
+##   23   17.9      67.9  14.2
+##   24   17.0      65.1  17.8</code></pre>
+<p>This difference is due to the fact that commands <code>table</code>
+and <code>prop.table</code> do not include survey weights in
+calculations. More information about these differences are found <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Expansion.html">here</a>.</p>
+<p>To replicate the results of Figure 2.5, there are some options. The
+first option is using an specialized librery called
+<code>survey</code>.</p>
+<p>To be allowed to use this library, we should first prepare the
+dataset, dropping missing values of variables that define the survey
+design. An additional step is transforming the variables in the
+dataframe. When we import the dataset, the system reads these variables
+as “haven_labelled” type, that is, they ma.intain labels of variables,
+with which we may produce a codebook. This may be useful in other
+ocassions, but it generates problems with the library
+<code>survey</code>. For this, we transform the variables to other type
+with the command <code>sapply</code>.</p>
+<p>Once prepared the dataset, we activate the library and declare the
+survey design. In the last section, we also use this library to
+calculate the results with the survey weights in the round 2018.
+Contrary to this code, the 2021 round of the AmericasBarometer uses
+phone interviews, and not face to face. For this reason, the primary
+unit of sampling is the individual, and so it is defined in the variable
+“upm”. The variable that defines strata is “strata” (and not
+“estratopri”, as in the 2018 round). The weighting variable is still
+“weight1500”.</p>
+<p>With this information, we save the design in an object
+“design21”.</p>
+<pre class="r"><code>library(survey)
+design21 = svydesign(ids = ~upm, strata = ~strata, weights = ~weight1500, nest=TRUE, data=lapop21)</code></pre>
+<p>The library <code>survey</code> includes native commands to perform
+multiple operations including survey weights. One is this commands is
+<code>svytable</code> that allows to make a crosstable between the
+variable “countfair1” and “pais”, specifying the design. This command
+returns the weighting absolute frequencies. For this reason, we have to
+nest this code in the command <code>prop.table</code> to calculate the
+percentages from weighting absolute frequencies. We also use the
+commands <code>round</code> to round percentage, and the command
+<code>as.data.table</code> to save this table in an object
+“votexcountry” as a dataframe that allows to use this data with
+<code>ggplot</code>.</p>
+<pre class="r"><code>votexcountry = as.data.frame(round(prop.table(svytable(~pais+countfair1r, design=design21), 1)*100, 0))
+votexcountry$country = country
+votexcountry</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["pais"],"name":[1],"type":["fct"],"align":["left"]},{"label":["countfair1r"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["country"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"5","2":"Always","3":"25","4":"Nicaragua"},{"1":"6","2":"Always","3":"48","4":"Costa Rica"},{"1":"7","2":"Always","3":"28","4":"Panama"},{"1":"8","2":"Always","3":"18","4":"Colombia"},{"1":"9","2":"Always","3":"23","4":"Ecuador"},{"1":"10","2":"Always","3":"26","4":"Bolivia"},{"1":"11","2":"Always","3":"27","4":"Peru"},{"1":"12","2":"Always","3":"25","4":"Paraguay"},{"1":"13","2":"Always","3":"60","4":"Chile"},{"1":"14","2":"Always","3":"75","4":"Uruguay"},{"1":"15","2":"Always","3":"42","4":"Brazil"},{"1":"17","2":"Always","3":"30","4":"Argentina"},{"1":"21","2":"Always","3":"26","4":"Dom. Rep."},{"1":"23","2":"Always","3":"18","4":"Jamaica"},{"1":"24","2":"Always","3":"18","4":"Guyana"},{"1":"5","2":"Sometimes","3":"45","4":"Nicaragua"},{"1":"6","2":"Sometimes","3":"43","4":"Costa Rica"},{"1":"7","2":"Sometimes","3":"55","4":"Panama"},{"1":"8","2":"Sometimes","3":"51","4":"Colombia"},{"1":"9","2":"Sometimes","3":"56","4":"Ecuador"},{"1":"10","2":"Sometimes","3":"57","4":"Bolivia"},{"1":"11","2":"Sometimes","3":"59","4":"Peru"},{"1":"12","2":"Sometimes","3":"47","4":"Paraguay"},{"1":"13","2":"Sometimes","3":"33","4":"Chile"},{"1":"14","2":"Sometimes","3":"21","4":"Uruguay"},{"1":"15","2":"Sometimes","3":"39","4":"Brazil"},{"1":"17","2":"Sometimes","3":"52","4":"Argentina"},{"1":"21","2":"Sometimes","3":"57","4":"Dom. Rep."},{"1":"23","2":"Sometimes","3":"67","4":"Jamaica"},{"1":"24","2":"Sometimes","3":"65","4":"Guyana"},{"1":"5","2":"Never","3":"29","4":"Nicaragua"},{"1":"6","2":"Never","3":"9","4":"Costa Rica"},{"1":"7","2":"Never","3":"17","4":"Panama"},{"1":"8","2":"Never","3":"31","4":"Colombia"},{"1":"9","2":"Never","3":"21","4":"Ecuador"},{"1":"10","2":"Never","3":"17","4":"Bolivia"},{"1":"11","2":"Never","3":"15","4":"Peru"},{"1":"12","2":"Never","3":"28","4":"Paraguay"},{"1":"13","2":"Never","3":"6","4":"Chile"},{"1":"14","2":"Never","3":"4","4":"Uruguay"},{"1":"15","2":"Never","3":"19","4":"Brazil"},{"1":"17","2":"Never","3":"17","4":"Argentina"},{"1":"21","2":"Never","3":"17","4":"Dom. Rep."},{"1":"23","2":"Never","3":"15","4":"Jamaica"},{"1":"24","2":"Never","3":"17","4":"Guyana"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>ggplot(data=votexcountry, aes(fill=countfair1r, x=Freq, y=country))+
+  geom_bar(stat=&quot;identity&quot;, width=0.3)+
+  geom_text(aes(label=paste(Freq, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=3)+
+  labs(x=&quot;Percentage&quot;, y=&quot;Country&quot;, fill=&quot;Votes are counted correctly&quot;,
+       caption=&quot;AmericasBarometer by LAPOP, 2021&quot;)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/unnamed-chunk-17-1.png" /><!-- --></p>
+<p>This figure reproduces exactly the results shown in the Figure 2.5 of
+the report, even in a different order.</p>
+</div>
+<div id="example-using-the-201819-dataset" class="section level2">
+<h2>Example using the 2018/19 dataset</h2>
+<p>The small difference between the percentages shown in Figure 3.3 and
+those shown in the “Describing and plotting variables” section may be
+due to the fact that the survey weight is not included in all the
+previous tables and graphs. If included, using the variable
+“weight1500”, the percentages shown in the report would be replicated.
+For example, to use WhatsApp, you can use the command <code>freq</code>
+from the library <code>descr</code>, which allows you to include a
+weighting variable.</p>
+<p>This table can be saved to a dataframe, from which the rows and
+columns that are not required can be removed, and the remaining columns
+can be renamed.</p>
+<pre class="r"><code>table2 = as.data.frame(descr::freq(lapop18$smedia8r, lapop18$weight1500, plot=F))
+table2 = table2[-c(5,6), -2]
+colnames(table2) &lt;- c(&quot;frec&quot;, &quot;per&quot;)
+table2$lab &lt;- rownames(table2)
+table2</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["frec"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["per"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["lab"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"13648.84125","2":"81.6626475","3":"Daily","_rn_":"Daily"},{"1":"2541.42991","2":"15.2056787","3":"A few times a week","_rn_":"A few times a week"},{"1":"475.89791","2":"2.8473540","3":"A few times a month","_rn_":"A few times a month"},{"1":"47.52031","2":"0.2843197","3":"A few times a year","_rn_":"A few times a year"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>With this new dataframe, we can replicate the figure for Whatsapp ,
+with the data weighted, using the <code>ggplot</code> code.</p>
+<pre class="r"><code>ggplot(data=table2, aes(x=2, y=per, fill=lab))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(per, 1), &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=3)+
+  coord_polar(&quot;y&quot;)+
+  theme_void()+
+  scale_fill_discrete(name=&quot;Frequency of use of Facebook&quot;)+
+   labs(title=&quot;Frequency with which you view content on Facebook&quot;, 
+        caption=&quot;AmericasBarometer by LAPOP, 2018/19&quot;)+
+  xlim(0.5, 2.5)</code></pre>
+<p><img
+src="Descriptives2_files/figure-html/wa%20graf%20pond-1.png" /><!-- --></p>
+<p>In addition to the <code>freq</code> command, you can also use the
+library <code>survey</code> and the native command
+<code>svytable</code>.</p>
+<pre class="r"><code>library(survey)
+design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)</code></pre>
+<p>The results obtained are the same as with the previous method and
+those presented in the report. These results can also be saved in a
+“dataframe” to make the graph.</p>
+<pre class="r"><code>prop.table(svytable(~smedia8r, design=design18))*100</code></pre>
+<pre><code>## smedia8r
+##               Daily  A few times a week A few times a month  A few times a year 
+##          81.6626475          15.2056787           2.8473540           0.2843197</code></pre>
+<p>The section “Cross with variables” presents the data of users of
+social networks by country. To build the table considering the design
+effect, you can also use the native <code>svytable</code> command that
+allows you to compute a bivariate table. In the same way as in the
+unweighted case, the partial tables of each social network are stored in
+list-type objects, which are put together as a “dataframe” and edited to
+present only the data of the users of each social network. for
+country.</p>
+<pre class="r"><code>fbpais_2 = round(prop.table(svytable(~pais+fb_user, design=design18), 1), 3)*100
+twpais_2 = round(prop.table(svytable(~pais+tw_user, design=design18), 1), 3)*100
+wapais_2 = round(prop.table(svytable(~pais+wa_user, design=design18), 1), 3)*100
+tablecountry_2 = as.data.frame(cbind(fbpais_2, twpais_2, wapais_2))
+tablecountry_2 = tablecountry_2[, c(-1,-3,-5)]
+varnames = c(&quot;Use Facebook&quot;, &quot;Use Twitter&quot;, &quot;Use Whatsapp&quot;)
+colnames(tablecountry_2) = varnames
+tablecountry_2</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Use Facebook"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Use Twitter"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Use Whatsapp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"47.9","2":"7.6","3":"55.1","_rn_":"México"},{"1":"43.2","2":"6.5","3":"47.6","_rn_":"Guatemala"},{"1":"56.2","2":"6.7","3":"56.0","_rn_":"El Salvador"},{"1":"44.6","2":"4.8","3":"46.9","_rn_":"Honduras"},{"1":"48.1","2":"5.8","3":"47.7","_rn_":"Nicaragua"},{"1":"66.6","2":"8.0","3":"81.6","_rn_":"Costa Rica"},{"1":"34.6","2":"5.8","3":"56.7","_rn_":"Panamá"},{"1":"60.0","2":"10.7","3":"63.5","_rn_":"Colombia"},{"1":"66.9","2":"11.2","3":"60.2","_rn_":"Ecuador"},{"1":"57.9","2":"5.6","3":"63.5","_rn_":"Bolivia"},{"1":"61.4","2":"7.6","3":"58.6","_rn_":"Perú"},{"1":"60.5","2":"8.0","3":"69.2","_rn_":"Paraguay"},{"1":"62.9","2":"9.2","3":"75.5","_rn_":"Chile"},{"1":"66.5","2":"9.8","3":"80.0","_rn_":"Uruguay"},{"1":"59.7","2":"8.5","3":"76.1","_rn_":"Brasil"},{"1":"67.3","2":"12.9","3":"78.9","_rn_":"Argentina"},{"1":"61.9","2":"9.5","3":"68.2","_rn_":"Rep. Dom."},{"1":"45.9","2":"4.5","3":"68.1","_rn_":"Jamaica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Finally, the section “Crosstables with sociodemographic variables”
+reproduces the results of Table 3.2 of the report. In the same way as in
+the previous case, the native command <code>svytable</code> can be used
+to perform the cross between the social network usage variables and the
+urban variable. The results of the Urban row in each social network
+would correspond to the first row of results in Table 3.2.</p>
+<pre class="r"><code>round(prop.table(svytable(~urban+wa_user, design=design18), 2), 3)*100</code></pre>
+<pre><code>##        wa_user
+## urban   No user User
+##   Rural    38.0 23.3
+##   Urban    62.0 76.7</code></pre>
+<pre class="r"><code>round(prop.table(svytable(~urban+fb_user, design=design18), 2), 3)*100</code></pre>
+<pre><code>##        fb_user
+## urban   No user User
+##   Rural    35.6 23.0
+##   Urban    64.4 77.0</code></pre>
+<pre class="r"><code>round(prop.table(svytable(~urban+tw_user, design=design18), 2), 3)*100</code></pre>
+<pre><code>##        tw_user
+## urban      0    1
+##   Rural 29.7 15.3
+##   Urban 70.3 84.7</code></pre>
+<p>In this way, frequency distribution tables and bivariate (or
+contingency) tables can be calculated including the design effect or the
+expansion factor.</p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGVzY3JpcHRpdmUgc3RhdGlzdGljcyB1c2luZyB0aGUgQW1lcmljYXNCYXJvbWV0ZXIgKDIpIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjb2xsYXBzZWQ6IGZhbHNlCiAgICBudW1iZXJfc2VjdGlvbnM6IGZhbHNlCiAgICB0b2NfZGVwdGg6IDEKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBmbGF0bHkKICAgIGRmX3ByaW50OiBwYWdlZAogICAgc2VsZl9jb250YWluZWQ6IG5vCiAgICBrZWVwX21kOiB5ZXMKICAgICNjb2RlX2ZvbGRpbmc6IGhpZGUKZWRpdG9yX29wdGlvbnM6IAogIG1hcmtkb3duOiAKICAgIHdyYXA6IHNlbnRlbmNlCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChtZXNzYWdlPUZBTFNFLHdhcm5pbmc9RkFMU0UsIGNhY2hlPVRSVUUpCmBgYAoKYGBge2NzcyBjb2xvciwgZWNobz1GQUxTRX0KLmNvbHVtbnMge2Rpc3BsYXk6IGZsZXg7fQpoMSB7Y29sb3I6ICMzMzY2Q0M7fQpgYGAKCiMgSW50cm9kdWN0aW9uCgpJbiB0aGlzIHNlY3Rpb24gd2Ugd2lsbCBjb250aW51ZSB0byB1c2UgdGhlIHJlZ2lvbmFsIHJlcG9ydCAiVGhlIFB1bHNlIG9mIERlbW9jcmFjeSIsIGF2YWlsYWJsZSBbaGVyZV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDE4LzIwMTgtMTlfQW1lcmljYXNCYXJvbWV0ZXJfUmVnaW9uYWxfUmVwb3J0X1NwYW5pc2hfV18wMy4yNy4yMC5wZGYpLCB3aGVyZSB0aGUgbWFpbiBmaW5kaW5ncyBvZiB0aGUgMjAxOC8xOSByb3VuZCBvZiB0aGUgQW1lcmljYXNCYXJvbWV0ZXIgYXJlIHByZXNlbnRlZC4KT25lIG9mIHRoZSBzZWN0aW9ucyBvZiB0aGlzIHJlcG9ydCByZXBvcnRzIGRhdGEgb24gc29jaWFsIG5ldHdvcmtzIGFuZCBwb2xpdGljYWwgYXR0aXR1ZGVzLgpUaGlzIHNlY3Rpb24gcHJlc2VudHMgZGF0YSBvbiB0aGUgdXNlIG9mIHRoZSBJbnRlcm5ldCBhbmQgdGhlIHVzZSBvZiBzb2NpYWwgbmV0d29ya3MsIGluIGdlbmVyYWwgYW5kIGJ5IGNvdW50cnkuCkluIHRoaXMgY2FzZSB3ZSBhcmUgZ29pbmcgdG8gd29yayB3aXRoIHRoZSBmcmVxdWVuY3kgb2YgdXNlIG9mIHNvY2lhbCBuZXR3b3Jrcy4KSW4gdGhpcyBzZWN0aW9uIHdlIGFyZSBnb2luZyB0byBkZXNjcmlwdGl2ZWx5IGFuYWx5emUgdGhlc2UgdmFyaWFibGVzIG9uIHRoZSBmcmVxdWVuY3kgb2YgdXNlIG9mIHNvY2lhbCBuZXR3b3Jrcywgb3JkaW5hbCB2YXJpYWJsZXMgKG9yIGZhY3RvciB2YXJpYWJsZXMsIGluIHRoZSBsYW5ndWFnZSBvZiBSKS4KCiMgQWJvdXQgdGhlIGRhdGFzZXQKClRoZSBkYXRhIHdlIGFyZSBnb2luZyB0byB1c2Ugc2hvdWxkIGJlIGNpdGVkIGFzIGZvbGxvd3M6IFNvdXJjZTogQW1lcmljYXNCYXJvbWV0ZXIgYnkgdGhlIExhdGluIEFtZXJpY2FuIFB1YmxpYyBPcGluaW9uIFByb2plY3QgKExBUE9QKSwgd3d3dy5MYXBvcFN1cnZleXMub3JnLgpUaGlzIGRvY3VtZW50IHJlbG9hZHMgYSB0cmltbWVkIGRhdGFiYXNlLgpUbyByZXByb2R1Y2UgdGhlIHJlc3VsdHMgc2hvd24gaW4gdGhpcyBzZWN0aW9uLCB5b3UgbXVzdCBjbGVhbiB0aGUgRW52aXJvbm1lbnQuCgpUaGlzIGRhdGFiYXNlIGlzIGhvc3RlZCBpbiB0aGUgIm1hdGVyaWFsc19lZHUiIHJlcG9zaXRvcnkgb2YgdGhlIExBUE9QIGFjY291bnQgb24gR2l0SHViLgpVc2luZyB0aGUgYHJpb2AgbGlicmFyeSBhbmQgdGhlIGBpbXBvcnRgIGNvbW1hbmQsIHdlIGNhbiBpbXBvcnQgdGhpcyBkYXRhYmFzZSBmcm9tIHRoaXMgcmVwb3NpdG9yeS4KSW4gYWRkaXRpb24sIHRoZSBkYXRhIGZyb20gY291bnRyaWVzIHdpdGggY29kZXMgbGVzcyB0aGFuIG9yIGVxdWFsIHRvIDM1IGFyZSBzZWxlY3RlZCwgdGhhdCBpcywgdGhlIG9ic2VydmF0aW9ucyBvZiB0aGUgVW5pdGVkIFN0YXRlcyBhbmQgQ2FuYWRhIGFyZSBlbGltaW5hdGVkLgoKYGBge3IgYmFzZTE4fQpsaWJyYXJ5KHJpbykKbGFwb3AxOCA9IGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9sYXBvcC1jZW50cmFsL21hdGVyaWFsc19lZHUvbWFpbi9MQVBPUF9BQl9NZXJnZV8yMDE4X3YxLjAuc2F2IikKbGFwb3AxOCA9IHN1YnNldChsYXBvcDE4LCBwYWlzPD0zNSkKYGBgCgpXZSBhbHNvIGxvYWQgZGF0YSBmcm9tIHRoZSAyMDIxIHJvdW5kLgoKYGBge3IgYmFzZTIxfQpsYXBvcDIxID0gaW1wb3J0KCJodHRwczovL3Jhdy5naXRodWIuY29tL2xhcG9wLWNlbnRyYWwvbWF0ZXJpYWxzX2VkdS9tYWluL2xhcG9wMjEuUkRhdGEiKQpsYXBvcDIxID0gc3Vic2V0KGxhcG9wMjEsIHBhaXM8PTM1KQpgYGAKCiMgRGVzY3JpYmluZyBhbmQgcGxvdHRpbmcgdmFyaWFibGVzCgpJbiB0aGUgc2VjdGlvbiBvbiBkZXNjcmlwdGl2ZSBzdGF0aXN0aWNzLCB3aGljaCBjYW4gYmUgc2VlbiBbaGVyZV0oaHR0cHM6Ly9hcnR1cm9tYWxkb25hZG8uZ2l0aHViLmlvL0Jhcm9tZXRyb0VkdV9XZWJfRW5nL0Rlc2NyaXB0aXZlcy5odG1sKSwgd2Ugd29ya2VkIHdpdGggbm9taW5hbCB2YXJpYWJsZXMsIHdpdGggZGljaG90b21vdXMgcmVzcG9uc2Ugb3B0aW9ucyAoWWVzL05vKS4KSW4gdGhpcyBkb2N1bWVudCB3ZSB3aWxsIHdvcmsgd2l0aCBwb2xpdG9taWMgb3JkaW5hbCB2YXJpYWJsZXMuCgojIFZvdGVzIGFyZSBjb3JyZWN0bHkgY291bnRlZAoKSW4gdGhpcyBzZWN0aW9uLCB3ZSB1c2UgdGhlIHZhcmlhYmxlIENPVU5URkFJUjEuClZvdGVzIGFyZSBjb3VudGVkIGNvcnJlY3RseSBhbmQgZmFpcmx5LgpXb3VsZCB5b3Ugc2F5IGl0IGhhcHBlbnMgYWx3YXlzLCBzb21ldGltZXMgb3IgbmV2ZXI/CkZpZ3VyZSAyLjUgb2YgdGhlIHJlcG9ydCBUaGUgUHVsc2Ugb2YgRGVtb2NyYWN5LCBhdmFpbGFibGUgW2hlcmVdKGh0dHBzOi8vd3d3LnZhbmRlcmJpbHQuZWR1L2xhcG9wL2FiMjAyMS8yMDIxX0xBUE9QX0FtZXJpY2FzQmFyb21ldGVyXzIwMjFfUHVsc2Vfb2ZfRGVtb2NyYWN5X1NQQS5wZGYpLCBzaG93cyByZXN1bHRzIG9mIHRoaXMgdmFyaWFibGUgYnkgY291bnRyeS4KCiFbXShGaWd1cmUyLjUucG5nKXt3aWR0aD0iNTQ0In0KCkluIHRoZSBzYW1lIHdheSBhcyB3aXRoIG5vbWluYWwgdmFyaWFibGVzLCB0aGVzZSBvcmRpbmFsIHZhcmlhYmxlcyBoYXZlIHRvIGJlIGRlY2xhcmVkIGFzICJmYWN0b3IiIGluIG5ldyB2YXJpYWJsZXMuCgpgYGB7cn0KbGlicmFyeShoYXZlbikKbGFwb3AyMSRjb3VudGZhaXIxciA9IGFzLmZhY3RvcihsYXBvcDIxJGNvdW50ZmFpcjEpCmBgYAoKVGhlbiwgdGhlc2UgdmFyaWFibGVzIGhhdmUgdG8gYmUgbGFiZWxsZWQuCldlIGNhbiBjcmVhdGUgYSBiYXNpYyBkZXNjcmlwdGl2ZSB0YWJsZSB3aXRoIHRoZSBjb21tYW5kIGB0YWJsZWAuCgpgYGB7cn0KbGV2ZWxzKGxhcG9wMjEkY291bnRmYWlyMXIpID0gYygiQWx3YXlzIiwgIlNvbWV0aW1lcyIsICJOZXZlciIpCnRhYmxlKGxhcG9wMjEkY291bnRmYWlyMXIpCmBgYAoKVG8gY2FsY3VsYXRlIHRhYmxlcyB3aXRoIHBlcmNlbnRhZ2VzLCByb3VuZGVkIHRvIG9uZSBkZWNpbWFsIHBsYWNlLCB3ZSB1c2UgYHByb3AudGFibGVgIGFuZCBgcm91bmRgLgpBZ2FpbiwgdGhlc2UgcGVyY2VudGFnZXMgYXJlIG5vdCB0aGUgc2FtZSBhcyB0aG9zZSBwcmVzZW50ZWQgaW4gdGhlIHJlcG9ydCBiZWNhdXNlIHRoZXNlIGNhbGN1bGF0aW9ucyBkbyBub3QgaW5jbHVkZSBmYWN0b3Igd2VpZ2h0cy4KCmBgYHtyfQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMjEkY291bnRmYWlyMXIpKSwgMykqMTAwCmBgYAoKQXMgd2UgbWVudGlvbiBpbiB0aGUgcHJldmlvdXMgc2VjdGlvbiwgd2UgY2FuIHBsb3QgdGhpcyB2YXJpYWJsZSB1c2luZyB0aGUgY29tbWFuZCBgYmFycGxvdGAuCgpgYGB7cn0KYmFycGxvdChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMjEkY291bnRmYWlyMXIpKSoxMDApCmBgYAoKT3RoZXIgb3B0aW9uIGlzIGNyZWF0ZSB0aGlzIHBsb3QgdXNpbmcgdGhlIGxpYnJhcnkgYGdncGxvdGAuCk9uZSBvcHRpb24gaXMgd29ya2luZyB3aXRoIHRoZSBkYXRhc2V0IGZyb20gc2NyYXRjaC4KVGhlIGZvbGxvd2luZyBjb2RlLCBob3dldmVyLCBzaG93cyBhIGJpZyBiYXIgd2l0aCB0aGUgcGVyY2VudGFnZSBvZiBtaXNzaW5nIHZhbHVlcy4KVGhpcyBpcyBiZWNhdXNlIHRoaXMgcXVlc3Rpb24gd2FzIGFwcGxpZWQgdG8gYSBzcGxpdCBzYW1wbGUuClRoZSBkYXRhc2V0IHJlY29yZHMgTkEgdG8gdGhlIG90aGVyIGhhbGYgb2YgdGhvc2Ugd2hvIGRvIG5vdCBhbnN3ZXIgdGhpcyBxdWVzdGlvbi4KCmBgYHtyfQpsaWJyYXJ5KGdncGxvdDIpCmdncGxvdChkYXRhPWxhcG9wMjEsIGFlcyh4PWNvdW50ZmFpcjFyKSkrCiAgZ2VvbV9iYXIoYWVzKHk9Li5wcm9wLi4qMTAwLCBncm91cD0xKSwgd2lkdGg9MC41KSsKICBsYWJzKHg9IlZvdGVzIGFyZSBjb3VudGVkIGNvcnJlY3RseSIsIHk9IlBlcmNlbnRhZ2UiLCAKICAgICAgIGNhcHRpb249IkFtZXJpY2FzQmFyb21ldGVyIGJ5IExBUE9QLCAyMDIxIikrCiAgY29vcmRfY2FydGVzaWFuKHlsaW09YygwLCAxMDApKQpgYGAKClRvIHByZXZlbnQgdGhhdCB0aGUgZmlndXJlIHNob3dzIGEgYmFyIGZvciBOQXMsIHRoZXNlIG9ic2VydmF0aW9ucyBzaG91bGQgYmUgZmlsdGVyZWQgYmVmb3JlIHByb2R1Y2luZyB0aGUgZ3JhcGguCkluIHRoZSBzYW1lIG1hbm5lciBhcyB0aGUgcHJldmlvdXMgc2VjdGlvbiwgd2UgY2FuIGZpbHRlciB0aGUgTkFzIGZvciB0aGUgdmFyaWFibGUgImNvdW50ZmFpcjEiIHdpdGggdGhlIGNvbW1hbmQgYHN1YnNldGAgYW5kIHRoZSBzcGVjaWZpY2F0aW9uIGAhaXMubmFgLgoKYGBge3J9CmdncGxvdChkYXRhPXN1YnNldChsYXBvcDIxLCAhaXMubmEoY291bnRmYWlyMXIpKSwgYWVzKHg9Y291bnRmYWlyMXIpKSsKICBnZW9tX2JhcihhZXMoeT0uLnByb3AuLioxMDAsIGdyb3VwPTEpLCB3aWR0aD0wLjUpKwogIGxhYnMoeD0iVm90ZXMgYXJlIGNvdW50ZWQgY29ycmVjdGx5IiwgeT0iUGVyY2VudGFnZSIsIAogICAgICAgY2FwdGlvbj0iQW1lcmljYXNCYXJvbWV0ZXIgYnkgTEFQT1AsIDIwMjEiKSsKICBjb29yZF9jYXJ0ZXNpYW4oeWxpbT1jKDAsIDYwKSkKYGBgCgpPdGhlciBvcHRpb24sIHRoYXQgc2ltcGxpZnkgdGhlIGNvZGUsIGlzIHRvIGNyZWF0ZSBhIGZyZXF1ZW5jeSB0YWJsZSBvZiB0aGlzIHZhcmlhYmxlIHdpdGggdGhlIGNvbW1hbmQgYHRhYmxlYCBhbmQgYHByb3AudGFibGVgLgpUaGlzIHRhYmxlIGlzIHJvdW5kZWQgdG8gb25lIGRlY2ltYWwgcGxhY2Ugd2l0aCB0aGUgY29tbWFuZCBgcm91bmRgIGFuZCBpcyBzYXZlZCBhcyBhIGRhdGFmcmFtZSB3aXRoIHRoZSBjb21tYW5kIGBhcy5kYXRhLmZyYW1lYCBpbiBhbiBvYmplY3QgImNvdW50Ii4KVGhpcyB0YWJsZSByZWNvcmRzIHR3byBjb2x1bW5zLCB0aGUgZmlyc3QgaXMgY2FsbGVkICJWYXIxIiB3aXRoIHRoZSBsYWJlbHMgb2YgdGhlIHZhcmlhYmxlcyBhbmQgdGhlIHNlY29uZCBpcyBjYWxsZWQgIkZyZXEiIGFuZCBzdG9yZXMgdGhlIHBlcmNlbnRhZ2VzLgoKYGBge3J9CmNvdW50ID0gYXMuZGF0YS5mcmFtZShyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMjEkY291bnRmYWlyMXIpKSwgMykqMTAwKQpjb3VudApgYGAKCldlIGNhbiB1c2UgdGhpcyB0YWJsZSAiY291bnQiIHRvIHByb2R1Y2UgYSBiYXIgcGxvdCB3aXRoIHRoZSBjb21tYW5kIGBnZ3Bsb3RgLgpUaGUgc3BlY2lmaWNhdGlvbiBgYWVzYCBkZWZpbmVzIHRoYXQgdGhlIHZhbHVlcyBvZiB0aGUgY29sdW1uICJWYXIxIiBhcmUgcHJlc2VudGVkIGluIHRoZSBYIGF4aXMgYW5kIHRoZSB2YWx1ZXMgb2YgdGhlIGNvbHVtbiAiRnJlcSIgYXJlIHNob3duIGluIHRoZSBZIGF4aXMuCldlIGRlZmluZSBhIHNpbXBsZSBiYXIgcGxvdCwgdXNpbmcgdGhlIGNvbW1hbmQgYGdlb21fYmFyKCApYCwgd2hlcmUgaW50ZXJuYWxseSB3ZSBkZWZpbmUgdGhlIHdpZHRoIG9mIGJhcnMuCldlIGRlZmluZSBsYWJlbHMgb2YgYXhpcyBhbmQgdGhlICJjYXB0aW9uIiB3aXRoIHRoZSBzcGVjaWZpY2F0aW9uIGBsYWJzYC4KCmBgYHtyfQpnZ3Bsb3QoZGF0YT1jb3VudCwgYWVzKHg9VmFyMSwgeT1GcmVxKSkrCiAgZ2VvbV9iYXIoc3RhdD0iaWRlbnRpdHkiLCB3aWR0aD0wLjUpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUoRnJlcSwgIiUiLCBzZXA9IiIpKSwgY29sb3I9IndoaXRlIiwgCiAgICAgICAgICAgIHBvc2l0aW9uPXBvc2l0aW9uX3N0YWNrKHZqdXN0PTAuNSksIHNpemU9MykrCiAgbGFicyh4PSJWb3RlcyBhcmUgY291bnRlZCBjb3JyZWN0bHkiLCB5PSJQZXJjZW50YWdlIiwgCiAgICAgICBjYXB0aW9uPSJBbWVyaWNhc0Jhcm9tZXRlciBieSBMQVBPUCwgMjAyMSIpCmBgYAoKRmlndXJlIDIuNSBzaG93cyBhIHN0YWNrZWQgYmFyIHdpdGggaW5mb3JtYXRpb24gZm9yIGVhY2ggY291bnRyeS4KRmlyc3QsIHdlIHByZXNlbnQgYSBzdGFja2VkIGJhciBwbG90IHVzaW5nIGFsbCBvYnNlcnZhdGlvbiBvZiB0aGUgMjAyMSByb3VuZCBvZiB0aGUgQW1lcmljYXNCYXJvbWV0ZXIsIHRoYXQgaXMgaW5jbHVkaW5nIGFsbCBjb3VudHJpZXMuClRvIHByb2R1Y2UgYSBzdGFja2VkIGhvcml6b250YWwgYmFyLCB3ZSB1c2UgdGhlIHZhcmlhYmxlICJGcmVxIiwgbm93IGluIHRoZSBYIGF4aXMuCldlIHVzZSB0aGUgb3B0aW9uIGBmaWxsYCB0byBkaXZpdmUgdGhpcyBiYXIgYnkgdmFsdWVzIG9mIHRoZSB2YXJpYWJsZSAiVmFyMSIuCkJlY2F1c2UgWSBheGlzIGRvZXMgbm90IHNob3cgYSB2YXJpYWJsZSwgd2UgZGVmaW5lIGFzIGAiICJgLgpJbiB0aGUgc2FtZSB3YXkgYXMgd2UgY2hhbmdlIHRoZSB2YXJpYWJsZXMgaW4gdGhlIGF4aXMsIHdlIGNhbiBhbHNvIGNoYW5nZSB0aGUgbGFiZWxzIGluIGBsYWJzYC4KSW4gdGhpcyBzcGVjaWZpY2F0aW9uIHdlIGNoYW5nZSB0aGUgbGFiZWwgb2YgdGhlIGxlZ2VuZCB3aXRoIGBmaWxsYC4KCmBgYHtyfQpnZ3Bsb3QoZGF0YT1jb3VudCwgYWVzKHg9RnJlcSwgeT0iIiwgZmlsbD1WYXIxKSkrCiAgZ2VvbV9iYXIoc3RhdD0iaWRlbnRpdHkiLCB3aWR0aD0wLjMpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUoRnJlcSwgIiUiLCBzZXA9IiIpKSwgY29sb3I9IndoaXRlIiwgCiAgICAgICAgICAgIHBvc2l0aW9uPXBvc2l0aW9uX3N0YWNrKHZqdXN0PTAuNSksIHNpemU9MykrCiAgbGFicyh4PSJQZXJjZW50YWdlIiwgeT0iIiwgZmlsbD0iVm90ZXMgYXJlIGNvdW50ZWQgY29ycmVjdGx5IiwgIAogICAgICAgY2FwdGlvbj0iQW1lcmljYXNCYXJvbWV0ZXIgYnkgTEFQT1AsIDIwMjEiKQpgYGAKClRvIHJlcGxpY2F0ZSB0aGUgY29tcGFyYXRpdmUgZ3JhcGggYnkgY291bnRyeSwgd2UgaGF2ZSB0byBjcmVhdGUgYSBjb250aW5nZW5jeSB0YWJsZSBiZXR3ZWVuIHZhcmlhYmxlICJjb3VudGZhaXIxIiBhbmQgInBhaXMiLgpUaGlzIGNyb3NzdGFibGUgaXMgc2F2ZWQgaW4gYW4gb2JqZWN0ICJjb3VudF9jb3VudHJ5Ii4KV2Ugc2hvdWxkIG5vdGUgdGhhdCB0aGUgZGF0YWZyYW1lIGNyZWF0ZXMgYSByb3cgZm9yIGVhY2ggdmFsdWUgb2YgImNvdW50ZmFpciIgaW4gZWFjaCBjb3VudHJ5LgpJbiB0aGlzIHdheSwgd2UgaGF2ZSAzIG9wdGlvbiB4IDIwIGNvdW50cmllcyA9IDYwIHJvd3MuCgpgYGB7cn0KY291bnRfY291bnRyeSA9IGFzLmRhdGEuZnJhbWUocm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDIxJHBhaXMsIGxhcG9wMjEkY291bnRmYWlyMXIpLCAxKSwgMykqMTAwKQpjb3VudF9jb3VudHJ5CmBgYAoKV2UgY2FsY3VsYXRlIGRhdGEgZm9yIGVhY2ggdmFsdWUgb2YgdGhlIHZhcmlhYmxlICJwYWlzIiBpbiB0aGlzIHRhYmxlLCBldmVuIHdoZW4gdGhlcmUgaXMgbm8gZGF0YSBpbiB0aGUgdmFyaWFibGUgImNvdW50ZmFpciIgYmVjYXVzZSB0aGlzIHF1ZXN0aW9uIHdhcyBub3QgZmllbGRlZCBpbiBhIGNvdW50cnkuCkZvciB0aGlzIHJlYXNvbiwgd2UgaGF2ZSB0byBkcm9wIHJvd3Mgb2YgY291bnRyaWVzIHdoZXJlIHdlIGNvdWxkIG5vdCByZWNvcmQgaW5mb3JtYXRpb24uCldlIGNhbiBkbyB0aGlzIHdpdGggdGhlIHNwZWNpZmljYXRpb24gYFstYyhyb3dzKSwgXWAuCkFmdGVyIHRoYXQsIHdlIGNhbiBjcmVhdGUgYSB2ZWN0b3Igd2l0aCB0aGUgbmFtZXMgb2YgY291bnRyaWVzLgpUaGlzIGxpc3Qgb2YgY291bnRyaWVzIGlzIHJlcGVhdGVkIHRocmVlIHRpbWVzICgxNSByZW1haW5pbmcgY291bnRyaWVzIHggMyBvcHRpb25zKS4KVGhpcyB2ZWN0b3IgaXMgYWRkZWQgdG8gdGhlIGRhdGFmcmFtZSBpbiBhIGNvbHVtbiAiY291bnRyeSIuCgpgYGB7cn0KY291bnRfY291bnRyeSA9IGNvdW50X2NvdW50cnlbLWMoMTo0LDE4LDIxOjI0LDM4LDQxOjQ0LDU4KSxdCmNvdW50cnkgPSBjKCJOaWNhcmFndWEiLCAiQ29zdGEgUmljYSIsICJQYW5hbWEiLCAiQ29sb21iaWEiLCAiRWN1YWRvciIsICJCb2xpdmlhIiwgIlBlcnUiLAogICAgICAgICJQYXJhZ3VheSIsICJDaGlsZSIsICJVcnVndWF5IiwgIkJyYXppbCIsICJBcmdlbnRpbmEiLCAiRG9tLiBSZXAuIiwgIkphbWFpY2EiLCAiR3V5YW5hIiwKICAgICAgICAiTmljYXJhZ3VhIiwgIkNvc3RhIFJpY2EiLCAiUGFuYW1hIiwgIkNvbG9tYmlhIiwgIkVjdWFkb3IiLCAiQm9saXZpYSIsICJQZXJ1IiwKICAgICAgICAiUGFyYWd1YXkiLCAiQ2hpbGUiLCAiVXJ1Z3VheSIsICJCcmF6aWwiLCAiQXJnZW50aW5hIiwgIkRvbS4gUmVwLiIsICJKYW1haWNhIiwgIkd1eWFuYSIsCiAgICAgICAgIk5pY2FyYWd1YSIsICJDb3N0YSBSaWNhIiwgIlBhbmFtYSIsICJDb2xvbWJpYSIsICJFY3VhZG9yIiwgIkJvbGl2aWEiLCAiUGVydSIsCiAgICAgICAgIlBhcmFndWF5IiwgIkNoaWxlIiwgIlVydWd1YXkiLCAiQnJhemlsIiwgIkFyZ2VudGluYSIsICJEb20uIFJlcC4iLCJKYW1haWNhIiwgIkd1eWFuYSIpCmNvdW50X2NvdW50cnkkY291bnRyeSA9IGNvdW50cnkKY291bnRfY291bnRyeQpgYGAKCldpdGggdGhpcyBkYXRhZnJhbWUgImNvdW50X2NvdW50cnkiLCB3ZSBoYXZlIHRoZSBlbGVtZW50cyB0byByZXBsaWNhdGUgdGhlIGZpZ3VyZSB3aXRoIHN0YWNrZWQgYmFycyBieSBjb3VudHJ5LgpJbiB0aGUgc3BlY2lmaWNhdGlvbiBgYWVzYCwgd2UgZGVmaW5lIHRoYXQgcGVyY2VudGFnZXMgYXJlIGluIFggYXhpcywgY291bnRyaWVzIGluIFkgYXhpcyBhbmQgdGhhdCBlYWNoIGJhciBpcyBkaXZpZGVkIGJ5IGNvbHVtbiAiVmFyMiIuCgpgYGB7cn0KZ2dwbG90KGRhdGE9Y291bnRfY291bnRyeSwgYWVzKHg9RnJlcSwgeT1jb3VudHJ5LCBmaWxsPVZhcjIpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIsIHdpZHRoPTAuMykrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShGcmVxLCAiJSIsIHNlcD0iIikpLCBjb2xvcj0id2hpdGUiLCAKICAgICAgICAgICAgcG9zaXRpb249cG9zaXRpb25fc3RhY2sodmp1c3Q9MC41KSwgc2l6ZT0yKSsKICBsYWJzKHg9IlBlcmNlbnRhZ2UiLCB5PSJDb3VudHJ5IiwgZmlsbD0iVm90ZXMgYXJlIGNvdW50ZWQgY29ycmVjdGx5IiwgIAogICAgICAgY2FwdGlvbj0iQW1lcmljYXNCYXJvbWV0ZXIgYnkgTEFQT1AsIDIwMjEiKQpgYGAKCiMgRnJlcXVlbmN5IG9mIHVzZSBvZiBzb2NpYWwgbmV0d29ya3MKClRoZSAyMDE4LzE5IHJvdW5kIGV2YWx1YXRlcyB0aGUgdXNlIG9mIHNvY2lhbCBuZXR3b3JrcyBhbmQgaW5jbHVkZXMgdmFyaWFibGVzIHRvIG1lYXN1cmUgdGhlIHVzZSBvZiBGYWNlYm9vaywgVHdpdHRlciBhbmQgV2hhdHNhcHA6IFNNRURJQTIgbWVhc3VyZXMgdGhlIHVzZSBvZiBGYWNlYm9vay4KSG93IG9mdGVuIGRvIHlvdSB2aWV3IGNvbnRlbnQgb24gRmFjZWJvb2s/ClNNRURJQTUuSG93IG9mdGVuIGRvIHlvdSBzZWUgY29udGVudCBvbiBUd2l0dGVyPwphbmQgU01FRElBOC4KSG93IG9mdGVuIGRvIHlvdSB1c2UgV2hhdHNhcHA/ClRoZXNlIHZhcmlhYmxlcyBoYXZlIGFzIHJlc3BvbnNlIG9wdGlvbnM6CgoxLiAgRGFpbHkKMi4gIEEgZmV3IHRpbWVzIGEgd2VlawozLiAgQSBmZXcgdGltZXMgYSBtb250aAo0LiAgQSBmZXcgdGltZXMgYSB5ZWFyCjUuICBOZXZlcgoKSW4gdGhlIHNhbWUgd2F5IGFzIHdpdGggbm9taW5hbCB2YXJpYWJsZXMsIHRoZXNlIHZhcmlhYmxlcyBoYXZlIHRvIGJlIGRlY2xhcmVkIGFzICJmYWN0b3IiIGluIG5ldyB2YXJpYWJsZXMuCgpgYGB7ciBmYWN0b3J9CmxhcG9wMTgkc21lZGlhMnIgPSBhcy5mYWN0b3IobGFwb3AxOCRzbWVkaWEyKQpsYXBvcDE4JHNtZWRpYTVyID0gYXMuZmFjdG9yKGxhcG9wMTgkc21lZGlhNSkKbGFwb3AxOCRzbWVkaWE4ciA9IGFzLmZhY3RvcihsYXBvcDE4JHNtZWRpYTgpCmBgYAoKRm9vdG5vdGUgMTUgb2YgdGhlIHJlcG9ydCBpbmRpY2F0ZXMgdGhhdCAiaW50ZXJ2aWV3ZWVzIHdobyByZXBvcnQgbmV2ZXIgc2VlaW5nIGNvbnRlbnQgb24gRmFjZWJvb2sgYW5kIFR3aXR0ZXIsIGFuZCB3aG8gaW5kaWNhdGUgdGhhdCB0aGV5IG5ldmVyIHVzZSBXaGF0c2FwcCwgYXJlIGNvbnNpZGVyZWQgbm9uLXVzZXJzIG9mIHRoZXNlIHNvY2lhbCBuZXR3b3JrcyIgKHAuIDY0KS4KRm9yIHRoaXMgcmVhc29uLCBGaWd1cmUgMy4zIG9mIGZyZXF1ZW5jeSBvZiB1c2Ugb2Ygc29jaWFsIG5ldHdvcmtzIChwYWdlIDU3KSBvbmx5IGluY2x1ZGVzIHRoZSBjYXRlZ29yaWVzICJEYWlseSIsICJTb21lIHRpbWVzIGEgd2VlayIsICJTb21lIHRpbWVzIGEgbW9udGgiIGFuZCAiU29tZSB0aW1lcyBhIHllYXIiLgpUaGUgY2F0ZWdvcnkgIk5ldmVyIiBpcyBleGNsdWRlZC4KCiFbXShGaWd1cmUzLjMuSlBHKXt3aWR0aD0iNDYzIn0KCkluIHRoZSBuZXcgdmFyaWFibGVzIHdlIGFyZSBnb2luZyB0byBkZWNsYXJlIHRoZSB2YWx1ZSA1LCBjb3JyZXNwb25kaW5nIHRvICJuZXZlciIsIGFzICJOQSIsIHRoYXQgaXMsIGFzIGEgbWlzc2luZyB2YWx1ZSBpbiBSLgoKYGBge3IgZWxpbWluYXIgbnVuY2F9CmxpYnJhcnkoY2FyKQpsYXBvcDE4JHNtZWRpYTJyID0gY2FyOjpyZWNvZGUobGFwb3AxOCRzbWVkaWEyciwgIjU9TkEiKQpsYXBvcDE4JHNtZWRpYTVyID0gY2FyOjpyZWNvZGUobGFwb3AxOCRzbWVkaWE1ciwgIjU9TkEiKQpsYXBvcDE4JHNtZWRpYThyID0gY2FyOjpyZWNvZGUobGFwb3AxOCRzbWVkaWE4ciwgIjU9TkEiKQpgYGAKClRoZW4sIHRoZXNlIHZhcmlhYmxlcyBoYXZlIHRvIGJlIGxhYmVsZWQgYW5kIHRoZSBiYXNpYyBkZXNjcmlwdGl2ZSB0YWJsZXMgZ2VuZXJhdGVkLCB3aXRoIHRoZSBjb21tYW5kIGB0YWJsZWAuCgpgYGB7ciBsYWJlbH0KbGV2ZWxzKGxhcG9wMTgkc21lZGlhMnIpIDwtIGMoIkRhaWx5IiwgIkEgZmV3IHRpbWVzIGEgd2VlayIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIkEgZmV3IHRpbWVzIGEgbW9udGgiLCAiQSBmZXcgdGltZXMgYSB5ZWFyIikKbGV2ZWxzKGxhcG9wMTgkc21lZGlhNXIpIDwtIGMoIkRhaWx5IiwgIkEgZmV3IHRpbWVzIGEgd2VlayIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIkEgZmV3IHRpbWVzIGEgbW9udGgiLCAiQSBmZXcgdGltZXMgYSB5ZWFyIikKbGV2ZWxzKGxhcG9wMTgkc21lZGlhOHIpIDwtIGMoIkRhaWx5IiwgIkEgZmV3IHRpbWVzIGEgd2VlayIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIkEgZmV3IHRpbWVzIGEgbW9udGgiLCAiQSBmZXcgdGltZXMgYSB5ZWFyIikKdGFibGUobGFwb3AxOCRzbWVkaWEycikKdGFibGUobGFwb3AxOCRzbWVkaWE1cikKdGFibGUobGFwb3AxOCRzbWVkaWE4cikKYGBgCgpUbyBjYWxjdWxhdGUgdGFibGVzIHdpdGggcGVyY2VudGFnZXMsIHJvdW5kZWQgdG8gYSBkZWNpbWFsIHBsYWNlLCB3ZSB1c2UgYHByb3AudGFibGVgIGFuZCBgcm91bmRgLgpBZ2FpbiwgdGhlc2UgcGVyY2VudGFnZXMgYXJlIG5vdCBleGFjdGx5IHRoZSBzYW1lIGFzIHRob3NlIHByZXNlbnRlZCBpbiB0aGUgcmVwb3J0IGJlY2F1c2UgdGhlc2UgY2FsY3VsYXRpb25zIGRvIG5vdCBpbmNsdWRlIHN1cnZleSB3ZWlnaHRzLgoKYGBge3IgcGVyY2VudGFnZXN9CnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AxOCRzbWVkaWEycikpLCAzKSoxMDAKcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDE4JHNtZWRpYTVyKSksIDMpKjEwMApyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkc21lZGlhOHIpKSwgMykqMTAwCmBgYAoKVG8gcHJlc2VudCBhbGwgdGhlIGRhdGEgaW4gYSBqb2ludCB0YWJsZSwgdGhlIHRhYmxlIG9mIGVhY2ggc29jaWFsIG5ldHdvcmsgaXMgc2F2ZWQgaW4gYSBuZXcgUiBvYmplY3QgKG5hbWVkIGFmdGVyIGVhY2ggc29jaWFsIG5ldHdvcmspLgpUaGVuIGFsbCBvZiB0aGVzZSBwYXJ0aWFsIHRhYmxlcywgY29udGFpbmluZyB0aGUgc2FtZSBhbnN3ZXIgY2hvaWNlcywgYXJlIGpvaW5lZCBhcyByb3dzIHdpdGggdGhlIGByYmluZGAgY29tbWFuZC4KVGhpcyBuZXcgam9pbnQgdGFibGUgaXMgc2F2ZWQgYXMgYSBuZXcgZGF0YWZyYW1lICJ0YWJsZSIuCgpgYGB7ciBiYXNpYyB0YWJsZX0KRmFjZWJvb2sgPSByb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkc21lZGlhMnIpKSwgMykqMTAwClR3aXR0ZXIgPSByb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkc21lZGlhNXIpKSwgMykqMTAwCldoYXRzYXBwID0gcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDE4JHNtZWRpYThyKSksIDMpKjEwMAp0YWJsZSA9IGFzLmRhdGEuZnJhbWUocmJpbmQoRmFjZWJvb2ssIFR3aXR0ZXIsIFdoYXRzYXBwKSkKdGFibGUKYGBgCgpUbyBnZXQgYSBiZXR0ZXIgcHJlc2VudGF0aW9uIG9mIHRoZSB0YWJsZSwgeW91IGNhbiB1c2UgdGhlIGBrYWJsZWAgY29tbWFuZCBmcm9tIHRoZSBga25pdHJgIHBhY2thZ2Ugb3IgdGhlIGBmb3JtYXR0YWJsZWAgY29tbWFuZCBmcm9tIHRoZSBga25pdHJgIHBhY2thZ2UuCgpgYGB7ciBpbXByb3ZlZCB0YWJsZX0KbGlicmFyeShrbml0cikKa2FibGUoaGVhZCh0YWJsZSksIGZvcm1hdD0ibWFya2Rvd24iLCBkaWdpdHM9MSkKbGlicmFyeShmb3JtYXR0YWJsZSkKZm9ybWF0dGFibGUodGFibGUpCmBgYAoKVG8gZ3JhcGggdGhpcyB2YXJpYWJsZSB3ZSBhcmUgbm90IGdvaW5nIHRvIGZvbGxvdyB0aGUgc2FtZSBwcm9jZWR1cmUgYXMgaW4gdGhlIHByZXZpb3VzIHNlY3Rpb24uCkluIHRoaXMgc2VjdGlvbiB3ZSBhcmUgZ29pbmcgdG8gd29yayBkaXJlY3RseSBmcm9tIHRoZSB0YWJsZSBjcmVhdGVkIHdpdGggdGhlIHBlcmNlbnRhZ2VzIG9mIHRoZSB0aHJlZSBzb2NpYWwgbmV0d29ya3MuClRoaXMgdGFibGUgaGFzIGVhY2ggc29jaWFsIG5ldHdvcmsgaW4gdGhlIHJvd3MgYW5kIHRoZSBhbnN3ZXIgb3B0aW9ucyBpbiB0aGUgY29sdW1ucy4KSW4gb3JkZXIgdG8gZ3JhcGggdGhpcyBkYXRhLCBpdCBpcyByZXF1aXJlZCB0aGF0IHRoZSBzb2NpYWwgbmV0d29ya3MgYXJlIGluIHRoZSBjb2x1bW5zIGFuZCB0aGUgYW5zd2VyIG9wdGlvbnMgaW4gdGhlIHJvd3MsIHNvIGZpcnN0IHdlIGFyZSBnb2luZyB0byB0cmFuc3Bvc2UgdGhpcyB0YWJsZS4KV2UgZG8gdGhpcyBwcm9jZWR1cmUgdXNpbmcgdGhlIGBkYXRhLnRhYmxlYCBsaWJyYXJ5IGFuZCB0aGUgYHRyYW5zcG9zZWAgY29tbWFuZC4KV2Ugc2F2ZSB0aGVzZSB0cmFuc3Bvc2VkIGRhdGEgaW4gYSBuZXcgdGFibGUgInRhYmxlX3RyIi4KClRoaXMgY29tbWFuZCB0cmFuc3Bvc2VzIHRoZSBkYXRhLCBidXQgbGVhdmVzIHRoZSByb3dzIGFuZCBjb2x1bW5zIHVubmFtZWQuCkNvbHVtbnMgYXJlIGZpcnN0IG5hbWVkIHdpdGggdGhlIGNvbW1hbmQgYGNvbG5hbWVzYCB1c2luZyB0aGUgcm93IG5hbWVzIG9mICJ0YWJsZSIuClRoZSByb3dzIGFyZSB0aGVuIG5hbWVkIHdpdGggdGhlIGNvbW1hbmQgYHJvd25hbWVzYCB1c2luZyB0aGUgY29sdW1uIG5hbWVzIG9mICJ0YWJsZSIuCgpGaW5hbGx5LCB3ZSByZXF1aXJlIGEgY29sdW1uIGluc2lkZSAidGFibGVfdHIiIHRoYXQgY29udGFpbnMgdGhlIHJlc3BvbnNlIGxhYmVscyBvZiB0aGUgc21lZGlhIHF1ZXN0aW9ucy4KVGhlc2UgbGFiZWxzIGFyZSBsaWtlIHJvdyBuYW1lcy4KVG8gaW5jbHVkZSB0aGVtIGFzIG9uZSBtb3JlIHZhcmlhYmxlLCBhZGQgYSB2YXJpYWJsZSAidGFibGFfdHJcJGxhYiIgdG8gd2hpY2ggdGhlIG5hbWVzIG9mIHRoZSByb3dzIGFyZSBhc3NpZ25lZCB3aXRoIGByb3cubmFtZXNgLgoKYGBge3IgdHJhbnNwb3NlZCB0YWJsZSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShkYXRhLnRhYmxlKQp0YWJsZV90ciA9IHRyYW5zcG9zZSh0YWJsZSkKY29sbmFtZXModGFibGVfdHIpID0gcm93bmFtZXModGFibGUpCnJvd25hbWVzKHRhYmxlX3RyKSA9IGNvbG5hbWVzKHRhYmxlKQp0YWJsZV90ciRsYWIgPC0gcm93bmFtZXModGFibGVfdHIpCnRhYmxlX3RyCmBgYAoKU2Vjb25kLCB0aGUgYGdncGxvdDJgIGxpYnJhcnkgaXMgYWN0aXZhdGVkIHRvIHBsb3QgdGhlIGRhdGEgc3RvcmVkIGluICJ0YWJsZV90ciIgd2l0aCB0aGUgY29tbWFuZCBgZ2dwbG90YC4KV2l0aGluIHRoaXMgY29tbWFuZCBpdCBpcyBzcGVjaWZpZWQgdGhhdCB0aGlzIGNvbW1hbmQgaXMgZ29pbmcgdG8gd29yayB3aXRoIHRoZSBkYXRhZnJhbWUgInRhYmxlX3RyIiAoYW5kIG5vdCB3aXRoIGxhcG9wMTgpLCBgZGF0YT10YWJsZV90cmAuClRoZSAiYWVzdGhldGljIiBpcyBzcGVjaWZpZWQ6IHRoZSBYIGF4aXMgd2lsbCBub3QgaW5jbHVkZSBhIHZhcmlhYmxlLCB0aGUgWSBheGlzIHdpbGwgc2hvdyB0aGUgIkZhY2Vib29rIiBpbmZvcm1hdGlvbiBmcm9tIHRoZSBkYXRhZnJhbWUgInRhYmxlX3RyIiwgYW5kIGBmaWxsPWxhYmAgaW5kaWNhdGVzIHRoYXQgZGF0YSB3aWxsIGJlIGRpdmlkZWQgYnkgY2F0ZWdvcmllcyBvZiB0aGUgdmFyaWFibGUgc3RvcmVkIGluICJsYWIiLgoKVGhlbiB0aGUgYGdlb21fYmFyYCBsYXllciBpcyBhZGRlZCB0byBpbmRpY2F0ZSB0aGF0IGl0IHdpbGwgYmUgZ3JhcGhlZCBpbiBiYXJzIG9mIHdpZHRoIChgd2lkdGggPSAxYCkgYW5kIHRoYXQgdGhlIGJhciB3aWxsIHJlcGxpY2F0ZSB3aGF0IGlzIHNwZWNpZmllZCBpbiB0aGUgYWVzdGhldGljIChgc3RhdD0iaWRlbnRpdHkiYCkuCldpdGggYGdlb21fdGV4dGAgeW91IGFkZCB0aGUgbGFiZWxzIG9mIHRoZSBkYXRhLCB3aXRoIHRoZSBwZXJjZW50YWdlIHN5bWJvbCwgYW5kIHlvdSBzcGVjaWZ5IHRoZSBwb3NpdGlvbiBvZiB0aGUgdGV4dCB3aXRoIGBwb3NpdGlvbj1wb3NpdGlvbl9zdGFjayjigKYpYCBhbmQgdGhlIHNpemUgd2l0aCBgc2l6ZT0zYC4KV2l0aCBgY29vcmRfcG9sYXJgIHlvdSB0cmFuc2Zvcm0gdGhlIGJhcnMgaW50byBhIHBpZSBjaGFydC4KRmluYWxseSwgdGhlICJ0aGVtZSIgaXMgZGVmaW5lZCB3aXRoIGB0aGVtZV92b2lkYCBpbmRpY2F0aW5nIGEgd2hpdGUgYmFja2dyb3VuZCBhbmQgdGhlIGxlZ2VuZCB0YWcgaXMgbW9kaWZpZWQgd2l0aCBgc2NhbGVfZmlsbF9kaXNjcmV0ZWAuCgpgYGB7ciBwaWUgY2hhcnR9CmxpYnJhcnkoZ2dwbG90MikKZ2dwbG90KGRhdGE9dGFibGVfdHIsIGFlcyh4PSIiLCB5PUZhY2Vib29rLCBmaWxsPWxhYikpKwogIGdlb21fYmFyKHdpZHRoPTEsIHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShGYWNlYm9vaywgIiUiLCBzZXA9IiIpKSwgY29sb3I9IndoaXRlIiwgCiAgICAgICAgICAgIHBvc2l0aW9uPXBvc2l0aW9uX3N0YWNrKHZqdXN0PTAuNSksIHNpemU9MykrCiAgY29vcmRfcG9sYXIoInkiLCBzdGFydD0wKSsKICB0aGVtZV92b2lkKCkrCiAgc2NhbGVfZmlsbF9kaXNjcmV0ZShuYW1lPSJGcmVxdWVuY3kgb2YgdXNlIG9mIEZhY2Vib29rIikKYGBgCgpJbiBmaWd1cmUgMy4zIG9mIHRoZSByZXBvcnQgIlRoZSBQdWxzZSBvZiBEZW1vY3JhY3kiIGEgY2lyY3VsYXIgImRvbm5hIiB0eXBlIGdyYXBoIGlzIHByZXNlbnRlZC4KVG8gZXhhY3RseSByZXByb2R1Y2UgdGhpcyB0eXBlIG9mIGdyYXBoLCBhIGZldyBkZXRhaWxzIG9mIHRoZSBhYm92ZSBzeW50YXggaGF2ZSB0byBiZSBhY2NvbW1vZGF0ZWQuCldlIHNldCAieD0yIiBpbiB0aGUgImFlc3RoZXRpY3MiIGFuZCBzZXQgbGltaXRzIG9uIHRoZSBYIGF4aXMsIGJldHdlZW4gMC41IGFuZCAyLjUsIHNvIHRoYXQgd2hlbiB0aGUgYXhpcyBpcyByb3RhdGVkLCB0aGUgImhvbGUiIGluc2lkZSB0aGUgY2lyY2xlIGlzIGNyZWF0ZWQuCgpgYGB7ciBkb25hfQpnZ3Bsb3QoZGF0YT10YWJsZV90ciwgYWVzKHg9MiwgeT1GYWNlYm9vaywgZmlsbD1sYWIpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUoRmFjZWJvb2ssICIlIiwgc2VwPSIiKSksIGNvbG9yPSJ3aGl0ZSIsIAogICAgICAgICAgICBwb3NpdGlvbj1wb3NpdGlvbl9zdGFjayh2anVzdD0wLjUpLCBzaXplPTMpKwogIGNvb3JkX3BvbGFyKCJ5IikrCiAgdGhlbWVfdm9pZCgpKwogIHNjYWxlX2ZpbGxfZGlzY3JldGUobmFtZT0iRnJlcXVlbmN5IG9mIHVzZSBvZiBGYWNlYm9vayIpKwogICBsYWJzKHRpdGxlPSJIb3cgb2Z0ZW4gZG8geW91IHZpZXcgY29udGVudCBvbiBGYWNlYm9vaz8iLCAKICAgICAgICBjYXB0aW9uPSJBbWVyaWNhc0Jhcm9tZXRlciBieSBMQVBPUCwgMjAxOC8xOSIpKwogIHhsaW0oMC41LCAyLjUpCmBgYAoKVG8gcmVwbGljYXRlIHRoZSBiYXIgY2hhcnQsIHNvbWUgbW9kaWZpY2F0aW9ucyBhcmUgbWFkZSB0byB0aGUgY29kZSBhYm92ZS4KRm9yIGV4YW1wbGUsIGluICJhZXN0aGV0aWNzIiwgaXQgaXMgbm93IGluZGljYXRlZCB0aGF0IHRoZSB2YXJpYWJsZSAic21lZGlhMnIiIGdvZXMgb24gdGhlIFggYXhpcyBhbmQgdGhlIHBlcmNlbnRhZ2UgInBlciIgZ29lcyBvbiB0aGUgWSBheGlzLgpJbiBhZGRpdGlvbiwgdGhlIHNwZWNpZmljYXRpb24gb2YgcG9sYXIgY29vcmRpbmF0ZXMgaXMgZWxpbWluYXRlZC4KV2UgY2FuIGFkZCBhIHRpdGxlIHRvIHRoZSBjaGFydCwgYXhpcyBsYWJlbHMsIGFuZCBhIGNhcHRpb24gd2l0aCB0aGUgc3BlY2lmaWNhdGlvbiBgbGFic2AuCkZpbmFsbHksIHRoZSBZIGF4aXMgaXMgZGVmaW5lZCBiZXR3ZWVuIDAgYW5kIDYwIHdpdGggdGhlIGBjb29yZF9jYXJ0ZXNpYW5gIHNwZWNpZmljYXRpb24uCkFuIGltcG9ydGFudCBwb2ludCBpcyB0aGF0IHRoaXMgZ3JhcGggY2FuIGFsc28gYmUgc2F2ZWQgaW4gYW4gb2JqZWN0IGluIFIsIHdoaWNoIHdlIHdpbGwgY2FsbCAicGxvdDEiCgpgYGB7ciBiYXIgZ3JhcGhpY30KcGxvdDEgPC0gZ2dwbG90KHRhYmxlX3RyLCBhZXMoeD1sYWIsIHk9RmFjZWJvb2spKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIsICB3aWR0aD0wLjUpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUoRmFjZWJvb2ssICIlIiwgc2VwPSIiKSksIGNvbG9yPSJibGFjayIsIHZqdXN0PS0wLjUpKwogIGxhYnModGl0bGU9IkZyZXF1ZW5jeSBvZiB1c2Ugb2Ygc29jaWFsIG5ldHdvcmtzIiwgeD0iRnJlcXVlbmN5IG9mIHVzZSBvZiBGYWNlYm9vayIsIAogICAgICAgeT0iUGVyY2VudGFnZSIsIGNhcHRpb249IkFtZXJpY2FCYXJvbWV0ZXIgYnkgTEFQT1AsIDIwMTgvMTkiKSsKICBjb29yZF9jYXJ0ZXNpYW4oeWxpbT1jKDAsIDYwKSkKcGxvdDEKYGBgCgpTYXZpbmcgYSBjaGFydCB0byBhbiBvYmplY3QgYWxsb3dzIHVzIHRvIGxhdGVyIGFkZCBtb3JlIGxheWVycyBvciBlbmhhbmNlbWVudHMgdG8gdGhlIGNoYXJ0LgpUaGUgcGxvdCBhYm92ZSwgZm9yIGV4YW1wbGUsIGhhcyB0aGUgIkZyZXF1ZW5jeSBvZiB1c2UiIGxhYmVscyBvbiBhIHNpbmdsZSBsaW5lLCBzbyB0aGV5IGNvdWxkIG92ZXJsYXAuCgpUbyBpbXByb3ZlIHRoaXMgdmlzdWFsaXphdGlvbiwgdGhlc2UgbGFiZWxzIGNhbiBiZSB0aWx0ZWQsIGJ1dCBpZiB5b3Ugd2FudCB0byBtYWludGFpbiB0aGUgaG9yaXpvbnRhbGl0eSB0byBmYWNpbGl0YXRlIHJlYWRpbmcsIHdoYXQgeW91IGNhbiBkbyBpcyBzZXBhcmF0ZSB0aGUgbG9uZyBsYWJlbHMgaW50byB0d28gb3IgbW9yZSBsaW5lcy4KVGhpcyBjYW4gYmUgZG9uZSwgZm9yIGV4YW1wbGUsIGJ5IGNyZWF0aW5nIGEgdmVjdG9yIHdpdGggdGhlIG5ldyBsYWJlbHMuCkxvbmcgdGFncyBjYW4gYmUgYnJva2VuIGludG8gbGluZXMgYnkgaW5jbHVkaW5nIGBcbmAgYmV0d2VlbiB0aGUgdGV4dHMgeW91IHdhbnQgdG8gYnJlYWsuClRoZW4gYSBuZXcgbGF5ZXIgY2FuIGJlIGFkZGVkIHRvIHRoZSBvYmplY3QgInBsb3QxIiB0byByZXBsYWNlIHRoZSBsYWJlbHMgd2l0aCB0aGUgbmV3IG9uZXMgZGl2aWRlZCBpbnRvIGxpbmVzLgpUaGlzIGlzIGRvbmUgd2l0aCB0aGUgc3BlY2lmaWNhdGlvbiBgc2NhbGVfeF9kaXNjcmV0ZWAgd2hlcmUgd2UgZGVmaW5lIHRvIHVzZSB0aGUgbGFiZWxzIGluIHRoZSBuZXcgdmVjdG9yLgoKYGBge3Igb3ZlcmxhcHBpbmcgbGFiZWxzfQpldGlxIDwtIGMoIkRhaWx5IiwgIkEgZmV3IHRpbWVzXG4gYSB3ZWVrIiwgIkEgZmV3IHRpbWVzXG4gYSBtb250aCIsIAogICAgICAgICAgIkEgZmV3IHRpbWVzXG4gYSB5ZWFyIikKcGxvdDEgKyAgc2NhbGVfeF9kaXNjcmV0ZShsYWJlbHM9ZXRpcSkKYGBgCgpUaGlzIG1ha2VzIHRoZSBncmFwaCBtb3JlIHJlYWRhYmxlLgpTbyBmYXIsIHdlIGhhdmUgcmVwbGljYXRlZCB0aGUgdGFibGVzIGFuZCBncmFwaHMgdGhhdCB3ZXJlIHVzZWQgd2l0aCB0aGUgbm9taW5hbCB2YXJpYWJsZXMsIG5vdyB1c2luZyBvcmRpbmFsIHZhcmlhYmxlcy4KSWYgeW91IHdhbnQgdG8gcmVwbGljYXRlIHRoZSBwaWUgY2hhcnQgb2YgdGhlIG90aGVyIHNvY2lhbCBuZXR3b3JrcywgeW91IGNhbiBydW4gdGhlIHNhbWUgY29kZSwgYnV0IGNoYW5nZSB0aGUgc29jaWFsIG5ldHdvcmsgY29sdW1uLgpGb3IgVHdpdHRlciwgZm9yIGV4YW1wbGUsIHlvdSB3b3VsZCBoYXZlLgoKYGBge3IgVHdpdHRlciBncmFwaH0KcGxvdDIgPC0gZ2dwbG90KGRhdGE9dGFibGVfdHIsIGFlcyh4PTIsIHk9VHdpdHRlciwgZmlsbD1sYWIpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUoVHdpdHRlciwgIiUiLCBzZXA9IiIpKSwgY29sb3I9IndoaXRlIiwgCiAgICAgICAgICAgIHBvc2l0aW9uPXBvc2l0aW9uX3N0YWNrKHZqdXN0PTAuNSksIHNpemU9MykrCiAgY29vcmRfcG9sYXIoInkiKSsKICB0aGVtZV92b2lkKCkrCiAgc2NhbGVfZmlsbF9kaXNjcmV0ZShuYW1lPSJGcmVxdWVuY3kgb2YgVHdpdHRlciB1c2UiKSsKICBsYWJzKHRpdGxlPSJIb3cgb2Z0ZW4geW91IHZpZXcgY29udGVudCBvbiBUd2l0dGVyIiwgY2FwdGlvbj0iQW1lcmljYXMgQmFyb21ldGVyIGJ5IExBUE9QLCAyMDE4LzE5IikrCiAgeGxpbSgwLjUsIDIuNSkKcGxvdDIKYGBgCgojIENyb3NzIHRhYmxlcwoKVGFibGUgMy4xIChwYWdlIDU1KSBvZiB0aGUgcmVwb3J0ICJUaGUgUHVsc2Ugb2YgRGVtb2NyYWN5IiBzaG93cyB0aGUgcGVyY2VudGFnZXMgb2YgdXNlIG9mIHNvY2lhbCBuZXR3b3JrcyBieSBjb3VudHJ5LgpUaGVuLCBvbiBwYWdlIDU2LCB0aGVyZSBpcyBhIHRhYmxlIHdpdGggdGhlIHBlcmNlbnRhZ2Ugb2Ygc29jaWFsIG5ldHdvcmsgdXNlcnMgYnkgc29jaW9kZW1vZ3JhcGhpYyBjaGFyYWN0ZXJpc3RpY3MsIGZvciBleGFtcGxlLCB1cmJhbi9ydXJhbCwgbWFsZSwgYXZlcmFnZSBhZ2UsIGF2ZXJhZ2Ugd2VhbHRoLCBhbmQgeWVhcnMgb2Ygc3R1ZHkuCgohW10oVGFibGUlMjAzLjEuSlBHKXt3aWR0aD0iMzk3In0KCldlIHdpbGwgc3RhcnQgYnkgcmVwbGljYXRpbmcgdGhlIGdlbmVyYWwgZGF0YSBvbiB0aGUgdXNlIG9mIHNvY2lhbCBuZXR3b3JrcyB0aGF0IGlzIHJlcG9ydGVkIGluIFRhYmxlIDMuMS4KVG8gcmVwbGljYXRlIHRoaXMgdGFibGUsIHlvdSBtdXN0IGZpcnN0IGRlZmluZSB0aGUgdmFyaWFibGUgImNvdW50cnkiIGFuZCB0aGUgdmFyaWFibGVzIGZvciB0aGUgdXNlIG9mIHNvY2lhbCBuZXR3b3JrcyAoc21lZGlhMSwgc21lZGlhNCBhbmQgc21lZGlhNykuCgpgYGB7ciBwYcOtc30KbGFwb3AxOCRzbWVkaWExciA9IGFzLmZhY3RvcihsYXBvcDE4JHNtZWRpYTEpCmxhcG9wMTgkc21lZGlhNHIgPSBhcy5mYWN0b3IobGFwb3AxOCRzbWVkaWE0KQpsYXBvcDE4JHNtZWRpYTdyID0gYXMuZmFjdG9yKGxhcG9wMTgkc21lZGlhNykKbGV2ZWxzKGxhcG9wMTgkc21lZGlhMXIpID0gYygiWWVzIiwgIk5vIikKbGV2ZWxzKGxhcG9wMTgkc21lZGlhNHIpID0gYygiWWVzIiwgIk5vIikKbGV2ZWxzKGxhcG9wMTgkc21lZGlhN3IpID0gYygiWWVzIiwgIk5vIikKbGFwb3AxOCRwYWlzID0gYXMuZmFjdG9yKGxhcG9wMTgkcGFpcykKbGV2ZWxzKGxhcG9wMTgkcGFpcykgPSBjKCJNw6l4aWNvIiwgIkd1YXRlbWFsYSIsICJFbCBTYWx2YWRvciIsICJIb25kdXJhcyIsCiAgICAgICAgICAgICAgICAgICAgICAgICJOaWNhcmFndWEiLCJDb3N0YSBSaWNhIiwgIlBhbmFtw6EiLCAiQ29sb21iaWEiLCAKICAgICAgICAgICAgICAgICAgICAgICAgIkVjdWFkb3IiLCAiQm9saXZpYSIsICJQZXLDuiIsICJQYXJhZ3VheSIsIAogICAgICAgICAgICAgICAgICAgICAgICAiQ2hpbGUiLCAiVXJ1Z3VheSIsICJCcmFzaWwiLCAiQXJnZW50aW5hIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICJSZXAuIERvbS4iLCAiSmFtYWljYSIpCnRhYmxlKGxhcG9wMTgkcGFpcykgI0NvdW50cnkKdGFibGUobGFwb3AxOCRzbWVkaWExcikgI0ZhY2Vib29rCmBgYAoKSG93ZXZlciwgdGhlIHZhcmlhYmxlICJ1c2VyIiBvZiBlYWNoIHNvY2lhbCBuZXR3b3JrIGlzIGNhbGN1bGF0ZWQgYXMgYSBjb25kaXRpb24gb2YgdHdvIHZhcmlhYmxlcywgYXMgc2VlbiBpbiB0aGUgZG9jdW1lbnQgb24gZGF0YSBtYW5pcHVsYXRpb24sIHdpdGggdGhlIGZvbGxvd2luZyBjb2RlLgoKYGBge3IgdXN1YXJpb3N9CmxhcG9wMTgkZmJfdXNlciA9IGlmZWxzZShsYXBvcDE4JHNtZWRpYTE9PTEgJiBsYXBvcDE4JHNtZWRpYTI8PTQsIDEsIDApCmxhcG9wMTgkdHdfdXNlciA9IGlmZWxzZShsYXBvcDE4JHNtZWRpYTQ9PTEgJiBsYXBvcDE4JHNtZWRpYTU8PTQsIDEsIDApCmxhcG9wMTgkd2FfdXNlciA9IGlmZWxzZShsYXBvcDE4JHNtZWRpYTc9PTEgJiBsYXBvcDE4JHNtZWRpYTg8PTQsIDEsIDApCmBgYAoKVGhlc2UgdmFyaWFibGVzIGFyZSBwbG90dGVkIGluIHRoZSByZXBvcnQgaW4gRmlndXJlIDMuMS4KVG8gcmVwcm9kdWNlIHRoaXMgZGF0YSwgeW91IGNhbiBkZXNjcmliZSB0aGVzZSB2YXJpYWJsZXMuCgpgYGB7ciB1c2VyfQpwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkZmJfdXNlcikpKjEwMApwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkdHdfdXNlcikpKjEwMApwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkd2FfdXNlcikpKjEwMApgYGAKCkFzIGluIHByZXZpb3VzIGdyYXBocywgd2l0aCB0aGlzIGRhdGEgYSBkYXRhZnJhbWUgY2FuIGJlIGNyZWF0ZWQgdGhhdCB3b3VsZCBiZSB1c2VkIHRvIG1ha2UgdGhlIGNpcmN1bGFyIGdyYXBocyBzaG93biBpbiB0aGUgcmVwb3J0LgoKVG8gcmVwbGljYXRlIHRoZSB0YWJsZSBvZiB1c2Ugb2Ygc29jaWFsIG5ldHdvcmtzIGJ5IGNvdW50cnksIGZpcnN0LCBiaXZhcmlhdGUgdGFibGVzIGFyZSBjcmVhdGVkIHdpdGggdGhlIHBlcmNlbnRhZ2Ugb2YgdGhvc2Ugd2hvIHVzZSBhbmQgdGhlIHBlcmNlbnRhZ2Ugb2YgdGhvc2Ugd2hvIGRvIG5vdCB1c2UgZWFjaCBzb2NpYWwgbmV0d29yayBpbiBlYWNoIGNvdW50cnkuClRoZXNlIHRhYmxlcyBhcmUgc3RvcmVkIGluIFIgb2JqZWN0cy4KVGhlc2Ugb2JqZWN0cyBhcmUgdGhlbiBtZXJnZWQgdXNpbmcgdGhlIGNvbW1hbmRzIGBjYmluZGAgdG8gYmluZCB0aGUgY29sdW1ucyBhbmQgYGFzLmRhdGEuZnJhbWVgIHRvIGJpbmQgdGhlIHRhYmxlcyBhcyBhIGRhdGFmcmFtZS4KVGhpcyB0YWJsZSBhbHNvIHByZXNlbnRzIHRoZSBwZXJjZW50YWdlcyBvZiB0aG9zZSB3aG8gZG8gbm90IHVzZSB0aGVzZSBzb2NpYWwgbmV0d29ya3MuClRvIHByZXNlbnQgYSB0YWJsZSB0aGF0IGluY2x1ZGVzIG9ubHkgdGhvc2Ugd2hvIGRvIHVzZSBzb2NpYWwgbmV0d29ya3MsIGNvbHVtbnMgYXJlIGVsaW1pbmF0ZWQsIHVzaW5nIHRoZSBzcGVjaWZpY2F0aW9uIGBbLCBjKC0xLC0zLC01KV1gLCB3aGljaCBpbmRpY2F0ZXMgdGhhdCB3ZSB3YW50IHRvIGVsaW1pbmF0ZSBjb2x1bW5zIDEgLCAzIGFuZCA1LgpGaW5hbGx5LCB0aGUgZGF0YWZyYW1lIGNvbHVtbnMgYXJlIHJlbmFtZWQuCgpgYGB7ciB0YWJsZSBieSBjb3VudHJ5fQpmYmNvdW50cnkgPSByb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkcGFpcywgbGFwb3AxOCRmYl91c2VyKSwgMSksIDMpKjEwMAp0d2NvdW50cnkgPSByb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkcGFpcywgbGFwb3AxOCR0d191c2VyKSwgMSksIDMpKjEwMAp3aGNvdW50cnkgPSByb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkcGFpcywgbGFwb3AxOCR3YV91c2VyKSwgMSksIDMpKjEwMAp0YWJsZWNvdW50cnkgPSBhcy5kYXRhLmZyYW1lKGNiaW5kKGZiY291bnRyeSwgdHdjb3VudHJ5LCB3aGNvdW50cnkpKQp0YWJsZWNvdW50cnkgPSB0YWJsZWNvdW50cnlbLCBjKC0xLC0zLC01KV0KdmFybmFtZXMgPSBjKCJVc2UgZmFjZWJvb2siLCAiVXNlIFR3aXR0ZXIiLCAiVXNlIFdoYXRzYXBwIikKY29sbmFtZXModGFibGVjb3VudHJ5KSA9IHZhcm5hbWVzCnRhYmxlY291bnRyeQpgYGAKClRvIGhhdmUgYSBiZXR0ZXIgcHJlc2VudGF0aW9uIG9mIHRoZSB0YWJsZSwgdGhlcmUgYXJlIHR3byBhbHRlcm5hdGl2ZXM6IHRoZSBmaXJzdCB3aXRoIHRoZSBga25pdHJgIGxpYnJhcnkgYW5kIHRoZSBvdGhlciB3aXRoIHRoZSBgZm9ybWF0dGFibGVgIGxpYnJhcnkuCgpgYGB7ciBpbXByb3ZlZCB0YWJsZSBieSBjb3VudHJ5fQpsaWJyYXJ5KGtuaXRyKQprYWJsZShoZWFkKHRhYmxlY291bnRyeSksIGZvcm1hdD0ibWFya2Rvd24iLCBkaWdpdHM9MSkKbGlicmFyeShmb3JtYXR0YWJsZSkKZm9ybWF0dGFibGUodGFibGVjb3VudHJ5KQpgYGAKCiMgQ3Jvc3N0YWJsZXMgd2l0aCBzb2Npb2RlbW9ncmFwaGljIHZhcmlhYmxlcwoKT24gcGFnZSA1NiBvZiB0aGUgcmVwb3J0ICJUaGUgcHVsc2Ugb2YgZGVtb2NyYWN5IiB0aGUgcmVzdWx0cyBvZiB0aGUgY3Jvc3N0YWJsZSBiZXR3ZWVuIHRoZSB2YXJpYWJsZXMgdXNlIG9mIHNvY2lhbCBuZXR3b3JrcyBhbmQgc29jaW9kZW1vZ3JhcGhpYyB2YXJpYWJsZXMgc3VjaCBhcyB1cmJhbi9ydXJhbCwgZ2VuZGVyLCBhZ2UsIHdlYWx0aCBhbmQgeWVhcnMgb2YgZWR1Y2F0aW9uIGFyZSBwcmVzZW50ZWQuCgohW10oVGFibGUlMjAzLjIuSlBHKXt3aWR0aD0iNjcyIn0KClRoZSB2YXJpYWJsZSAicTEiIHJlY29yZHMgdGhlIGdlbmRlciBvZiB0aGUgaW50ZXJ2aWV3ZWUuClRoaXMgdmFyaWFibGUgaXMgZW5jb2RlZCBhcyBmb2xsb3dzOgoKMS4gIE1hbgoyLiAgV29tYW4KClRvIGNhbGN1bGF0ZSBhICJkdW1teSIgdmFyaWFibGUgY2FsbGVkICJtYW4iLCBzdWNoIHRoYXQgbWFsZSBpcyAxIGFuZCBmZW1hbGUgaXMgMCwgb25lIHdheSB0byBkbyBpdCBpcyBhbGdlYnJhaWNhbGx5ICgyLXZhcmlhYmxlIHExKS4KSW4gdGhpcyB3YXksIG5vdyB0aGUgbWVuIG1haW50YWluIHRoZSB2YWx1ZSAxICgyLTEpIGFuZCB0aGUgd29tZW4gYmVjb21lIDAgKDItMikuCkluIHRoaXMgY2FzZSwgdGhlIG5ldyB2YXJpYWJsZSAibWFuIiBpcyBjcmVhdGVkIGFzIGEgbnVtZXJpYyB2YXJpYWJsZS4KV2UgYXJlIGdvaW5nIHRvIGtlZXAgdGhlIHZhcmlhYmxlIGFzICJudW0iIHNvIHRoYXQsIGZ1cnRoZXIgZG93biwgd2UgY2FuIGNhbGN1bGF0ZSB0aGUgbWVhbiBvZiB0aGlzIHZhcmlhYmxlIChzb21ldGhpbmcgdGhhdCBjYW5ub3QgYmUgZG9uZSB3aXRoIGEgdmFyaWFibGUgZGVjbGFyZWQgYXMgYSBmYWN0b3IpLgoKYGBge3IgbWFufQpsYXBvcDE4JG1lbiA8LSAyLWxhcG9wMTgkcTEKdGFibGUobGFwb3AxOCRtZW4pCmBgYAoKVGhlIHVyYmFuL3J1cmFsIHZhcmlhYmxlIGlzIG5hbWVkICJ1ciIgaW4gdGhlIGRhdGFiYXNlIGFuZCBpcyBlbmNvZGVkIGFzIGZvbGxvd3M6CgoxLiAgVXJiYW4KMi4gIFJ1cmFsCgpJbiB0aGUgc2FtZSB3YXkgYXMgd2l0aCBnZW5kZXIsIHRoZSBmb3JtdWxhIDItIHZhcmlhYmxlIHVyIGlzIHVzZWQsIGJ1dCB0aGlzIHZhcmlhYmxlIGlzIGNvbnZlcnRlZCBpbnRvIGEgZmFjdG9yIGFuZCBpcyBsYWJlbGVkLgoKYGBge3IgdXJiYW59CmxhcG9wMTgkdXJiYW4gPC0gMi1sYXBvcDE4JHVyCmxhcG9wMTgkdXJiYW4gPSBhcy5mYWN0b3IobGFwb3AxOCR1cmJhbikKbGV2ZWxzKGxhcG9wMTgkdXJiYW4pIDwtIGMoIlJ1cmFsIiwgIlVyYmFuIikKdGFibGUobGFwb3AxOCR1cmJhbikKYGBgCgpUaGUgY3Jvc3N0YWJsZXMgb2YgdGhlIHVzZSBvZiBzb2NpYWwgbmV0d29ya3MgYnkgc29tZSBvZiB0aGUgc29jaW9kZW1vZ3JhcGhpYyB2YXJpYWJsZXMgd2lsbCBiZSBwcmVzZW50ZWQsIHRvIGJldHRlciB1bmRlcnN0YW5kIGhvdyB0aGUgZ2VuZXJhbCB0YWJsZSBpcyBjb25zdHJ1Y3RlZC4KRm9yIGV4YW1wbGUsIHRoZSByZXBvcnQgc2hvd3MgaW4gVGFibGUgMy4yLCBhZnRlciB0aGUgZ2VuZXJhbCBwb3B1bGF0aW9uIGNvbHVtbiwgdGhlIGNvbHVtbnMgZm9yIFdoYXRzQXBwIHVzZXJzIGFuZCBub24tdXNlcnMgKHZhcmlhYmxlICJ3YV91c2VyIikgYW5kIGluIHRoZSByb3dzLCB0aGUgZmlyc3QgY29ycmVzcG9uZHMgdG8gdXJiYW4gKHZhcmlhYmxlICJ1cmJhbiIsIHdoZXJlIDAgaXMgcnVyYWwgYW5kIDEgdXJiYW4pLgpJdCBpcyBwcmVzZW50ZWQgdGhhdCBhbW9uZyBXaGF0c0FwcCB1c2VycywgNzYuNyUgYXJlIHVyYmFuIGFuZCBhbW9uZyBub24tdXNlcnMsIDYyJSBhcmUgdXJiYW4uClRoZXNlIGRhdGEgYXJlIGdlbmVyYXRlZCB3aXRoIHRoZSBgdGFibGVgIGNvbW1hbmQgdGhhdCBhbGxvd3MgeW91IHRvIG1ha2UgYSBjb250aW5nZW5jeSB0YWJsZSBvZiAyIHZhcmlhYmxlcy4KSW4gdGhpcyBjYXNlIGl0IHNob3VsZCBiZSBub3RlZCB0aGF0IGVhY2ggdmFyaWFibGUgaGFzIGEgdGl0bGUuClNvIHRoZSBjb21tYW5kIGlzIGB0YWJsZSh0aXRsZTEgPSB2YXIxLCB0aXRsZTIgPSB2YXIyKWAuClRoZW4sIHRoZSBgcHJvcC50YWJsZWAgY29tbWFuZCBpcyB1c2VkIHNvIHRoYXQgdGhlIG9ic2VydmF0aW9ucyBhcmUgbm90IGRpc3BsYXllZCwgYnV0IHRoZSBwZXJjZW50YWdlcy4KVGhpcyBjb21tYW5kIGFsbG93cyB5b3UgdG8gY2FsY3VsYXRlIHRoZSBwZXJjZW50YWdlcyBvZiB0aGUgdG90YWwgKHRoZSBkZWZhdWx0IG9wdGlvbiksIG9mIHRoZSByb3dzIGFuZCBvZiB0aGUgY29sdW1ucy4KVG8gY2FsY3VsYXRlIG9uIGNvbHVtbnMgeW91IG11c3Qgc3BlY2lmeSBgcHJvcC50YWJsZSh0YWJsZSguLi4pLCAyKWAuCklmIHlvdSB3YW50ZWQgdGhlIHBlcmNlbnRhZ2Ugb3ZlciB0aGUgcm93cywgdGhlIGNvZGUgd291bGQgYmUgYHByb3AudGFibGUodGFibGUoLi4uKSwgMSlgLgpUaGlzIHRhYmxlIGNhbiBiZSBzYXZlZCBhcyBhIGRhdGFmcmFtZSB3aXRoIHRoZSBgYXMuZGF0YS5mcmFtZWAgY29tbWFuZCBpbiBhIG5ldyBvYmplY3QgInQxIi4KCmBgYHtyIHRhYmxlIFdoeFVyfQp0MSA9IGFzLmRhdGEuZnJhbWUocm91bmQocHJvcC50YWJsZSh0YWJsZShVcmJhbiA9IGxhcG9wMTgkdXJiYW4sIFVzZXIgPSBsYXBvcDE4JHdhX3VzZXIpLCAyKSoxMDAsIDEpKQp0MQpgYGAKClRoZSByb3dzIGNvcnJlc3BvbmRpbmcgdG8gIlVyYmFuIiBpbiB0aGlzIHRhYmxlIHJlcHJvZHVjZSB0aGUgZGF0YSBpbiBUYWJsZSAzLjI6IDYyLjElIGFyZSB1cmJhbiBhbW9uZyBub24tV2hhdHNhcHAgdXNlcnMgYW5kIDc2LjclIGFyZSB1cmJhbiBhbW9uZyB1c2Vycy4KCk5vdyB0aGUgdGFibGUgd2lsbCBiZSBwcmVzZW50ZWQgYmV0d2VlbiBGYWNlYm9vayB1c2VycyAodmFyaWFibGUgImZiX3VzZXIiKSBhbmQgbWVuICh2YXJpYWJsZSAibWVuIiksIGJ1dCBwcmVzZW50aW5nIG9ubHkgdGhlIHBlcmNlbnRhZ2VzIHVzZWQgaW4gdGhlIHRhYmxlIGFuZCBub3cgdXNpbmcgdGhlIGNvZGUgc3R5bGUgb2YgdGhlIFRpZHl2ZXJzZSwgdXNpbmcgdGhlICJwaXBlIiBvcGVyYXRvci4KVGhlIGZpcnN0IHRoaW5nIGlzIHRvIGRlZmluZSB0aGUgdmFyaWFibGUgImZiX3VzZXIiIGFzIGEgZmFjdG9yIGFuZCBsYWJlbCBpdC4KVGhlbiwgdGhlIGBzdWJzZXRgIGNvbW1hbmQgaXMgdXNlZCB0byBmaWx0ZXIgdGhlIG1pc3NpbmcgY2FzZXMgb24gdGhlICJmYl91c2VyIiB2YXJpYWJsZS4KVGhlbiB0aGUgcmVzdWx0cyBhcmUgcmVxdWVzdGVkIHRvIGJlIGdyb3VwZWQgYnkgY2F0ZWdvcmllcyBvZiB0aGUgdmFyaWFibGUgImZiX3VzZXIiLgpXaXRoIHRoZSBgc3VtbWFyaXNlYCBjb21tYW5kLCB0aGUgYXZlcmFnZSBvZiB0aGUgIm1hbiIgdmFyaWFibGUgaXMgc2F2ZWQgaW4gdGhlICJtYW4iIGNvbHVtbiwgd2l0aCB0aGUgYG1lYW5gIGNvbW1hbmQgdGhhdCBpbmNsdWRlcyB0aGUgc3BlY2lmaWNhdGlvbiBgbmEucm09VGAgc28gYXMgbm90IHRvIGluY2x1ZGUgbWlzc2luZyB2YWx1ZXMgaW4gdGhlIGNhbGN1bGF0aW9uLgpJbiB0aGlzIGNhc2UsIGl0IHRha2VzIGFkdmFudGFnZSBvZiB0aGUgZmFjdCB0aGF0IHRoZSB2YXJpYWJsZSAibWVuIiBpcyBhIGR1bW15IHZhcmlhYmxlLCBpbiBzdWNoIGEgd2F5IHRoYXQgdGhlIGF2ZXJhZ2UgY29ycmVzcG9uZHMgdG8gdGhlIHByb3BvcnRpb24gb2YgbWVuLgoKYGBge3IgdGFibCBGYnhtYW4sIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxhcG9wMTgkZmJfdXNlciA9IGFzLmZhY3RvcihsYXBvcDE4JGZiX3VzZXIpCmxldmVscyhsYXBvcDE4JGZiX3VzZXIpID0gYygiTm8gdXNlciIsICJVc2VyIikKbGlicmFyeSh0aWR5dmVyc2UpCnRhYmxlMSA9IHN1YnNldChsYXBvcDE4LCAhaXMubmEoZmJfdXNlcikpICU+JSAjVG8gbm90IGluY2x1ZGUgdGhlIE5BIGdyb3VwIG9mIEZhY2Vib29rIHVzZXJzCiAgZ3JvdXBfYnkoZmJfdXNlcikgJT4lCiAgZHBseXI6OnN1bW1hcmlzZShNZW49bWVhbihtZW4sIG5hLnJtPVQpKjEwMCkgI25hLnJtPVQgaXMgaW5jbHVkZWQgYmVjYXVzZSBtYW4gaGFzIE5Bcwp0YWJsZTEKYGBgCgpUaGVzZSBhcmUgdGhlIHBlcmNlbnRhZ2VzIGZvciBGYWNlYm9vayB1c2VycywgaW4gdGhlIHJvdyBvZiB0aGUgTWFsZSB2YXJpYWJsZSBpbiBUYWJsZSAzLjIuClRoYXQgaXMsIGFtb25nIG5vbi11c2VycywgNDkuOSUgYXJlIG1lbiBhbmQgYW1vbmcgdXNlcnMgdGhpcyBwZXJjZW50YWdlIGlzIDQ5LjclLgpTbyBmYXIgd2UgaGF2ZSByZXBsaWNhdGVkIHNvbWUgcmVzdWx0cyBmcm9tIFRhYmxlIDMuMi4KVGhlIG90aGVyIGRhdGEgY2FuIGNvbnRpbnVlIHRvIGJlIHJlY29uc3RydWN0ZWQgdGhyb3VnaCBjb21iaW5hdGlvbnMgb2YgdGhlIHNvY2lhbCBuZXR3b3JrIHVzZXIgdmFyaWFibGVzIGFuZCB0aGUgc29jaW9kZW1vZ3JhcGhpYyB2YXJpYWJsZXMuCgojIFR3by1WYXJpYWJsZSBCYXIgQ2hhcnQKClRoZSBjcm9zcyBiZXR3ZWVuIFdoYXRzQXBwIHVzZXJzIGFuZCB0aGUgdXJiYW4gdmFyaWFibGUgY2FuIGFsc28gYmUgc2VlbiBpbiBhIGdyb3VwZWQgYmFyIGdyYXBoLgpUaGUgZmlyc3QgdGhpbmcgd2Ugd2lsbCBkbyBpcyBkZWZpbmUgdGhlIHZhcmlhYmxlICJ3YV91c2VyIiBhcyBhIGZhY3RvciBhbmQgbGFiZWwgaXQuClRoZW4sIGl0IGlzIHJlcXVpcmVkIHRvIGNyZWF0ZSBhIHRhYmxlIHdpdGggdGhlIGdyb3VwZWQgZGF0YS4KVGhlICJ0MSIgZGF0YWZyYW1lIGNyZWF0ZWQgZWFybGllciBjYW4gYmUgdXNlZCwgYnV0IGhlcmUgd2Ugd2lsbCBhZ2FpbiB1c2UgdGhlICJwaXBlIiBvcGVyYXRvciB0byByZWNyZWF0ZSB0aGUgZGF0YS4KCkZvciB0aGlzLCBpdCBpcyBncm91cGVkIGJvdGggYnkgdXNlIG9mIFdoYXRzQXBwIGFuZCBieSB1cmJhbi9ydXJhbCwgdGhhdCBpcywgaW4gZm91ciBjb21iaW5hdGlvbnMuCkluIGVhY2ggc3ViZ3JvdXAgdGhlIG4gaXMgY2FsY3VsYXRlZC4KU2luY2UgdGhlICUgaGF2ZSB0byBiZSBjYWxjdWxhdGVkIGZvciBlYWNoIGdyb3VwIG9mICJ3YV91c2VyIiwgaXQgaXMgZ3JvdXBlZCBhZ2FpbiBhbmQgdGhlICUgb2YgZWFjaCBzdWJncm91cCBpcyBjYWxjdWxhdGVkLCBpbiBzdWNoIGEgd2F5IHRoYXQgdGhlIHBlcmNlbnRhZ2VzIGFkZCB1cCB0byAxMDAlIGluIGVhY2ggc3ViZ3JvdXAgb2YgIndhX3VzZXIiLgoKYGBge3IgdGFibGUgd2F9CmxhcG9wMTgkd2FfdXNlciA9IGFzLmZhY3RvcihsYXBvcDE4JHdhX3VzZXIpCmxldmVscyhsYXBvcDE4JHdhX3VzZXIpID0gYygiTm8gdXNlciIsICJVc2VyIikKZmFjZSA8LSBzdWJzZXQobGFwb3AxOCwgIWlzLm5hKHdhX3VzZXIpKSAlPiUgIyFpcy5uYSBpcyB1c2VkIHNvIHRoYXQgTkFzIGFyZSBub3QgcmVwb3J0ZWQgaW4gdGhlIHRhYmxlCiAgZ3JvdXBfYnkod2FfdXNlciwgdXJiYW4pICU+JSAjZ3JvdXBzIGFyZSBjb25maWd1cmVkCiAgZHBseXI6OmNvdW50KCkgJT4lICNuIGlzIGNhbGN1bGF0ZWQKICBncm91cF9ieSh3YV91c2VyKSAlPiUgI0l0IGlzIGdyb3VwZWQgYnkgV2hhdHNBcHAgdXNlcgogIGRwbHlyOjptdXRhdGUocGVyY2VudGFnZSA9IHJvdW5kKG4vc3VtKG4pLCAzKSoxMDApICNUaGUgcGVyY2VudGFnZSBpcyBjYWxjdWxhdGVkIGluIGVhY2ggV2hhdHNBcHAgZ3JvdXAKZmFjZQpgYGAKClRoZSBkYXRhIGluIHRoaXMgbmV3IHRhYmxlIGlzIGV4YWN0bHkgdGhlIHNhbWUgYXMgaW4gInQxIi4KV2l0aCB0aGUgdGFibGUgcmVhZHksIHVzZSB0aGUgYGdncGxvdGAgY29tbWFuZCwgZGVmaW5pbmcgIndhX3VzZXIiIHRvIGJlIHRoZSB2YXJpYWJsZSBvbiB0aGUgWCBheGlzLCB0aGUgWSBheGlzIHRvIGJlIHRoZSBwZXJjZW50YWdlLCBhbmQgdGhlIHN1Ymdyb3VwcyB0byBiZSBmb3JtZWQgYnkgdGhlIHZhcmlhYmxlICJ1cmJhbiIgd2l0aCB0aGUgYGZpbGxgIHNwZWNpZmljYXRpb24uCi4gVGhlIGBkb2RnZWAgc3BlY2lmaWNhdGlvbiBpcyB1c2VkIGluIGBnZW9tX2JhcmAgdG8gaGF2ZSB0aGUgYmFycyBzZXBhcmF0ZWQgYnkgZWFjaCBncm91cC4KCmBgYHtyIGdyb3VwZWQgZ3JhcGhpY3N9CmdncGxvdChkYXRhPWZhY2UsIGFlcyh4PXdhX3VzZXIsIHk9cGVyY2VudGFnZSwgZmlsbD11cmJhbiwgeW1heD0xMDApKSsKICBnZW9tX2Jhcihwb3NpdGlvbj0iZG9kZ2UiLCBzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUocGVyY2VudGFnZSwgIiUiLCBzZXA9IiIpKSwgCiAgICAgICAgICAgIHBvc2l0aW9uPXBvc2l0aW9uX2RvZGdlKHdpZHRoPTAuOSksIHZqdXN0PS0wLjI1KSsKICB5bGFiKCJQZXJjZW50YWdlIikrCiAgeGxhYigiV2hhdHNhcHAgdXNlciIpCmBgYAoKSWYgd2Ugd2FudGVkIHRvIG1ha2UgdGhlIGdyYXBoIHdpdGggc3RhY2tlZCBiYXJzLCB3ZSB3b3VsZCBoYXZlIHRvIGNoYW5nZSB0aGUgYHBvc2l0aW9uPSJzdGFjayJgIHNwZWNpZmljYXRpb24gaW4gYGdlb21fYmFyYCBhbmQgdGhlIGBwb3NpdGlvbj1wb3NpdGlvbl9zdGFjaygpYCBzcGVjaWZpY2F0aW9uIGluIGBnZW9tX3RleHRgLgoKYGBge3Igc3RhY2tlZCBiYXJzfQpnZ3Bsb3QoZGF0YT1mYWNlLCBhZXMoeD13YV91c2VyLCB5PXBlcmNlbnRhZ2UsIGZpbGw9dXJiYW4sIHltYXg9MTAwKSkrCiAgZ2VvbV9iYXIocG9zaXRpb249InN0YWNrIiwgc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHBlcmNlbnRhZ2UsICIlIiwgc2VwPSIiKSksIAogICAgICAgICAgICBwb3NpdGlvbj1wb3NpdGlvbl9zdGFjaygpLCB2anVzdD0yLjUpKwogIHlsYWIoIlBlcmNlbnRhZ2UiKSsKICB4bGFiKCJXaGF0c2FwcCB1c2VyIikKYGBgCgpJbiBib3RoIGNhc2VzLCB0aGUgbGlnaHQgYmx1ZSBiYXJzIGluZGljYXRlIHRoZSBwZXJjZW50YWdlcyByZXBvcnRlZCBpbiB0YWJsZSAzLjIgb2YgdGhlIHJlcG9ydCBhbmQgY29ycmVzcG9uZCB0byB0aGUgcHJvcG9ydGlvbiBvZiBwZW9wbGUgbGl2aW5nIGluIHVyYmFuIGFyZWFzIGJldHdlZW4gdXNlcnMgYW5kIG5vbi11c2Vycy4KCiMgU3VtbWFyeQoKSW4gdGhpcyBkb2N1bWVudCB3ZSBoYXZlIHdvcmtlZCB3aXRoIG9yZGluYWwgY2F0ZWdvcmljYWwgdmFyaWFibGVzLCBzdWNoIGFzIHRoZSBmcmVxdWVuY3kgb2YgdXNlIG9mIHNvY2lhbCBuZXR3b3Jrcy4KVGhlIHVzZSBvZiBjb250aW5nZW5jeSB0YWJsZXMgb2YgdHdvIGNhdGVnb3JpY2FsIHZhcmlhYmxlcyBhbmQgdGhlIGNyZWF0aW9uIG9mIGdyb3VwZWQgYmFyIGdyYXBocyBmb3IgMiB2YXJpYWJsZXMgaGF2ZSBhbHNvIGJlZW4gaW50cm9kdWNlZC4KCiMgQ2FsY3VsYXRpb25zIGluY2x1ZGluZyBzdXJ2ZXkgd2VpZ2h0cwoKIyMgRXhhbXBsZSB1c2luZyB0aGUgMjAyMSBkYXRhc2V0CgpXaXRoIHRoZSBkYXRhIG9mIHRoZSAyMDIxIHdhdmUgb2YgdGhlIEFtZXJpY2FzQmFyb21ldGVyLCB3ZSBoYXZlIGNhbGN1bGF0ZWQgdGhlIHBlcmNlbnRhZ2VzIG9mIHRoZSB2YXJpYWJsZSB0aGF0IGdhdWdlcyB3aGV0aGVyIHRoZSB2b3RlcyBhcmUgY291bnRlZCBjb3JyZWN0bHkuClRoZSBmaWd1cmUgd2UgaGF2ZSBwcm9kdWNlZCBpcyBmb3IgdGhlIHRvdGFsIHNhbXBsZTsgaXQgbWVhbnMsIGZvciBhbGwgdGhlIGNvdW50cmllcy4KVGhlIEZpZ3VyZSAyLjUgb2YgdGhlIHJlcG9ydCBUaGUgUHVsc2Ugb2YgRGVtb2NyYWN5IHByZXNlbnRzIHJlc3VsdHMgZm9yIGVhY2ggY291bnRyeS4KCklmIHdlIGNhbGN1bGF0ZSBwZXJjZW50YWdlcyB3aXRoIHRoZSBjb21tYW5kcyBgdGFibGVgIGFuZCBgcHJvcC50YWJsZWAsIHdlIHdvdWxkIGdldCBkaWZmZXJlbnQgcmVzdWx0cyBmcm9tIHRob3NlIHNob3cgaW4gdGhlIEZpZ3VyZS4KRm9yIGV4YW1wbGUsIE5pY2FyYWd1YSwgY291bnRyeSA1LCBkaXNwbGF5IHRoYXQgMjYlIG9mIGNpdGl6ZW5zIGluIHRoaXMgY291bnRyeSBpbmRpY2F0ZSB0aGF0IHZvdGVzIGFyZSBhbHdheXMgY291bnRlZCBjb3JyZWN0bHksIDQ5JSBpbmRpY2F0ZSB0aGF0IHZvdGVzIGFyZSBzb21ldGltZXMgY291bnRlZCBjb3JyZWN0bHksIGFuZCAyNC40JSB0aGF0IHZvdGVyIGFyZSBuZXZlciBjb3VudGVkIGNvcnJlY3RseS4KSG93ZXZlciwgdGhlIGZpZ3VyZSBzaG93cyB0aGF0IDI5JSBpbmRpY2F0ZSB0aGF0IHZvdGVzIGFyZSBuZXZlciBjb3VudGVkIGNvcnJlY3RseSBpbiBOaWNhcmFndWEsIDQ1JSB0aGF0IHNvbWV0aW1lcywgYW5kIDI1JSB0aGF0IGFsd2F5cy4KVGhlc2UgcGVyY2VudGFnZXMgZG8gbm90IG1hdGNoIHRob3NlIHByb2R1Y2VkIHdpdGggdGhlc2UgY29tbWFuZHMuCgpgYGB7cn0Kcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDIxJHBhaXMsIGxhcG9wMjEkY291bnRmYWlyMXIpLCAxKSwgMykqMTAwCmBgYAoKVGhpcyBkaWZmZXJlbmNlIGlzIGR1ZSB0byB0aGUgZmFjdCB0aGF0IGNvbW1hbmRzIGB0YWJsZWAgYW5kIGBwcm9wLnRhYmxlYCBkbyBub3QgaW5jbHVkZSBzdXJ2ZXkgd2VpZ2h0cyBpbiBjYWxjdWxhdGlvbnMuCk1vcmUgaW5mb3JtYXRpb24gYWJvdXQgdGhlc2UgZGlmZmVyZW5jZXMgYXJlIGZvdW5kIFtoZXJlXShodHRwczovL2FydHVyb21hbGRvbmFkby5naXRodWIuaW8vQmFyb21ldHJvRWR1X1dlYl9FbmcvRXhwYW5zaW9uLmh0bWwpLgoKVG8gcmVwbGljYXRlIHRoZSByZXN1bHRzIG9mIEZpZ3VyZSAyLjUsIHRoZXJlIGFyZSBzb21lIG9wdGlvbnMuClRoZSBmaXJzdCBvcHRpb24gaXMgdXNpbmcgYW4gc3BlY2lhbGl6ZWQgbGlicmVyeSBjYWxsZWQgYHN1cnZleWAuCgpUbyBiZSBhbGxvd2VkIHRvIHVzZSB0aGlzIGxpYnJhcnksIHdlIHNob3VsZCBmaXJzdCBwcmVwYXJlIHRoZSBkYXRhc2V0LCBkcm9wcGluZyBtaXNzaW5nIHZhbHVlcyBvZiB2YXJpYWJsZXMgdGhhdCBkZWZpbmUgdGhlIHN1cnZleSBkZXNpZ24uCkFuIGFkZGl0aW9uYWwgc3RlcCBpcyB0cmFuc2Zvcm1pbmcgdGhlIHZhcmlhYmxlcyBpbiB0aGUgZGF0YWZyYW1lLgpXaGVuIHdlIGltcG9ydCB0aGUgZGF0YXNldCwgdGhlIHN5c3RlbSByZWFkcyB0aGVzZSB2YXJpYWJsZXMgYXMgImhhdmVuX2xhYmVsbGVkIiB0eXBlLCB0aGF0IGlzLCB0aGV5IG1hLmludGFpbiBsYWJlbHMgb2YgdmFyaWFibGVzLCB3aXRoIHdoaWNoIHdlIG1heSBwcm9kdWNlIGEgY29kZWJvb2suClRoaXMgbWF5IGJlIHVzZWZ1bCBpbiBvdGhlciBvY2Fzc2lvbnMsIGJ1dCBpdCBnZW5lcmF0ZXMgcHJvYmxlbXMgd2l0aCB0aGUgbGlicmFyeSBgc3VydmV5YC4KRm9yIHRoaXMsIHdlIHRyYW5zZm9ybSB0aGUgdmFyaWFibGVzIHRvIG90aGVyIHR5cGUgd2l0aCB0aGUgY29tbWFuZCBgc2FwcGx5YC4KCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0UsIGluY2x1ZGU9RkFMU0V9CmxhcG9wMjEgPSBzdWJzZXQobGFwb3AyMSwgIWlzLm5hKHdlaWdodDE1MDApKQpzYXBwbHkobGFwb3AyMSwgaGF2ZW46OnphcF9sYWJlbHMpCmBgYAoKT25jZSBwcmVwYXJlZCB0aGUgZGF0YXNldCwgd2UgYWN0aXZhdGUgdGhlIGxpYnJhcnkgYW5kIGRlY2xhcmUgdGhlIHN1cnZleSBkZXNpZ24uCkluIHRoZSBsYXN0IHNlY3Rpb24sIHdlIGFsc28gdXNlIHRoaXMgbGlicmFyeSB0byBjYWxjdWxhdGUgdGhlIHJlc3VsdHMgd2l0aCB0aGUgc3VydmV5IHdlaWdodHMgaW4gdGhlIHJvdW5kIDIwMTguCkNvbnRyYXJ5IHRvIHRoaXMgY29kZSwgdGhlIDIwMjEgcm91bmQgb2YgdGhlIEFtZXJpY2FzQmFyb21ldGVyIHVzZXMgcGhvbmUgaW50ZXJ2aWV3cywgYW5kIG5vdCBmYWNlIHRvIGZhY2UuCkZvciB0aGlzIHJlYXNvbiwgdGhlIHByaW1hcnkgdW5pdCBvZiBzYW1wbGluZyBpcyB0aGUgaW5kaXZpZHVhbCwgYW5kIHNvIGl0IGlzIGRlZmluZWQgaW4gdGhlIHZhcmlhYmxlICJ1cG0iLgpUaGUgdmFyaWFibGUgdGhhdCBkZWZpbmVzIHN0cmF0YSBpcyAic3RyYXRhIiAoYW5kIG5vdCAiZXN0cmF0b3ByaSIsIGFzIGluIHRoZSAyMDE4IHJvdW5kKS4KVGhlIHdlaWdodGluZyB2YXJpYWJsZSBpcyBzdGlsbCAid2VpZ2h0MTUwMCIuCgpXaXRoIHRoaXMgaW5mb3JtYXRpb24sIHdlIHNhdmUgdGhlIGRlc2lnbiBpbiBhbiBvYmplY3QgImRlc2lnbjIxIi4KCmBgYHtyfQpsaWJyYXJ5KHN1cnZleSkKZGVzaWduMjEgPSBzdnlkZXNpZ24oaWRzID0gfnVwbSwgc3RyYXRhID0gfnN0cmF0YSwgd2VpZ2h0cyA9IH53ZWlnaHQxNTAwLCBuZXN0PVRSVUUsIGRhdGE9bGFwb3AyMSkKYGBgCgpUaGUgbGlicmFyeSBgc3VydmV5YCBpbmNsdWRlcyBuYXRpdmUgY29tbWFuZHMgdG8gcGVyZm9ybSBtdWx0aXBsZSBvcGVyYXRpb25zIGluY2x1ZGluZyBzdXJ2ZXkgd2VpZ2h0cy4KT25lIGlzIHRoaXMgY29tbWFuZHMgaXMgYHN2eXRhYmxlYCB0aGF0IGFsbG93cyB0byBtYWtlIGEgY3Jvc3N0YWJsZSBiZXR3ZWVuIHRoZSB2YXJpYWJsZSAiY291bnRmYWlyMSIgYW5kICJwYWlzIiwgc3BlY2lmeWluZyB0aGUgZGVzaWduLgpUaGlzIGNvbW1hbmQgcmV0dXJucyB0aGUgd2VpZ2h0aW5nIGFic29sdXRlIGZyZXF1ZW5jaWVzLgpGb3IgdGhpcyByZWFzb24sIHdlIGhhdmUgdG8gbmVzdCB0aGlzIGNvZGUgaW4gdGhlIGNvbW1hbmQgYHByb3AudGFibGVgIHRvIGNhbGN1bGF0ZSB0aGUgcGVyY2VudGFnZXMgZnJvbSB3ZWlnaHRpbmcgYWJzb2x1dGUgZnJlcXVlbmNpZXMuCldlIGFsc28gdXNlIHRoZSBjb21tYW5kcyBgcm91bmRgIHRvIHJvdW5kIHBlcmNlbnRhZ2UsIGFuZCB0aGUgY29tbWFuZCBgYXMuZGF0YS50YWJsZWAgdG8gc2F2ZSB0aGlzIHRhYmxlIGluIGFuIG9iamVjdCAidm90ZXhjb3VudHJ5IiBhcyBhIGRhdGFmcmFtZSB0aGF0IGFsbG93cyB0byB1c2UgdGhpcyBkYXRhIHdpdGggYGdncGxvdGAuCgpgYGB7cn0Kdm90ZXhjb3VudHJ5ID0gYXMuZGF0YS5mcmFtZShyb3VuZChwcm9wLnRhYmxlKHN2eXRhYmxlKH5wYWlzK2NvdW50ZmFpcjFyLCBkZXNpZ249ZGVzaWduMjEpLCAxKSoxMDAsIDApKQp2b3RleGNvdW50cnkkY291bnRyeSA9IGNvdW50cnkKdm90ZXhjb3VudHJ5CmBgYAoKYGBge3J9CmdncGxvdChkYXRhPXZvdGV4Y291bnRyeSwgYWVzKGZpbGw9Y291bnRmYWlyMXIsIHg9RnJlcSwgeT1jb3VudHJ5KSkrCiAgZ2VvbV9iYXIoc3RhdD0iaWRlbnRpdHkiLCB3aWR0aD0wLjMpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUoRnJlcSwgIiUiLCBzZXA9IiIpKSwgY29sb3I9IndoaXRlIiwgCiAgICAgICAgICAgIHBvc2l0aW9uPXBvc2l0aW9uX3N0YWNrKHZqdXN0PTAuNSksIHNpemU9MykrCiAgbGFicyh4PSJQZXJjZW50YWdlIiwgeT0iQ291bnRyeSIsIGZpbGw9IlZvdGVzIGFyZSBjb3VudGVkIGNvcnJlY3RseSIsCiAgICAgICBjYXB0aW9uPSJBbWVyaWNhc0Jhcm9tZXRlciBieSBMQVBPUCwgMjAyMSIpCmBgYAoKVGhpcyBmaWd1cmUgcmVwcm9kdWNlcyBleGFjdGx5IHRoZSByZXN1bHRzIHNob3duIGluIHRoZSBGaWd1cmUgMi41IG9mIHRoZSByZXBvcnQsIGV2ZW4gaW4gYSBkaWZmZXJlbnQgb3JkZXIuCgojIyBFeGFtcGxlIHVzaW5nIHRoZSAyMDE4LzE5IGRhdGFzZXQKClRoZSBzbWFsbCBkaWZmZXJlbmNlIGJldHdlZW4gdGhlIHBlcmNlbnRhZ2VzIHNob3duIGluIEZpZ3VyZSAzLjMgYW5kIHRob3NlIHNob3duIGluIHRoZSAiRGVzY3JpYmluZyBhbmQgcGxvdHRpbmcgdmFyaWFibGVzIiBzZWN0aW9uIG1heSBiZSBkdWUgdG8gdGhlIGZhY3QgdGhhdCB0aGUgc3VydmV5IHdlaWdodCBpcyBub3QgaW5jbHVkZWQgaW4gYWxsIHRoZSBwcmV2aW91cyB0YWJsZXMgYW5kIGdyYXBocy4KSWYgaW5jbHVkZWQsIHVzaW5nIHRoZSB2YXJpYWJsZSAid2VpZ2h0MTUwMCIsIHRoZSBwZXJjZW50YWdlcyBzaG93biBpbiB0aGUgcmVwb3J0IHdvdWxkIGJlIHJlcGxpY2F0ZWQuCkZvciBleGFtcGxlLCB0byB1c2UgV2hhdHNBcHAsIHlvdSBjYW4gdXNlIHRoZSBjb21tYW5kIGBmcmVxYCBmcm9tIHRoZSBsaWJyYXJ5IGBkZXNjcmAsIHdoaWNoIGFsbG93cyB5b3UgdG8gaW5jbHVkZSBhIHdlaWdodGluZyB2YXJpYWJsZS4KClRoaXMgdGFibGUgY2FuIGJlIHNhdmVkIHRvIGEgZGF0YWZyYW1lLCBmcm9tIHdoaWNoIHRoZSByb3dzIGFuZCBjb2x1bW5zIHRoYXQgYXJlIG5vdCByZXF1aXJlZCBjYW4gYmUgcmVtb3ZlZCwgYW5kIHRoZSByZW1haW5pbmcgY29sdW1ucyBjYW4gYmUgcmVuYW1lZC4KCmBgYHtyIHdhIHdlaWdodGVkfQp0YWJsZTIgPSBhcy5kYXRhLmZyYW1lKGRlc2NyOjpmcmVxKGxhcG9wMTgkc21lZGlhOHIsIGxhcG9wMTgkd2VpZ2h0MTUwMCwgcGxvdD1GKSkKdGFibGUyID0gdGFibGUyWy1jKDUsNiksIC0yXQpjb2xuYW1lcyh0YWJsZTIpIDwtIGMoImZyZWMiLCAicGVyIikKdGFibGUyJGxhYiA8LSByb3duYW1lcyh0YWJsZTIpCnRhYmxlMgpgYGAKCldpdGggdGhpcyBuZXcgZGF0YWZyYW1lLCB3ZSBjYW4gcmVwbGljYXRlIHRoZSBmaWd1cmUgZm9yIFdoYXRzYXBwICwgd2l0aCB0aGUgZGF0YSB3ZWlnaHRlZCwgdXNpbmcgdGhlIGBnZ3Bsb3RgIGNvZGUuCgpgYGB7ciB3YSBncmFmIHBvbmR9CmdncGxvdChkYXRhPXRhYmxlMiwgYWVzKHg9MiwgeT1wZXIsIGZpbGw9bGFiKSkrCiAgZ2VvbV9iYXIoc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHJvdW5kKHBlciwgMSksICIlIiwgc2VwPSIiKSksIGNvbG9yPSJ3aGl0ZSIsIAogICAgICAgICAgICBwb3NpdGlvbj1wb3NpdGlvbl9zdGFjayh2anVzdD0wLjUpLCBzaXplPTMpKwogIGNvb3JkX3BvbGFyKCJ5IikrCiAgdGhlbWVfdm9pZCgpKwogIHNjYWxlX2ZpbGxfZGlzY3JldGUobmFtZT0iRnJlcXVlbmN5IG9mIHVzZSBvZiBGYWNlYm9vayIpKwogICBsYWJzKHRpdGxlPSJGcmVxdWVuY3kgd2l0aCB3aGljaCB5b3UgdmlldyBjb250ZW50IG9uIEZhY2Vib29rIiwgCiAgICAgICAgY2FwdGlvbj0iQW1lcmljYXNCYXJvbWV0ZXIgYnkgTEFQT1AsIDIwMTgvMTkiKSsKICB4bGltKDAuNSwgMi41KQpgYGAKCkluIGFkZGl0aW9uIHRvIHRoZSBgZnJlcWAgY29tbWFuZCwgeW91IGNhbiBhbHNvIHVzZSB0aGUgbGlicmFyeSBgc3VydmV5YCBhbmQgdGhlIG5hdGl2ZSBjb21tYW5kIGBzdnl0YWJsZWAuCgpgYGB7ciBzdXJ2ZXl9CmxpYnJhcnkoc3VydmV5KQpkZXNpZ24xOCA9IHN2eWRlc2lnbihpZHMgPSB+dXBtLCBzdHJhdGEgPSB+ZXN0cmF0b3ByaSwgd2VpZ2h0cyA9IH53ZWlnaHQxNTAwLCBuZXN0PVRSVUUsIGRhdGE9bGFwb3AxOCkKYGBgCgpUaGUgcmVzdWx0cyBvYnRhaW5lZCBhcmUgdGhlIHNhbWUgYXMgd2l0aCB0aGUgcHJldmlvdXMgbWV0aG9kIGFuZCB0aG9zZSBwcmVzZW50ZWQgaW4gdGhlIHJlcG9ydC4KVGhlc2UgcmVzdWx0cyBjYW4gYWxzbyBiZSBzYXZlZCBpbiBhICJkYXRhZnJhbWUiIHRvIG1ha2UgdGhlIGdyYXBoLgoKYGBge3Igc3Z5dGFibGV9CnByb3AudGFibGUoc3Z5dGFibGUofnNtZWRpYThyLCBkZXNpZ249ZGVzaWduMTgpKSoxMDAKYGBgCgpUaGUgc2VjdGlvbiAiQ3Jvc3Mgd2l0aCB2YXJpYWJsZXMiIHByZXNlbnRzIHRoZSBkYXRhIG9mIHVzZXJzIG9mIHNvY2lhbCBuZXR3b3JrcyBieSBjb3VudHJ5LgpUbyBidWlsZCB0aGUgdGFibGUgY29uc2lkZXJpbmcgdGhlIGRlc2lnbiBlZmZlY3QsIHlvdSBjYW4gYWxzbyB1c2UgdGhlIG5hdGl2ZSBgc3Z5dGFibGVgIGNvbW1hbmQgdGhhdCBhbGxvd3MgeW91IHRvIGNvbXB1dGUgYSBiaXZhcmlhdGUgdGFibGUuCkluIHRoZSBzYW1lIHdheSBhcyBpbiB0aGUgdW53ZWlnaHRlZCBjYXNlLCB0aGUgcGFydGlhbCB0YWJsZXMgb2YgZWFjaCBzb2NpYWwgbmV0d29yayBhcmUgc3RvcmVkIGluIGxpc3QtdHlwZSBvYmplY3RzLCB3aGljaCBhcmUgcHV0IHRvZ2V0aGVyIGFzIGEgImRhdGFmcmFtZSIgYW5kIGVkaXRlZCB0byBwcmVzZW50IG9ubHkgdGhlIGRhdGEgb2YgdGhlIHVzZXJzIG9mIGVhY2ggc29jaWFsIG5ldHdvcmsuCmZvciBjb3VudHJ5LgoKYGBge3IgYml2YXJpYXRlIHN2eXRhYmxlfQpmYnBhaXNfMiA9IHJvdW5kKHByb3AudGFibGUoc3Z5dGFibGUofnBhaXMrZmJfdXNlciwgZGVzaWduPWRlc2lnbjE4KSwgMSksIDMpKjEwMAp0d3BhaXNfMiA9IHJvdW5kKHByb3AudGFibGUoc3Z5dGFibGUofnBhaXMrdHdfdXNlciwgZGVzaWduPWRlc2lnbjE4KSwgMSksIDMpKjEwMAp3YXBhaXNfMiA9IHJvdW5kKHByb3AudGFibGUoc3Z5dGFibGUofnBhaXMrd2FfdXNlciwgZGVzaWduPWRlc2lnbjE4KSwgMSksIDMpKjEwMAp0YWJsZWNvdW50cnlfMiA9IGFzLmRhdGEuZnJhbWUoY2JpbmQoZmJwYWlzXzIsIHR3cGFpc18yLCB3YXBhaXNfMikpCnRhYmxlY291bnRyeV8yID0gdGFibGVjb3VudHJ5XzJbLCBjKC0xLC0zLC01KV0KdmFybmFtZXMgPSBjKCJVc2UgRmFjZWJvb2siLCAiVXNlIFR3aXR0ZXIiLCAiVXNlIFdoYXRzYXBwIikKY29sbmFtZXModGFibGVjb3VudHJ5XzIpID0gdmFybmFtZXMKdGFibGVjb3VudHJ5XzIKYGBgCgpGaW5hbGx5LCB0aGUgc2VjdGlvbiAiQ3Jvc3N0YWJsZXMgd2l0aCBzb2Npb2RlbW9ncmFwaGljIHZhcmlhYmxlcyIgcmVwcm9kdWNlcyB0aGUgcmVzdWx0cyBvZiBUYWJsZSAzLjIgb2YgdGhlIHJlcG9ydC4KSW4gdGhlIHNhbWUgd2F5IGFzIGluIHRoZSBwcmV2aW91cyBjYXNlLCB0aGUgbmF0aXZlIGNvbW1hbmQgYHN2eXRhYmxlYCBjYW4gYmUgdXNlZCB0byBwZXJmb3JtIHRoZSBjcm9zcyBiZXR3ZWVuIHRoZSBzb2NpYWwgbmV0d29yayB1c2FnZSB2YXJpYWJsZXMgYW5kIHRoZSB1cmJhbiB2YXJpYWJsZS4KVGhlIHJlc3VsdHMgb2YgdGhlIFVyYmFuIHJvdyBpbiBlYWNoIHNvY2lhbCBuZXR3b3JrIHdvdWxkIGNvcnJlc3BvbmQgdG8gdGhlIGZpcnN0IHJvdyBvZiByZXN1bHRzIGluIFRhYmxlIDMuMi4KCmBgYHtyfQpyb3VuZChwcm9wLnRhYmxlKHN2eXRhYmxlKH51cmJhbit3YV91c2VyLCBkZXNpZ249ZGVzaWduMTgpLCAyKSwgMykqMTAwCnJvdW5kKHByb3AudGFibGUoc3Z5dGFibGUofnVyYmFuK2ZiX3VzZXIsIGRlc2lnbj1kZXNpZ24xOCksIDIpLCAzKSoxMDAKcm91bmQocHJvcC50YWJsZShzdnl0YWJsZSh+dXJiYW4rdHdfdXNlciwgZGVzaWduPWRlc2lnbjE4KSwgMiksIDMpKjEwMApgYGAKCkluIHRoaXMgd2F5LCBmcmVxdWVuY3kgZGlzdHJpYnV0aW9uIHRhYmxlcyBhbmQgYml2YXJpYXRlIChvciBjb250aW5nZW5jeSkgdGFibGVzIGNhbiBiZSBjYWxjdWxhdGVkIGluY2x1ZGluZyB0aGUgZGVzaWduIGVmZmVjdCBvciB0aGUgZXhwYW5zaW9uIGZhY3Rvci4K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Descriptives2.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
