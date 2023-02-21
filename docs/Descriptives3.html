@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Descriptive statistics using the Americas Barometer (3)</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LAPOP_edu</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="install.html">Installing R and RStudio</a>
+    </li>
+    <li>
+      <a href="basic.html">Basic procedures</a>
+    </li>
+    <li>
+      <a href="bases.html">Importing datasets</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    First steps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Manipulation.html">Data manipulation</a>
+    </li>
+    <li>
+      <a href="Expansion.html">Survey weights</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Describing and plotting data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Descriptives.html">Descriptive statistics: nominal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives2.html">Descriptive statistics: ordinal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives3.html">Descriptive statistics: numerical variables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Basic inference
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="IC.html">Confidence intervals</a>
+    </li>
+    <li>
+      <a href="pruebat.html">Compararing 2 means</a>
+    </li>
+    <li>
+      <a href="anova.html">Comparing more than 2 means</a>
+    </li>
+    <li>
+      <a href="chi.html">Crosstables and chi-square analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="correlacion.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regresion1.html">Simple linear regresion</a>
+    </li>
+    <li>
+      <a href="regresion2.html">Multiple linear regresion</a>
+    </li>
+    <li>
+      <a href="logit.html">Logistic regresion</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapas.html">Maps</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Contact</a>
+</li>
+<li>
+  <a href="https://arturomaldonado.github.io/BarometroEdu_Web/index.html">Spanish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Descriptive statistics using the Americas
+Barometer (3)</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this section we will see basic aspects of how to describe a
+numerical variable. For that, we will continue to use the 2018/19
+regional report “The Pulse of Democracy”, available <a
+href="https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_10.13.19.pdf">here</a>,
+where the main findings of the 2018/19 round of the AmericasBarometer
+are presented. One of the sections of this document reports information
+on social networks and political attitudes. This section presents
+information on Internet use and the use of social networks, in general,
+by country and by certain sociodemographic characteristics.</p>
+</div>
+<div id="about-the-dataset" class="section level1">
+<h1>About the dataset</h1>
+<p>The data we are going to use should be cited as follows: Source:
+AmericasBarometer by the Latin American Public Opinion Project (LAPOP),
+wwww.LapopSurveys.org. This section loads a trimmed database. This
+database is hosted in the “materials_edu” repository of the LAPOP
+account on GitHub. It is recommended to clean the Environment before
+starting this module.</p>
+<p>Using the library <code>rio</code> and the command
+<code>import</code>, you can import this database from this repository.
+In addition, the data from countries with codes less than or equal to 35
+are selected, that is, the observations of the United States and Canada
+are eliminated.</p>
+<pre class="r"><code>library(rio)
+lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)
+lapop18 = subset(lapop18, pais&lt;=35)</code></pre>
+</div>
+<div id="describing-a-numeric-variable" class="section level1">
+<h1>Describing a numeric variable</h1>
+<p>Table 3.2 of the report “The Pulse of Democracy” shows the general
+averages of the variables age (“q2” in the database) and years of study
+(“ed” in the database) for the general population.</p>
+<p><img src="Table%203.2.JPG" width="604" /></p>
+<p>The command <code>mean</code> is used to calculate the average and
+<code>na.rm=T</code> is used because these variables have missing
+values.</p>
+<pre class="r"><code>mean(lapop18$q2, na.rm=T)</code></pre>
+<pre><code>## [1] 39.99204</code></pre>
+<pre class="r"><code>mean(lapop18$ed, na.rm=T)</code></pre>
+<pre><code>## [1] 9.934748</code></pre>
+<p>In the section where we worked with qualitative variables (or factor
+variables, in the language of R), we saw that the variables “men” and
+“urban” could be described by defining these variables as a factor,
+labeling them and making a frequency table of these variables. Other way
+to find the percentage of people who are men or who live in urban areas
+is to work with these variables, but not define them as a factor. When
+variables are created, they are both defined by default as numeric. In
+this case, in addition to being numeric, they are variables of type
+dummy, that is, with values 0 and 1. In the case of the “men” variable,
+we defined 0 = Woman and 1 = Man; and in the case of the “urban”
+variable we define 0 = Rural and 1 = Urban. It is a good practice to
+name the dummy variable with a name that refers to category 1. With
+dummy variables, when the average is calculated, the result is the same
+as the percentage of category 1. So, if
+<code>mean(lapop$man, na.rm=T)</code> is calculated, this operation
+gives us the percentage of category 1, that is, men. It is multiplied by
+100 to put it in a format from 0 to 100.</p>
+<pre class="r"><code>lapop18$men = 2-lapop18$q1
+lapop18$urban = 2-lapop18$ur
+mean(lapop18$men, na.rm=T)*100</code></pre>
+<pre><code>## [1] 49.74846</code></pre>
+<pre class="r"><code>mean(lapop18$urban, na.rm=T)*100</code></pre>
+<pre><code>## [1] 71.15398</code></pre>
+<p>These results are the same as those presented in the first column of
+results for the general population, except for the wealth variable
+(“quintall”) which is not available in this trimmed version of the
+dataset.</p>
+</div>
+<div id="plotting-a-numeric-variable" class="section level1">
+<h1>Plotting a numeric variable</h1>
+<p>After describing a numeric variable, you can also include some basic
+plots, for example, using the command <code>hist</code> you can produce
+the histogram of the variable “years of education” (ed).</p>
+<pre class="r"><code>hist(lapop18$ed)</code></pre>
+<p><img
+src="Descriptives3_files/figure-html/simple%20histogram-1.png" /><!-- --></p>
+<p>This same plot can be reproduced using the command
+<code>ggplot</code>. With this command we have more flexibility with the
+graphic options. First, we define the dataframe to be used “lapop18” and
+the variable “ed” on the X axis. Then we define the specification
+<code>geom_histogram()</code> to produce a histogram. We define the
+width of the histogram bar with <code>banwidth=1</code>. Finally, this
+code allows you to label the X and Y axis and include a black and white
+theme, with <code>theme_bw()</code>.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(lapop18, aes(x=ed))+
+  geom_histogram(binwidth = 1)+
+  xlab(&quot;Years of education&quot;)+
+  ylab(&quot;Frecuency&quot;)+
+  theme_bw()</code></pre>
+<p><img
+src="Descriptives3_files/figure-html/gghist-1.png" /><!-- --></p>
+</div>
+<div id="average-by-groups" class="section level1">
+<h1>Average by groups</h1>
+<p>Table 3.2 of the report shows the mean of these numerical variables
+by groups of variables related to social networks. For example, it shows
+the average of years of study for Facebook users and for non-Facebook
+users. If we want to calculate the average of years of study for
+Facebook users, we first calculate this variable, in the same way as in
+previous sections, with the command <code>ifelse</code>.</p>
+<pre class="r"><code>lapop18$fb_user &lt;- ifelse(lapop18$smedia1==1 &amp; lapop18$smedia2&lt;=4, 1, 0)
+lapop18$tw_user &lt;- ifelse(lapop18$smedia4==1 &amp; lapop18$smedia5&lt;=4, 1, 0)
+lapop18$wa_user &lt;- ifelse(lapop18$smedia7==1 &amp; lapop18$smedia8&lt;=4, 1, 0)</code></pre>
+<p>Calculating the average years for Facebook users and non-users can be
+done in many ways. A first option is by using the square brackets
+<code>[...]</code>. In this case, we will calculate the average years of
+study by user groups <code>[lapop18$fb_user==1]</code> and non-Facebook
+users <code>[lapop18$fb_user==0]</code>.</p>
+<pre class="r"><code>mean(lapop18$ed[lapop18$fb_user==0], na.rm=T)</code></pre>
+<pre><code>## [1] 8.064905</code></pre>
+<pre class="r"><code>mean(lapop18$ed[lapop18$fb_user==1], na.rm=T)</code></pre>
+<pre><code>## [1] 11.44839</code></pre>
+</div>
+<div id="describing-of-a-numerical-variable-by-groups"
+class="section level1">
+<h1>Describing of a numerical variable by groups</h1>
+<p>Other way to describe a numeric variable is by using the command
+<code>summary</code>. This command reports the most used descriptive
+statistics for a numerical variable: minimum, maximum, quartiles, mean
+and median. All these statistics allow a better comparison between both
+groups, users and non-users of Facebook. Within this command you can
+include the <code>digits=3</code> specification to round the results,
+which avoids having to use <code>round</code>, for example.</p>
+<pre class="r"><code>summary(lapop18$ed[lapop18$fb_user==0], na.rm=T, digits=3)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    0.00    5.00    8.00    8.06   11.00   18.00    1374</code></pre>
+<pre class="r"><code>summary(lapop18$ed[lapop18$fb_user==1], na.rm=T, digits=3)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##     0.0     9.0    12.0    11.4    14.0    18.0    1240</code></pre>
+<p>However, the command <code>summary</code> does not return an
+important statistic such as the standard deviation, a measure of
+dispersion or heterogeneity. In order to have the above statistics and
+include the standard deviation, among other additional measurements, you
+can use the command <code>describeBy</code>, which is part of the
+library <code>psych</code>. This command asks for the variable to
+describe (“ed”) and the variable that forms the groups (“fb_user”) and
+provides the mean, standard deviation, median, trimmed mean, absolute
+deviation from the median, minimum and maximum.</p>
+<pre class="r"><code>library(psych)
+describeBy(lapop18$ed, lapop18$fb_user)</code></pre>
+<pre><code>## 
+##  Descriptive statistics by group 
+## group: 0
+##    vars     n mean  sd median trimmed  mad min max range skew kurtosis   se
+## X1    1 11540 8.06 4.3      8    7.99 4.45   0  18    18 0.13    -0.52 0.04
+## ------------------------------------------------------------ 
+## group: 1
+##    vars     n  mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 14998 11.45 3.59     12   11.52 2.97   0  18    18 -0.24        0 0.03</code></pre>
+<p>This same information can be obtained using the tidyverse style of
+coding (with the operator pype <code>%&gt;%</code>) and saved to a
+table. This table can save the data of the average age for WhatsApp
+users and non-users and also the standard deviation of each group.
+First, we define which dataframe to work with. Then, it is indicated
+that the missing values of the Whatsapp users variable are not used
+internally with <code>filter(!is.na(wa_user))</code>. Next, it is
+indicated that it will work in groups of the WhatsApp users variable
+with <code>group_by(wa_user)</code>. Finally, it is indicated that in
+each group the mean and standard deviation will be calculated, with
+<code>summarise</code>.</p>
+<pre class="r"><code>library(dplyr)
+whatxedad &lt;- lapop18 %&gt;%
+  filter(!is.na(wa_user)) %&gt;%
+  group_by(wa_user) %&gt;%
+  summarise(promedio = mean(q2, na.rm=T), sd = sd(q2, na.rm=T))
+whatxedad</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["wa_user"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["promedio"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"0","2":"48.25723","3":"18.04314"},{"1":"1","2":"35.38153","3":"13.86258"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="plotting-a-numeric-variable-by-groups" class="section level1">
+<h1>Plotting a numeric variable by groups</h1>
+<p>The report does not show it, but graphs can be presented for each
+group to facilitate the comparison of a variable. To make these
+comparative graphs by group, we’re going to continue to use the
+tidyverse. As in the previous table, the dataframe is defined and it is
+indicated that the missing values of the “wa_user” variable are not
+taken into account. Then, it is instructed to make a plot, with
+<code>ggplot</code> having the variable “q2” on the X axis. This graph
+is defined to be a histogram with <code>geom_histogram()</code>. A
+novelty is that, with the <code>facet_wrap(~wa_user)</code>
+specification, it is possible to indicate that graphs are made for each
+group of that variable. Finally, the axes are labeled.</p>
+<pre class="r"><code>lapop18 %&gt;%
+  filter(!is.na(wa_user)) %&gt;%
+  ggplot(aes(x=q2))+
+  geom_histogram()+
+  facet_wrap(~wa_user)+
+  xlab(&quot;Age&quot;)+
+  ylab(&quot;Frecuency&quot;)</code></pre>
+<p><img
+src="Descriptives3_files/figure-html/hist%20edadxwhat-1.png" /><!-- --></p>
+<p>This graph, however, shows the values 0 and 1 of the variable
+“wa_user” in the header of both graphs. This is because this variable,
+when created, was defined by default as numeric. For the variable labels
+to appear, you have to transform “wa_user” into a factor and label
+it.</p>
+<pre class="r"><code>lapop18$wa_user = as.factor(lapop18$wa_user)
+levels(lapop18$wa_user) &lt;- c(&quot;No user&quot;, &quot;User&quot;)</code></pre>
+<p>Other way to compare the age distribution by groups of WhatsApp users
+or non-users is by means of a boxplot. With the command
+<code>boxplot</code> you can make these plots. The command first asks
+for the variable on the Y axis, then the variable that defines the
+groups and the dataframe. You can label the X and Y axis with the names
+of the variables. Since the variable “wa_user” has been factored and
+labeled, the labels now appear.</p>
+<pre class="r"><code>boxplot(q2 ~ wa_user, data=lapop18, xlab =&quot;Whatsapp user&quot;, ylab=&quot;Age&quot;)</code></pre>
+<p><img
+src="Descriptives3_files/figure-html/boxplot%20edadxWha-1.png" /><!-- --></p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this section we have worked with numerical variables, such as age
+or years of study. Descriptive statistics have been calculated, such as
+the mean or standard deviation for the entire population or by groups.
+Finally, several ways of graphing these variables have been presented,
+using histograms or boxplots.</p>
+</div>
+<div id="calculations-including-survey-weights" class="section level1">
+<h1>Calculations including survey weights</h1>
+<p>The above results do not include survey weights. To include weights
+in the calculations you can use the command <code>weighted.mean</code>,
+which is part of the library <code>stats</code>, which comes preloaded
+with R, so you don’t have to install it.</p>
+<pre class="r"><code>weighted.mean(lapop18$q2, lapop18$weight1500, na.rm=T)</code></pre>
+<pre><code>## [1] 39.98095</code></pre>
+<pre class="r"><code>weighted.mean(lapop18$ed, lapop18$weight1500, na.rm=T)</code></pre>
+<pre><code>## [1] 9.931417</code></pre>
+<pre class="r"><code>weighted.mean(lapop18$men, lapop18$weight1500, na.rm=T)*100</code></pre>
+<pre><code>## [1] 49.74826</code></pre>
+<pre class="r"><code>weighted.mean(lapop18$urban, lapop18$weight1500, na.rm=T)*100</code></pre>
+<pre><code>## [1] 71.11895</code></pre>
+<p>Other way to calculate the mean including the expansion factor is by
+using the library <code>survey</code> and its native command
+<code>svymean</code>. For this you have to define the sample design with
+the command <code>svydesign</code> and save this design in an object,
+here called “design18”.</p>
+<pre class="r"><code>library(survey)
+design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)</code></pre>
+<p>To calculate the average, the command <code>svymean</code> is used
+and the <code>na.rm=T</code> specification is used because these
+variables have missing values.</p>
+<pre class="r"><code>svymean(~q2, design18, na.rm=T)</code></pre>
+<pre><code>##      mean     SE
+## q2 39.981 0.0535</code></pre>
+<pre class="r"><code>svymean(~ed, design18, na.rm=T)</code></pre>
+<pre><code>##      mean   SE
+## ed 9.9314 0.04</code></pre>
+<p>For dummy variables, the procedure is the same, except that they are
+multiplied by 100 to present it in percentage format.</p>
+<pre class="r"><code>svymean(~men, design18, na.rm =T)*100</code></pre>
+<pre><code>##       mean    SE
+## men 49.748 8e-04</code></pre>
+<pre class="r"><code>svymean(~urban, design18, na.rm=T)*100</code></pre>
+<pre><code>##         mean     SE
+## urban 71.119 0.0076</code></pre>
+<p>The package <code>survey</code> also has commands to replicate
+charts. For example, to calculate a simple histogram.</p>
+<pre class="r"><code>svyhist(~ed, design18, freq = T)</code></pre>
+<p><img
+src="Descriptives3_files/figure-html/weighted%20hist-1.png" /><!-- --></p>
+<p>To calculate descriptive statistics by groups, you can use the
+command <code>svyby</code>, which allows you to define the numerical
+variable that you want to describe, the variable that defines the
+groups, and the weighted statistic that you want to calculate.</p>
+<pre class="r"><code>svyby(~ed, ~fb_user, design18, svymean, na.rm=T)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["fb_user"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["ed"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["se"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"0","2":"8.066855","3":"0.04903821","_rn_":"0"},{"1":"1","2":"11.439412","3":"0.04152185","_rn_":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>To reproduce a descriptive graph by groups, the command
+<code>svyboxplot</code> can be used to compare the distribution of the
+age variable between groups of a variable of type factor, such as
+WhatsApp users.</p>
+<pre class="r"><code>svyboxplot(~q2~factor(wa_user), design18, all.outliers = T)</code></pre>
+<p><img
+src="Descriptives3_files/figure-html/weighted%20boxplot%20by%20groups-1.png" /><!-- --></p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRGVzY3JpcHRpdmUgc3RhdGlzdGljcyB1c2luZyB0aGUgQW1lcmljYXMgQmFyb21ldGVyICgzKSIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29sbGFwc2VkOiBmYWxzZQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgdG9jX2RlcHRoOiAxCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogZmxhdGx5CiAgICBkZl9wcmludDogcGFnZWQKICAgIHNlbGZfY29udGFpbmVkOiBubwogICAga2VlcF9tZDogeWVzCiAgICAjY29kZV9mb2xkaW5nOiBoaWRlCmVkaXRvcl9vcHRpb25zOiAKICBtYXJrZG93bjogCiAgICB3cmFwOiBzZW50ZW5jZQotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQobWVzc2FnZT1GQUxTRSx3YXJuaW5nPUZBTFNFLCBjYWNoZT1UUlVFKQpgYGAKCmBgYHtjc3MgY29sb3IsIGVjaG89RkFMU0V9Ci5jb2x1bW5zIHtkaXNwbGF5OiBmbGV4O30KaDEge2NvbG9yOiAjMzM2NkNDO30KYGBgCgojIEludHJvZHVjdGlvbgoKSW4gdGhpcyBzZWN0aW9uIHdlIHdpbGwgc2VlIGJhc2ljIGFzcGVjdHMgb2YgaG93IHRvIGRlc2NyaWJlIGEgbnVtZXJpY2FsIHZhcmlhYmxlLgpGb3IgdGhhdCwgd2Ugd2lsbCBjb250aW51ZSB0byB1c2UgdGhlIDIwMTgvMTkgcmVnaW9uYWwgcmVwb3J0ICJUaGUgUHVsc2Ugb2YgRGVtb2NyYWN5IiwgYXZhaWxhYmxlIFtoZXJlXShodHRwczovL3d3dy52YW5kZXJiaWx0LmVkdS9sYXBvcC9hYjIwMTgvMjAxOC0xOV9BbWVyaWNhc0Jhcm9tZXRlcl9SZWdpb25hbF9SZXBvcnRfMTAuMTMuMTkucGRmKSwgd2hlcmUgdGhlIG1haW4gZmluZGluZ3Mgb2YgdGhlIDIwMTgvMTkgcm91bmQgb2YgdGhlIEFtZXJpY2FzQmFyb21ldGVyIGFyZSBwcmVzZW50ZWQuCk9uZSBvZiB0aGUgc2VjdGlvbnMgb2YgdGhpcyBkb2N1bWVudCByZXBvcnRzIGluZm9ybWF0aW9uIG9uIHNvY2lhbCBuZXR3b3JrcyBhbmQgcG9saXRpY2FsIGF0dGl0dWRlcy4KVGhpcyBzZWN0aW9uIHByZXNlbnRzIGluZm9ybWF0aW9uIG9uIEludGVybmV0IHVzZSBhbmQgdGhlIHVzZSBvZiBzb2NpYWwgbmV0d29ya3MsIGluIGdlbmVyYWwsIGJ5IGNvdW50cnkgYW5kIGJ5IGNlcnRhaW4gc29jaW9kZW1vZ3JhcGhpYyBjaGFyYWN0ZXJpc3RpY3MuCgojIEFib3V0IHRoZSBkYXRhc2V0CgpUaGUgZGF0YSB3ZSBhcmUgZ29pbmcgdG8gdXNlIHNob3VsZCBiZSBjaXRlZCBhcyBmb2xsb3dzOiBTb3VyY2U6IEFtZXJpY2FzQmFyb21ldGVyIGJ5IHRoZSBMYXRpbiBBbWVyaWNhbiBQdWJsaWMgT3BpbmlvbiBQcm9qZWN0IChMQVBPUCksIHd3d3cuTGFwb3BTdXJ2ZXlzLm9yZy4KVGhpcyBzZWN0aW9uIGxvYWRzIGEgdHJpbW1lZCBkYXRhYmFzZS4KVGhpcyBkYXRhYmFzZSBpcyBob3N0ZWQgaW4gdGhlICJtYXRlcmlhbHNfZWR1IiByZXBvc2l0b3J5IG9mIHRoZSBMQVBPUCBhY2NvdW50IG9uIEdpdEh1Yi4KSXQgaXMgcmVjb21tZW5kZWQgdG8gY2xlYW4gdGhlIEVudmlyb25tZW50IGJlZm9yZSBzdGFydGluZyB0aGlzIG1vZHVsZS4KClVzaW5nIHRoZSBsaWJyYXJ5IGByaW9gIGFuZCB0aGUgY29tbWFuZCBgaW1wb3J0YCwgeW91IGNhbiBpbXBvcnQgdGhpcyBkYXRhYmFzZSBmcm9tIHRoaXMgcmVwb3NpdG9yeS4KSW4gYWRkaXRpb24sIHRoZSBkYXRhIGZyb20gY291bnRyaWVzIHdpdGggY29kZXMgbGVzcyB0aGFuIG9yIGVxdWFsIHRvIDM1IGFyZSBzZWxlY3RlZCwgdGhhdCBpcywgdGhlIG9ic2VydmF0aW9ucyBvZiB0aGUgVW5pdGVkIFN0YXRlcyBhbmQgQ2FuYWRhIGFyZSBlbGltaW5hdGVkLgoKYGBge3IgYmFzZX0KbGlicmFyeShyaW8pCmxhcG9wMTggPSBpbXBvcnQoImh0dHBzOi8vcmF3LmdpdGh1Yi5jb20vbGFwb3AtY2VudHJhbC9tYXRlcmlhbHNfZWR1L21haW4vTEFQT1BfQUJfTWVyZ2VfMjAxOF92MS4wLnNhdiIpCmxhcG9wMTggPSBzdWJzZXQobGFwb3AxOCwgcGFpczw9MzUpCmBgYAoKIyBEZXNjcmliaW5nIGEgbnVtZXJpYyB2YXJpYWJsZQoKVGFibGUgMy4yIG9mIHRoZSByZXBvcnQgIlRoZSBQdWxzZSBvZiBEZW1vY3JhY3kiIHNob3dzIHRoZSBnZW5lcmFsIGF2ZXJhZ2VzIG9mIHRoZSB2YXJpYWJsZXMgYWdlICgicTIiIGluIHRoZSBkYXRhYmFzZSkgYW5kIHllYXJzIG9mIHN0dWR5ICgiZWQiIGluIHRoZSBkYXRhYmFzZSkgZm9yIHRoZSBnZW5lcmFsIHBvcHVsYXRpb24uCgohW10oVGFibGUlMjAzLjIuSlBHKXt3aWR0aD0iNjA0In0KClRoZSBjb21tYW5kIGBtZWFuYCBpcyB1c2VkIHRvIGNhbGN1bGF0ZSB0aGUgYXZlcmFnZSBhbmQgYG5hLnJtPVRgIGlzIHVzZWQgYmVjYXVzZSB0aGVzZSB2YXJpYWJsZXMgaGF2ZSBtaXNzaW5nIHZhbHVlcy4KCmBgYHtyIG1lYW59Cm1lYW4obGFwb3AxOCRxMiwgbmEucm09VCkKbWVhbihsYXBvcDE4JGVkLCBuYS5ybT1UKQpgYGAKCkluIHRoZSBzZWN0aW9uIHdoZXJlIHdlIHdvcmtlZCB3aXRoIHF1YWxpdGF0aXZlIHZhcmlhYmxlcyAob3IgZmFjdG9yIHZhcmlhYmxlcywgaW4gdGhlIGxhbmd1YWdlIG9mIFIpLCB3ZSBzYXcgdGhhdCB0aGUgdmFyaWFibGVzICJtZW4iIGFuZCAidXJiYW4iIGNvdWxkIGJlIGRlc2NyaWJlZCBieSBkZWZpbmluZyB0aGVzZSB2YXJpYWJsZXMgYXMgYSBmYWN0b3IsIGxhYmVsaW5nIHRoZW0gYW5kIG1ha2luZyBhIGZyZXF1ZW5jeSB0YWJsZSBvZiB0aGVzZSB2YXJpYWJsZXMuCk90aGVyIHdheSB0byBmaW5kIHRoZSBwZXJjZW50YWdlIG9mIHBlb3BsZSB3aG8gYXJlIG1lbiBvciB3aG8gbGl2ZSBpbiB1cmJhbiBhcmVhcyBpcyB0byB3b3JrIHdpdGggdGhlc2UgdmFyaWFibGVzLCBidXQgbm90IGRlZmluZSB0aGVtIGFzIGEgZmFjdG9yLgpXaGVuIHZhcmlhYmxlcyBhcmUgY3JlYXRlZCwgdGhleSBhcmUgYm90aCBkZWZpbmVkIGJ5IGRlZmF1bHQgYXMgbnVtZXJpYy4KSW4gdGhpcyBjYXNlLCBpbiBhZGRpdGlvbiB0byBiZWluZyBudW1lcmljLCB0aGV5IGFyZSB2YXJpYWJsZXMgb2YgdHlwZSBkdW1teSwgdGhhdCBpcywgd2l0aCB2YWx1ZXMgMCBhbmQgMS4KSW4gdGhlIGNhc2Ugb2YgdGhlICJtZW4iIHZhcmlhYmxlLCB3ZSBkZWZpbmVkIDAgPSBXb21hbiBhbmQgMSA9IE1hbjsgYW5kIGluIHRoZSBjYXNlIG9mIHRoZSAidXJiYW4iIHZhcmlhYmxlIHdlIGRlZmluZSAwID0gUnVyYWwgYW5kIDEgPSBVcmJhbi4KSXQgaXMgYSBnb29kIHByYWN0aWNlIHRvIG5hbWUgdGhlIGR1bW15IHZhcmlhYmxlIHdpdGggYSBuYW1lIHRoYXQgcmVmZXJzIHRvIGNhdGVnb3J5IDEuCldpdGggZHVtbXkgdmFyaWFibGVzLCB3aGVuIHRoZSBhdmVyYWdlIGlzIGNhbGN1bGF0ZWQsIHRoZSByZXN1bHQgaXMgdGhlIHNhbWUgYXMgdGhlIHBlcmNlbnRhZ2Ugb2YgY2F0ZWdvcnkgMS4KU28sIGlmIGBtZWFuKGxhcG9wJG1hbiwgbmEucm09VClgIGlzIGNhbGN1bGF0ZWQsIHRoaXMgb3BlcmF0aW9uIGdpdmVzIHVzIHRoZSBwZXJjZW50YWdlIG9mIGNhdGVnb3J5IDEsIHRoYXQgaXMsIG1lbi4KSXQgaXMgbXVsdGlwbGllZCBieSAxMDAgdG8gcHV0IGl0IGluIGEgZm9ybWF0IGZyb20gMCB0byAxMDAuCgpgYGB7ciBkdW1teSBhdmVyYWdlfQpsYXBvcDE4JG1lbiA9IDItbGFwb3AxOCRxMQpsYXBvcDE4JHVyYmFuID0gMi1sYXBvcDE4JHVyCm1lYW4obGFwb3AxOCRtZW4sIG5hLnJtPVQpKjEwMAptZWFuKGxhcG9wMTgkdXJiYW4sIG5hLnJtPVQpKjEwMApgYGAKClRoZXNlIHJlc3VsdHMgYXJlIHRoZSBzYW1lIGFzIHRob3NlIHByZXNlbnRlZCBpbiB0aGUgZmlyc3QgY29sdW1uIG9mIHJlc3VsdHMgZm9yIHRoZSBnZW5lcmFsIHBvcHVsYXRpb24sIGV4Y2VwdCBmb3IgdGhlIHdlYWx0aCB2YXJpYWJsZSAoInF1aW50YWxsIikgd2hpY2ggaXMgbm90IGF2YWlsYWJsZSBpbiB0aGlzIHRyaW1tZWQgdmVyc2lvbiBvZiB0aGUgZGF0YXNldC4KCiMgUGxvdHRpbmcgYSBudW1lcmljIHZhcmlhYmxlCgpBZnRlciBkZXNjcmliaW5nIGEgbnVtZXJpYyB2YXJpYWJsZSwgeW91IGNhbiBhbHNvIGluY2x1ZGUgc29tZSBiYXNpYyBwbG90cywgZm9yIGV4YW1wbGUsIHVzaW5nIHRoZSBjb21tYW5kIGBoaXN0YCB5b3UgY2FuIHByb2R1Y2UgdGhlIGhpc3RvZ3JhbSBvZiB0aGUgdmFyaWFibGUgInllYXJzIG9mIGVkdWNhdGlvbiIgKGVkKS4KCmBgYHtyIHNpbXBsZSBoaXN0b2dyYW19Cmhpc3QobGFwb3AxOCRlZCkKYGBgCgpUaGlzIHNhbWUgcGxvdCBjYW4gYmUgcmVwcm9kdWNlZCB1c2luZyB0aGUgY29tbWFuZCBgZ2dwbG90YC4KV2l0aCB0aGlzIGNvbW1hbmQgd2UgaGF2ZSBtb3JlIGZsZXhpYmlsaXR5IHdpdGggdGhlIGdyYXBoaWMgb3B0aW9ucy4KRmlyc3QsIHdlIGRlZmluZSB0aGUgZGF0YWZyYW1lIHRvIGJlIHVzZWQgImxhcG9wMTgiIGFuZCB0aGUgdmFyaWFibGUgImVkIiBvbiB0aGUgWCBheGlzLgpUaGVuIHdlIGRlZmluZSB0aGUgc3BlY2lmaWNhdGlvbiBgZ2VvbV9oaXN0b2dyYW0oKWAgdG8gcHJvZHVjZSBhIGhpc3RvZ3JhbS4KV2UgZGVmaW5lIHRoZSB3aWR0aCBvZiB0aGUgaGlzdG9ncmFtIGJhciB3aXRoIGBiYW53aWR0aD0xYC4KRmluYWxseSwgdGhpcyBjb2RlIGFsbG93cyB5b3UgdG8gbGFiZWwgdGhlIFggYW5kIFkgYXhpcyBhbmQgaW5jbHVkZSBhIGJsYWNrIGFuZCB3aGl0ZSB0aGVtZSwgd2l0aCBgdGhlbWVfYncoKWAuCgpgYGB7ciBnZ2hpc3QsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoZ2dwbG90MikKZ2dwbG90KGxhcG9wMTgsIGFlcyh4PWVkKSkrCiAgZ2VvbV9oaXN0b2dyYW0oYmlud2lkdGggPSAxKSsKICB4bGFiKCJZZWFycyBvZiBlZHVjYXRpb24iKSsKICB5bGFiKCJGcmVjdWVuY3kiKSsKICB0aGVtZV9idygpCmBgYAoKIyBBdmVyYWdlIGJ5IGdyb3VwcwoKVGFibGUgMy4yIG9mIHRoZSByZXBvcnQgc2hvd3MgdGhlIG1lYW4gb2YgdGhlc2UgbnVtZXJpY2FsIHZhcmlhYmxlcyBieSBncm91cHMgb2YgdmFyaWFibGVzIHJlbGF0ZWQgdG8gc29jaWFsIG5ldHdvcmtzLgpGb3IgZXhhbXBsZSwgaXQgc2hvd3MgdGhlIGF2ZXJhZ2Ugb2YgeWVhcnMgb2Ygc3R1ZHkgZm9yIEZhY2Vib29rIHVzZXJzIGFuZCBmb3Igbm9uLUZhY2Vib29rIHVzZXJzLgpJZiB3ZSB3YW50IHRvIGNhbGN1bGF0ZSB0aGUgYXZlcmFnZSBvZiB5ZWFycyBvZiBzdHVkeSBmb3IgRmFjZWJvb2sgdXNlcnMsIHdlIGZpcnN0IGNhbGN1bGF0ZSB0aGlzIHZhcmlhYmxlLCBpbiB0aGUgc2FtZSB3YXkgYXMgaW4gcHJldmlvdXMgc2VjdGlvbnMsIHdpdGggdGhlIGNvbW1hbmQgYGlmZWxzZWAuCgpgYGB7ciB1c2Vyc30KbGFwb3AxOCRmYl91c2VyIDwtIGlmZWxzZShsYXBvcDE4JHNtZWRpYTE9PTEgJiBsYXBvcDE4JHNtZWRpYTI8PTQsIDEsIDApCmxhcG9wMTgkdHdfdXNlciA8LSBpZmVsc2UobGFwb3AxOCRzbWVkaWE0PT0xICYgbGFwb3AxOCRzbWVkaWE1PD00LCAxLCAwKQpsYXBvcDE4JHdhX3VzZXIgPC0gaWZlbHNlKGxhcG9wMTgkc21lZGlhNz09MSAmIGxhcG9wMTgkc21lZGlhODw9NCwgMSwgMCkKYGBgCgpDYWxjdWxhdGluZyB0aGUgYXZlcmFnZSB5ZWFycyBmb3IgRmFjZWJvb2sgdXNlcnMgYW5kIG5vbi11c2VycyBjYW4gYmUgZG9uZSBpbiBtYW55IHdheXMuCkEgZmlyc3Qgb3B0aW9uIGlzIGJ5IHVzaW5nIHRoZSBzcXVhcmUgYnJhY2tldHMgYFsuLi5dYC4KSW4gdGhpcyBjYXNlLCB3ZSB3aWxsIGNhbGN1bGF0ZSB0aGUgYXZlcmFnZSB5ZWFycyBvZiBzdHVkeSBieSB1c2VyIGdyb3VwcyBgW2xhcG9wMTgkZmJfdXNlcj09MV1gIGFuZCBub24tRmFjZWJvb2sgdXNlcnMgYFtsYXBvcDE4JGZiX3VzZXI9PTBdYC4KCmBgYHtyIEZiIHN0dWR5IHllYXJzfQptZWFuKGxhcG9wMTgkZWRbbGFwb3AxOCRmYl91c2VyPT0wXSwgbmEucm09VCkKbWVhbihsYXBvcDE4JGVkW2xhcG9wMTgkZmJfdXNlcj09MV0sIG5hLnJtPVQpCmBgYAoKIyBEZXNjcmliaW5nIG9mIGEgbnVtZXJpY2FsIHZhcmlhYmxlIGJ5IGdyb3VwcwoKT3RoZXIgd2F5IHRvIGRlc2NyaWJlIGEgbnVtZXJpYyB2YXJpYWJsZSBpcyBieSB1c2luZyB0aGUgY29tbWFuZCBgc3VtbWFyeWAuClRoaXMgY29tbWFuZCByZXBvcnRzIHRoZSBtb3N0IHVzZWQgZGVzY3JpcHRpdmUgc3RhdGlzdGljcyBmb3IgYSBudW1lcmljYWwgdmFyaWFibGU6IG1pbmltdW0sIG1heGltdW0sIHF1YXJ0aWxlcywgbWVhbiBhbmQgbWVkaWFuLgpBbGwgdGhlc2Ugc3RhdGlzdGljcyBhbGxvdyBhIGJldHRlciBjb21wYXJpc29uIGJldHdlZW4gYm90aCBncm91cHMsIHVzZXJzIGFuZCBub24tdXNlcnMgb2YgRmFjZWJvb2suCldpdGhpbiB0aGlzIGNvbW1hbmQgeW91IGNhbiBpbmNsdWRlIHRoZSBgZGlnaXRzPTNgIHNwZWNpZmljYXRpb24gdG8gcm91bmQgdGhlIHJlc3VsdHMsIHdoaWNoIGF2b2lkcyBoYXZpbmcgdG8gdXNlIGByb3VuZGAsIGZvciBleGFtcGxlLgoKYGBge3J9CnN1bW1hcnkobGFwb3AxOCRlZFtsYXBvcDE4JGZiX3VzZXI9PTBdLCBuYS5ybT1ULCBkaWdpdHM9MykKc3VtbWFyeShsYXBvcDE4JGVkW2xhcG9wMTgkZmJfdXNlcj09MV0sIG5hLnJtPVQsIGRpZ2l0cz0zKQpgYGAKCkhvd2V2ZXIsIHRoZSBjb21tYW5kIGBzdW1tYXJ5YCBkb2VzIG5vdCByZXR1cm4gYW4gaW1wb3J0YW50IHN0YXRpc3RpYyBzdWNoIGFzIHRoZSBzdGFuZGFyZCBkZXZpYXRpb24sIGEgbWVhc3VyZSBvZiBkaXNwZXJzaW9uIG9yIGhldGVyb2dlbmVpdHkuCkluIG9yZGVyIHRvIGhhdmUgdGhlIGFib3ZlIHN0YXRpc3RpY3MgYW5kIGluY2x1ZGUgdGhlIHN0YW5kYXJkIGRldmlhdGlvbiwgYW1vbmcgb3RoZXIgYWRkaXRpb25hbCBtZWFzdXJlbWVudHMsIHlvdSBjYW4gdXNlIHRoZSBjb21tYW5kIGBkZXNjcmliZUJ5YCwgd2hpY2ggaXMgcGFydCBvZiB0aGUgbGlicmFyeSBgcHN5Y2hgLgpUaGlzIGNvbW1hbmQgYXNrcyBmb3IgdGhlIHZhcmlhYmxlIHRvIGRlc2NyaWJlICgiZWQiKSBhbmQgdGhlIHZhcmlhYmxlIHRoYXQgZm9ybXMgdGhlIGdyb3VwcyAoImZiX3VzZXIiKSBhbmQgcHJvdmlkZXMgdGhlIG1lYW4sIHN0YW5kYXJkIGRldmlhdGlvbiwgbWVkaWFuLCB0cmltbWVkIG1lYW4sIGFic29sdXRlIGRldmlhdGlvbiBmcm9tIHRoZSBtZWRpYW4sIG1pbmltdW0gYW5kIG1heGltdW0uCgpgYGB7ciBhdmVyYWdlIHllYXJzIG9mIHN0dWR5IGJ5IEZCLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHBzeWNoKQpkZXNjcmliZUJ5KGxhcG9wMTgkZWQsIGxhcG9wMTgkZmJfdXNlcikKYGBgCgpUaGlzIHNhbWUgaW5mb3JtYXRpb24gY2FuIGJlIG9idGFpbmVkIHVzaW5nIHRoZSB0aWR5dmVyc2Ugc3R5bGUgb2YgY29kaW5nICh3aXRoIHRoZSBvcGVyYXRvciBweXBlIGAlPiVgKSBhbmQgc2F2ZWQgdG8gYSB0YWJsZS4KVGhpcyB0YWJsZSBjYW4gc2F2ZSB0aGUgZGF0YSBvZiB0aGUgYXZlcmFnZSBhZ2UgZm9yIFdoYXRzQXBwIHVzZXJzIGFuZCBub24tdXNlcnMgYW5kIGFsc28gdGhlIHN0YW5kYXJkIGRldmlhdGlvbiBvZiBlYWNoIGdyb3VwLgpGaXJzdCwgd2UgZGVmaW5lIHdoaWNoIGRhdGFmcmFtZSB0byB3b3JrIHdpdGguClRoZW4sIGl0IGlzIGluZGljYXRlZCB0aGF0IHRoZSBtaXNzaW5nIHZhbHVlcyBvZiB0aGUgV2hhdHNhcHAgdXNlcnMgdmFyaWFibGUgYXJlIG5vdCB1c2VkIGludGVybmFsbHkgd2l0aCBgZmlsdGVyKCFpcy5uYSh3YV91c2VyKSlgLgpOZXh0LCBpdCBpcyBpbmRpY2F0ZWQgdGhhdCBpdCB3aWxsIHdvcmsgaW4gZ3JvdXBzIG9mIHRoZSBXaGF0c0FwcCB1c2VycyB2YXJpYWJsZSB3aXRoIGBncm91cF9ieSh3YV91c2VyKWAuCkZpbmFsbHksIGl0IGlzIGluZGljYXRlZCB0aGF0IGluIGVhY2ggZ3JvdXAgdGhlIG1lYW4gYW5kIHN0YW5kYXJkIGRldmlhdGlvbiB3aWxsIGJlIGNhbGN1bGF0ZWQsIHdpdGggYHN1bW1hcmlzZWAuCgpgYGB7ciBhdmVyYWdlIHllYXJzIHggV2hhdHNhcHAsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoZHBseXIpCndoYXR4ZWRhZCA8LSBsYXBvcDE4ICU+JQogIGZpbHRlcighaXMubmEod2FfdXNlcikpICU+JQogIGdyb3VwX2J5KHdhX3VzZXIpICU+JQogIHN1bW1hcmlzZShwcm9tZWRpbyA9IG1lYW4ocTIsIG5hLnJtPVQpLCBzZCA9IHNkKHEyLCBuYS5ybT1UKSkKd2hhdHhlZGFkCmBgYAoKIyBQbG90dGluZyBhIG51bWVyaWMgdmFyaWFibGUgYnkgZ3JvdXBzCgpUaGUgcmVwb3J0IGRvZXMgbm90IHNob3cgaXQsIGJ1dCBncmFwaHMgY2FuIGJlIHByZXNlbnRlZCBmb3IgZWFjaCBncm91cCB0byBmYWNpbGl0YXRlIHRoZSBjb21wYXJpc29uIG9mIGEgdmFyaWFibGUuClRvIG1ha2UgdGhlc2UgY29tcGFyYXRpdmUgZ3JhcGhzIGJ5IGdyb3VwLCB3ZSdyZSBnb2luZyB0byBjb250aW51ZSB0byB1c2UgdGhlIHRpZHl2ZXJzZS4KQXMgaW4gdGhlIHByZXZpb3VzIHRhYmxlLCB0aGUgZGF0YWZyYW1lIGlzIGRlZmluZWQgYW5kIGl0IGlzIGluZGljYXRlZCB0aGF0IHRoZSBtaXNzaW5nIHZhbHVlcyBvZiB0aGUgIndhX3VzZXIiIHZhcmlhYmxlIGFyZSBub3QgdGFrZW4gaW50byBhY2NvdW50LgpUaGVuLCBpdCBpcyBpbnN0cnVjdGVkIHRvIG1ha2UgYSBwbG90LCB3aXRoIGBnZ3Bsb3RgIGhhdmluZyB0aGUgdmFyaWFibGUgInEyIiBvbiB0aGUgWCBheGlzLgpUaGlzIGdyYXBoIGlzIGRlZmluZWQgdG8gYmUgYSBoaXN0b2dyYW0gd2l0aCBgZ2VvbV9oaXN0b2dyYW0oKWAuCkEgbm92ZWx0eSBpcyB0aGF0LCB3aXRoIHRoZSBgZmFjZXRfd3JhcCh+d2FfdXNlcilgIHNwZWNpZmljYXRpb24sIGl0IGlzIHBvc3NpYmxlIHRvIGluZGljYXRlIHRoYXQgZ3JhcGhzIGFyZSBtYWRlIGZvciBlYWNoIGdyb3VwIG9mIHRoYXQgdmFyaWFibGUuCkZpbmFsbHksIHRoZSBheGVzIGFyZSBsYWJlbGVkLgoKYGBge3IgaGlzdCBlZGFkeHdoYXQsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxhcG9wMTggJT4lCiAgZmlsdGVyKCFpcy5uYSh3YV91c2VyKSkgJT4lCiAgZ2dwbG90KGFlcyh4PXEyKSkrCiAgZ2VvbV9oaXN0b2dyYW0oKSsKICBmYWNldF93cmFwKH53YV91c2VyKSsKICB4bGFiKCJBZ2UiKSsKICB5bGFiKCJGcmVjdWVuY3kiKQpgYGAKClRoaXMgZ3JhcGgsIGhvd2V2ZXIsIHNob3dzIHRoZSB2YWx1ZXMgMCBhbmQgMSBvZiB0aGUgdmFyaWFibGUgIndhX3VzZXIiIGluIHRoZSBoZWFkZXIgb2YgYm90aCBncmFwaHMuClRoaXMgaXMgYmVjYXVzZSB0aGlzIHZhcmlhYmxlLCB3aGVuIGNyZWF0ZWQsIHdhcyBkZWZpbmVkIGJ5IGRlZmF1bHQgYXMgbnVtZXJpYy4KRm9yIHRoZSB2YXJpYWJsZSBsYWJlbHMgdG8gYXBwZWFyLCB5b3UgaGF2ZSB0byB0cmFuc2Zvcm0gIndhX3VzZXIiIGludG8gYSBmYWN0b3IgYW5kIGxhYmVsIGl0LgoKYGBge3Igd2EgZmFjdG9yfQpsYXBvcDE4JHdhX3VzZXIgPSBhcy5mYWN0b3IobGFwb3AxOCR3YV91c2VyKQpsZXZlbHMobGFwb3AxOCR3YV91c2VyKSA8LSBjKCJObyB1c2VyIiwgIlVzZXIiKQpgYGAKCk90aGVyIHdheSB0byBjb21wYXJlIHRoZSBhZ2UgZGlzdHJpYnV0aW9uIGJ5IGdyb3VwcyBvZiBXaGF0c0FwcCB1c2VycyBvciBub24tdXNlcnMgaXMgYnkgbWVhbnMgb2YgYSBib3hwbG90LgpXaXRoIHRoZSBjb21tYW5kIGBib3hwbG90YCB5b3UgY2FuIG1ha2UgdGhlc2UgcGxvdHMuClRoZSBjb21tYW5kIGZpcnN0IGFza3MgZm9yIHRoZSB2YXJpYWJsZSBvbiB0aGUgWSBheGlzLCB0aGVuIHRoZSB2YXJpYWJsZSB0aGF0IGRlZmluZXMgdGhlIGdyb3VwcyBhbmQgdGhlIGRhdGFmcmFtZS4KWW91IGNhbiBsYWJlbCB0aGUgWCBhbmQgWSBheGlzIHdpdGggdGhlIG5hbWVzIG9mIHRoZSB2YXJpYWJsZXMuClNpbmNlIHRoZSB2YXJpYWJsZSAid2FfdXNlciIgaGFzIGJlZW4gZmFjdG9yZWQgYW5kIGxhYmVsZWQsIHRoZSBsYWJlbHMgbm93IGFwcGVhci4KCmBgYHtyIGJveHBsb3QgZWRhZHhXaGEsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmJveHBsb3QocTIgfiB3YV91c2VyLCBkYXRhPWxhcG9wMTgsIHhsYWIgPSJXaGF0c2FwcCB1c2VyIiwgeWxhYj0iQWdlIikKYGBgCgojIFN1bW1hcnkKCkluIHRoaXMgc2VjdGlvbiB3ZSBoYXZlIHdvcmtlZCB3aXRoIG51bWVyaWNhbCB2YXJpYWJsZXMsIHN1Y2ggYXMgYWdlIG9yIHllYXJzIG9mIHN0dWR5LgpEZXNjcmlwdGl2ZSBzdGF0aXN0aWNzIGhhdmUgYmVlbiBjYWxjdWxhdGVkLCBzdWNoIGFzIHRoZSBtZWFuIG9yIHN0YW5kYXJkIGRldmlhdGlvbiBmb3IgdGhlIGVudGlyZSBwb3B1bGF0aW9uIG9yIGJ5IGdyb3Vwcy4KRmluYWxseSwgc2V2ZXJhbCB3YXlzIG9mIGdyYXBoaW5nIHRoZXNlIHZhcmlhYmxlcyBoYXZlIGJlZW4gcHJlc2VudGVkLCB1c2luZyBoaXN0b2dyYW1zIG9yIGJveHBsb3RzLgoKIyBDYWxjdWxhdGlvbnMgaW5jbHVkaW5nIHN1cnZleSB3ZWlnaHRzCgpUaGUgYWJvdmUgcmVzdWx0cyBkbyBub3QgaW5jbHVkZSBzdXJ2ZXkgd2VpZ2h0cy4KVG8gaW5jbHVkZSB3ZWlnaHRzIGluIHRoZSBjYWxjdWxhdGlvbnMgeW91IGNhbiB1c2UgdGhlIGNvbW1hbmQgYHdlaWdodGVkLm1lYW5gLCB3aGljaCBpcyBwYXJ0IG9mIHRoZSBsaWJyYXJ5IGBzdGF0c2AsIHdoaWNoIGNvbWVzIHByZWxvYWRlZCB3aXRoIFIsIHNvIHlvdSBkb24ndCBoYXZlIHRvIGluc3RhbGwgaXQuCgpgYGB7ciBjb21hbmQgd2VpZ2h0ZWR9CndlaWdodGVkLm1lYW4obGFwb3AxOCRxMiwgbGFwb3AxOCR3ZWlnaHQxNTAwLCBuYS5ybT1UKQp3ZWlnaHRlZC5tZWFuKGxhcG9wMTgkZWQsIGxhcG9wMTgkd2VpZ2h0MTUwMCwgbmEucm09VCkKd2VpZ2h0ZWQubWVhbihsYXBvcDE4JG1lbiwgbGFwb3AxOCR3ZWlnaHQxNTAwLCBuYS5ybT1UKSoxMDAKd2VpZ2h0ZWQubWVhbihsYXBvcDE4JHVyYmFuLCBsYXBvcDE4JHdlaWdodDE1MDAsIG5hLnJtPVQpKjEwMApgYGAKCk90aGVyIHdheSB0byBjYWxjdWxhdGUgdGhlIG1lYW4gaW5jbHVkaW5nIHRoZSBleHBhbnNpb24gZmFjdG9yIGlzIGJ5IHVzaW5nIHRoZSBsaWJyYXJ5IGBzdXJ2ZXlgIGFuZCBpdHMgbmF0aXZlIGNvbW1hbmQgYHN2eW1lYW5gLgpGb3IgdGhpcyB5b3UgaGF2ZSB0byBkZWZpbmUgdGhlIHNhbXBsZSBkZXNpZ24gd2l0aCB0aGUgY29tbWFuZCBgc3Z5ZGVzaWduYCBhbmQgc2F2ZSB0aGlzIGRlc2lnbiBpbiBhbiBvYmplY3QsIGhlcmUgY2FsbGVkICJkZXNpZ24xOCIuCgpgYGB7ciBzdXJ2ZXksIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoc3VydmV5KQpkZXNpZ24xOCA9IHN2eWRlc2lnbihpZHMgPSB+dXBtLCBzdHJhdGEgPSB+ZXN0cmF0b3ByaSwgd2VpZ2h0cyA9IH53ZWlnaHQxNTAwLCBuZXN0PVRSVUUsIGRhdGE9bGFwb3AxOCkKYGBgCgpUbyBjYWxjdWxhdGUgdGhlIGF2ZXJhZ2UsIHRoZSBjb21tYW5kIGBzdnltZWFuYCBpcyB1c2VkIGFuZCB0aGUgYG5hLnJtPVRgIHNwZWNpZmljYXRpb24gaXMgdXNlZCBiZWNhdXNlIHRoZXNlIHZhcmlhYmxlcyBoYXZlIG1pc3NpbmcgdmFsdWVzLgoKYGBge3Igd2VpZ2h0ZWQgbWVhbiBhZ2UgYW5kIHN0dWRpZXN9CnN2eW1lYW4ofnEyLCBkZXNpZ24xOCwgbmEucm09VCkKc3Z5bWVhbih+ZWQsIGRlc2lnbjE4LCBuYS5ybT1UKQpgYGAKCkZvciBkdW1teSB2YXJpYWJsZXMsIHRoZSBwcm9jZWR1cmUgaXMgdGhlIHNhbWUsIGV4Y2VwdCB0aGF0IHRoZXkgYXJlIG11bHRpcGxpZWQgYnkgMTAwIHRvIHByZXNlbnQgaXQgaW4gcGVyY2VudGFnZSBmb3JtYXQuCgpgYGB7ciB3ZWlnaHRlZCBtZWFuIG1hbiBhbmQgdXJiYW59CnN2eW1lYW4ofm1lbiwgZGVzaWduMTgsIG5hLnJtID1UKSoxMDAKc3Z5bWVhbih+dXJiYW4sIGRlc2lnbjE4LCBuYS5ybT1UKSoxMDAKYGBgCgpUaGUgcGFja2FnZSBgc3VydmV5YCBhbHNvIGhhcyBjb21tYW5kcyB0byByZXBsaWNhdGUgY2hhcnRzLgpGb3IgZXhhbXBsZSwgdG8gY2FsY3VsYXRlIGEgc2ltcGxlIGhpc3RvZ3JhbS4KCmBgYHtyIHdlaWdodGVkIGhpc3R9CnN2eWhpc3QofmVkLCBkZXNpZ24xOCwgZnJlcSA9IFQpCmBgYAoKVG8gY2FsY3VsYXRlIGRlc2NyaXB0aXZlIHN0YXRpc3RpY3MgYnkgZ3JvdXBzLCB5b3UgY2FuIHVzZSB0aGUgY29tbWFuZCBgc3Z5YnlgLCB3aGljaCBhbGxvd3MgeW91IHRvIGRlZmluZSB0aGUgbnVtZXJpY2FsIHZhcmlhYmxlIHRoYXQgeW91IHdhbnQgdG8gZGVzY3JpYmUsIHRoZSB2YXJpYWJsZSB0aGF0IGRlZmluZXMgdGhlIGdyb3VwcywgYW5kIHRoZSB3ZWlnaHRlZCBzdGF0aXN0aWMgdGhhdCB5b3Ugd2FudCB0byBjYWxjdWxhdGUuCgpgYGB7ciB3ZWlnaHRlZCBlZCBieSBncm91cHN9CnN2eWJ5KH5lZCwgfmZiX3VzZXIsIGRlc2lnbjE4LCBzdnltZWFuLCBuYS5ybT1UKQpgYGAKClRvIHJlcHJvZHVjZSBhIGRlc2NyaXB0aXZlIGdyYXBoIGJ5IGdyb3VwcywgdGhlIGNvbW1hbmQgYHN2eWJveHBsb3RgIGNhbiBiZSB1c2VkIHRvIGNvbXBhcmUgdGhlIGRpc3RyaWJ1dGlvbiBvZiB0aGUgYWdlIHZhcmlhYmxlIGJldHdlZW4gZ3JvdXBzIG9mIGEgdmFyaWFibGUgb2YgdHlwZSBmYWN0b3IsIHN1Y2ggYXMgV2hhdHNBcHAgdXNlcnMuCgpgYGB7ciB3ZWlnaHRlZCBib3hwbG90IGJ5IGdyb3Vwc30Kc3Z5Ym94cGxvdCh+cTJ+ZmFjdG9yKHdhX3VzZXIpLCBkZXNpZ24xOCwgYWxsLm91dGxpZXJzID0gVCkKYGBgCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Descriptives3.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
