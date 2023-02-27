@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Confidence intervals using the Americas Barometer</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LAPOP_edu</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="install.html">Installing R and RStudio</a>
+    </li>
+    <li>
+      <a href="basic.html">Basic procedures</a>
+    </li>
+    <li>
+      <a href="bases.html">Importing datasets</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    First steps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Manipulation.html">Data manipulation</a>
+    </li>
+    <li>
+      <a href="Expansion.html">Survey weights</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Describing and plotting data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Descriptives.html">Descriptive statistics: nominal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives2.html">Descriptive statistics: ordinal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives3.html">Descriptive statistics: numerical variables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Basic inference
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="IC.html">Confidence intervals</a>
+    </li>
+    <li>
+      <a href="pruebat.html">Compararing 2 means</a>
+    </li>
+    <li>
+      <a href="anova.html">Comparing more than 2 means</a>
+    </li>
+    <li>
+      <a href="chi.html">Crosstables and chi-square analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="correlacion.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regresion1.html">Simple linear regresion</a>
+    </li>
+    <li>
+      <a href="regresion2.html">Multiple linear regresion</a>
+    </li>
+    <li>
+      <a href="logit.html">Logistic regresion</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapas.html">Maps</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Contact</a>
+</li>
+<li>
+  <a href="https://arturomaldonado.github.io/BarometroEdu_Web/index.html">Spanish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Confidence intervals using the Americas
+Barometer</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this section we will see how to construct confidence intervals of
+the mean using the data from the AmericasBarometer. For that, we will
+use the 2021 regional report “The Pulse of Democracy”, available <a
+href="https://www.vanderbilt.edu/lapop/ab2021/2021_LAPOP_AmericasBarometer_2021_Pulse_of_Democracy.pdf">here</a>
+and the 2018/19 report, available <a
+href="https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf">here</a>.
+The 2021 round reports data on executive coups. Figure 1.7 shows the
+percentage of citizens that tolerates an executive coup by country. In
+both cases, results include descriptive estimators and confidence
+intervals. The 2018/19 round of the AmericasBarometer reports data on
+social networks and political attitudes. In particular, Figure 3.9
+reports the degree of satisfaction with democracy by type of user of
+social networks.</p>
+</div>
+<div id="about-the-dataset" class="section level1">
+<h1>About the dataset</h1>
+<p>The data we are going to use should be cited as follows: Source:
+AmericasBarometer by the Latin American Public Opinion Project (LAPOP),
+wwww.LapopSurveys.org. This document loads a trimmed database. This
+database is hosted in the “materials_edu” repository of the LAPOP
+account on GitHub. It is recommended to clean the Environment before
+proceeding with this section.</p>
+<p>Using the library <code>rio</code> and the command
+<code>import</code>, we can import this database from this repository.
+In addition, the data from countries with codes less than or equal to 35
+are selected, that is, the observations of the United States and Canada
+are eliminated.</p>
+<pre class="r"><code>library(rio)
+lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)
+lapop18 = subset(lapop18, pais&lt;=35)</code></pre>
+<p>We also upload the dataset for the 2021 round.</p>
+<pre class="r"><code>lapop21 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData&quot;)
+lapop21 = subset(lapop21, pais&lt;=35)</code></pre>
+</div>
+<div id="tolerance-to-executive-coups" class="section level1">
+<h1>Tolerance to executive coups</h1>
+<p>Figure 1.7 of the report The Pulse of Democracy for the 2021 round of
+the AmericasBarometer shows the results of the percentage of citizens
+that tolerates an executive coup by country. This graph also displays
+the 95% confidence interval for each country.</p>
+<p><img src="Figure1.7.png" width="520" /></p>
+<p>The variable used in this figure is “jc15a”. Its wording is: “Do you
+believe that when the country is facing very difficult times, it is
+justifiable for the president of the country to close the Congress and
+govern without Congress?” The options are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Yes, it is justified</p></li>
+<li><p>No, it is not justified</p></li>
+</ol>
+</div>
+<div id="describing-tolerance-to-executive-coups"
+class="section level1">
+<h1>Describing tolerance to executive coups</h1>
+<p>To calculate the percentage of citizens that justify or tolerate an
+executive coup, we have to recode this variable in a way that those who
+justify have a value of 100 and those who do not justify have a value of
+0. In this case, we use the command <code>recode</code> and we tabulate
+with <code>table</code> to verify the recodification.</p>
+<pre class="r"><code>lapop21$jc15ar = car::recode(lapop21$jc15a, &quot;1=100; 2=0&quot;)
+table(lapop21$jc15ar)</code></pre>
+<pre><code>## 
+##     0   100 
+## 14711  5908</code></pre>
+<p>To calculate the percentsage of citizens who tolerate an executive
+coup we can use the command <code>table</code> and
+<code>prop.table</code>. The new variable “jc15ar” is a dummy variable.
+With this type of variable, the mean is the proportion of responses with
+100. It means that if we calculate the mean of this variable, the
+results is the percentage for all respondents. In this section we
+proceed as this variable is numeric. In strict sense, this is a
+categorical nominal variable. The calculation of standard deviations and
+confidence intervals are then referential.</p>
+<p>The result indicates that the percentage of citizens that tolerates
+an executive coup is 28.7% for the whole sample.</p>
+<pre class="r"><code>summary(lapop21$jc15ar)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    0.00    0.00    0.00   28.65  100.00  100.00   40042</code></pre>
+</div>
+<div id="confidence-intervals-for-tolerance-to-executive-coups"
+class="section level1">
+<h1>Confidence intervals for tolerance to executive coups</h1>
+<p>To calculate the 95% confidence interval of this percentage, we can
+use the command <code>t.test</code> or the library <code>lsr</code> that
+has the command <code>ciMean</code>.</p>
+<pre class="r"><code>t.test(lapop21$jc15ar)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  lapop21$jc15ar
+## t = 90.996, df = 20618, p-value &lt; 2.2e-16
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  28.03599 29.27038
+## sample estimates:
+## mean of x 
+##  28.65318</code></pre>
+<pre class="r"><code>library(lsr)
+ciMean(as.numeric(lapop21$jc15ar), na.rm = T)</code></pre>
+<pre><code>##          2.5%    97.5%
+## [1,] 28.03599 29.27038</code></pre>
+</div>
+<div id="tolerance-to-executive-coups-by-country"
+class="section level1">
+<h1>Tolerance to executive coups by country</h1>
+<p>Figure 1.7 shows the percentage of citizens that tolerates an
+executive coup by country To replicate this results, we have to define
+the variable “pais” as factor. We saved this change in a new variable
+“paises” that we label with the initials of each country.</p>
+<pre class="r"><code>lapop21$paises = as.factor(lapop21$pais)
+levels(lapop21$paises) &lt;- c(&quot;MX&quot;, &quot;GT&quot;, &quot;SV&quot;, &quot;HN&quot;, &quot;NI&quot;, &quot;CR&quot;,
+                            &quot;PN&quot;, &quot;CO&quot;, &quot;EC&quot;, &quot;BO&quot;, &quot;PE&quot;,
+                            &quot;PY&quot;, &quot;CL&quot;, &quot;UY&quot;, &quot;BR&quot;, &quot;AR&quot;, &quot;DO&quot;,
+                            &quot;HT&quot;, &quot;JA&quot;, &quot;GU&quot;)
+table(lapop21$paises)</code></pre>
+<pre><code>## 
+##   MX   GT   SV   HN   NI   CR   PN   CO   EC   BO   PE   PY   CL   UY   BR   AR 
+## 2998 3000 3245 2999 2997 2977 3183 3003 3005 3002 3038 3004 2954 3009 3016 3011 
+##   DO   HT   JA   GU 
+## 3000 3088 3121 3011</code></pre>
+<p>To calculate these percentages by country, we can use several
+alternatives. For example, the command <code>tapply</code> allows to
+calculate the mean of a variable by groups of other variable.</p>
+<pre class="r"><code>tapply(lapop21$jc15ar, lapop21$paises, mean, na.rm=T)</code></pre>
+<pre><code>##        MX        GT        SV        HN        NI        CR        PN        CO 
+## 30.312500 36.687307 48.068670 22.660819 31.111111       NaN 28.962444 35.041447 
+##        EC        BO        PE        PY        CL        UY        BR        AR 
+## 31.944444 32.082414 43.805613 34.459459 16.544118  8.552632 23.862069 13.795620 
+##        DO        HT        JA        GU 
+## 25.495959 44.042553 30.583215       NaN</code></pre>
+<p>Other way is to ude the library <code>plyr</code> and
+<code>dplyr</code> that include the command <code>ddply</code>. This
+command requires a definition of a dataframe “lapop21”, the grouping
+variable “paises”, and then the functions to calculate in each group,
+“mean” and “sd”.</p>
+<pre class="r"><code>library(plyr)
+library(dplyr)
+ddply(lapop21, &quot;paises&quot;, summarise, mean=mean(jc15ar, na.rm=T), sd=sd(jc15ar, na.rm=T))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["paises"],"name":[1],"type":["fct"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"MX","2":"30.312500","3":"45.99683"},{"1":"GT","2":"36.687307","3":"48.23249"},{"1":"SV","2":"48.068670","3":"49.99846"},{"1":"HN","2":"22.660819","3":"41.89433"},{"1":"NI","2":"31.111111","3":"46.32915"},{"1":"CR","2":"NaN","3":"NA"},{"1":"PN","2":"28.962444","3":"45.37325"},{"1":"CO","2":"35.041447","3":"47.72796"},{"1":"EC","2":"31.944444","3":"46.64234"},{"1":"BO","2":"32.082414","3":"46.69652"},{"1":"PE","2":"43.805613","3":"49.63180"},{"1":"PY","2":"34.459459","3":"47.54144"},{"1":"CL","2":"16.544118","3":"37.17149"},{"1":"UY","2":"8.552632","3":"27.97656"},{"1":"BR","2":"23.862069","3":"42.63874"},{"1":"AR","2":"13.795620","3":"34.49799"},{"1":"DO","2":"25.495959","3":"43.59987"},{"1":"HT","2":"44.042553","3":"49.69672"},{"1":"JA","2":"30.583215","3":"46.09229"},{"1":"GU","2":"NaN","3":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>As we observe in the table, there is no data for Costa Rica, nor
+Guyana. With the standard deviation, we can calculate the lower and
+upper limits of the confidence interval.</p>
+<p>We can do this directly with the library <code>Rmisc</code>. This
+library has the command <code>group.CI</code> that calculates the mean,
+the upper limit and the lower limit of a variable by groups of other
+variable. This table is saved in an object “coup”. This command does not
+include rows of countries with no data, so there are no rows for Costa
+Rica and Guyana.</p>
+<pre class="r"><code>library(Rmisc)
+coup = group.CI(jc15ar~paises, lapop21)
+coup</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["paises"],"name":[1],"type":["fct"],"align":["left"]},{"label":["jc15ar.upper"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["jc15ar.mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["jc15ar.lower"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"MX","2":"33.88284","3":"30.312500","4":"26.742162"},{"1":"GT","2":"40.41369","3":"36.687307","4":"32.960926"},{"1":"SV","2":"51.78163","3":"48.068670","4":"44.355713"},{"1":"HN","2":"25.80600","3":"22.660819","4":"19.515638"},{"1":"NI","2":"34.61243","3":"31.111111","4":"27.609797"},{"1":"PN","2":"31.20785","3":"28.962444","4":"26.717039"},{"1":"CO","2":"37.61174","3":"35.041447","4":"32.471157"},{"1":"EC","2":"34.35553","3":"31.944444","4":"29.533359"},{"1":"BO","2":"34.56732","3":"32.082414","4":"29.597507"},{"1":"PE","2":"46.35270","3":"43.805613","4":"41.258529"},{"1":"PY","2":"37.01489","3":"34.459459","4":"31.904033"},{"1":"CL","2":"18.52143","3":"16.544118","4":"14.566804"},{"1":"UY","2":"10.03646","3":"8.552632","4":"7.068802"},{"1":"BR","2":"26.05857","3":"23.862069","4":"21.665568"},{"1":"AR","2":"15.62400","3":"13.795620","4":"11.967243"},{"1":"DO","2":"27.81437","3":"25.495959","4":"23.177545"},{"1":"HT","2":"48.54708","3":"44.042553","4":"39.538028"},{"1":"JA","2":"32.99455","3":"30.583215","4":"28.171877"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>With this table, we can replicate Figure 1.7 with the library
+<code>ggplot</code>. In a previous section, we produce a bar graph by
+country, specifying variables in axis with <code>aes</code> and using
+<code>geom_bar(…)</code>. Now, we want to add confidence intervals. For
+this, we add a new layer with the specification
+<code>geom_errorbar(…)</code>. This specification requires a new
+<code>aes</code> where we have to specify a “ymin” and a “ymax” of the
+confidence interval. The table “coup” has the information for “ymin” in
+the column “jc15ar.lower” and the information for “ymax” in the column
+“jc15ar.upper”.</p>
+<p>We also have options like <code>width</code> to specify the width of
+the whiskers of the error bars, <code>color</code> to specify the color
+of error bars, <code>cex</code> to specify the width of lines and
+<code>linetype</code> to specify the type of line, in this case dashed
+lines.</p>
+<pre class="r"><code>library(ggplot2)
+fig1.7 = ggplot(coup, aes(x=reorder(paises, -jc15ar.mean), y=jc15ar.mean))+
+  geom_bar(width=0.5, fill=&quot;darkslategray3&quot;, colour=&quot;#69b3a2&quot;, stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=jc15ar.lower, ymax=jc15ar.upper), width=0.4, 
+                color=&quot;darkcyan&quot;, cex=0.4, linetype=3)+
+  geom_text(aes(label=paste(round(jc15ar.mean, 1), &quot;%&quot;)), vjust=-4.4, size=2.5)+
+  xlab(&quot;Country&quot;) + ylab(&quot;Tolerance to executive coups (%)&quot;)+
+  ylim(0, 60)
+fig1.7</code></pre>
+<p><img src="IC_files/figure-html/unnamed-chunk-9-1.png" /><!-- --></p>
+<p>These results, however, are not equal to those presented in Figure
+1.7. This is due to the fact that these calculations do not include
+survey weights. Below, we will show how to include survey weights in
+calculations to replicate this figure.</p>
+</div>
+<div id="describing-of-satisfaction-with-democracy"
+class="section level1">
+<h1>Describing of satisfaction with democracy</h1>
+<p>Figure 3.9 presents the percentage of respondents who are satisfied
+with democracy by type of social network user.</p>
+<p><img src="Figure3.9.JPG" width="436" /></p>
+<p>The variable satisfaction with democracy is called “pn4” and is coded
+as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Very satisfied</li>
+<li>Satisfied</li>
+<li>Dissatisfied</li>
+<li>Very dissatisfied</li>
+</ol>
+<p>Footnote 21 indicates that “Interviewees who select (1) or (2) are
+coded as satisfied with democracy.” Therefore, this variable has to be
+recoded. In this case, the command <code>recode</code> is used and
+tabulated, via <code>table</code>, to verify the recoding.</p>
+<pre class="r"><code>library(car)
+table(lapop18$pn4)</code></pre>
+<pre><code>## 
+##     1     2     3     4 
+##  1727  8916 12455  3855</code></pre>
+<pre class="r"><code>lapop18$pn4rr = car::recode(lapop18$pn4, &quot;1:2=100; 3:4=0&quot;)
+table(lapop18$pn4rr)</code></pre>
+<pre><code>## 
+##     0   100 
+## 16310 10643</code></pre>
+<p>The new variable “pn4rr” is a dummy variable. In this type of
+variables, the mean corresponds to the proportion of responses of 100.
+That is, if we calculate the mean of this variable, we are calculating
+the percentage for all the interviewees. In this section we will treat
+this variable as if it were a numeric variable. Strictly speaking, it is
+a nominal categorical variable. The calculations of standard deviations
+and then of confidence intervals, therefore, are referential.</p>
+<pre class="r"><code>summary(lapop18$pn4rr)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    0.00    0.00    0.00   39.49  100.00  100.00    1089</code></pre>
+<p>These results show an average of 39.5, that is, 39.5% of those
+interviewed are satisfied with democracy. We can also calculate the
+confidence interval for this variable in several ways. A first way is by
+performing a one-sample t-test, using the command <code>t.test</code>.
+Other way is using the command <code>ciMean</code> from the library
+<code>lsr</code>.</p>
+<pre class="r"><code>t.test(lapop18$pn4rr)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  lapop18$pn4rr
+## t = 132.62, df = 26952, p-value &lt; 2.2e-16
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  38.90364 40.07087
+## sample estimates:
+## mean of x 
+##  39.48726</code></pre>
+<pre class="r"><code>library(lsr)
+ciMean(lapop18$pn4rr, na.rm=T)</code></pre>
+<pre><code>##          2.5%    97.5%
+## [1,] 38.90364 40.07087</code></pre>
+<p>These results indicate that the 95% confidence interval of the mean
+for satisfaction with democracy varies between 38.9% and 40.1% . We
+could change this default value to 99% confidence by adding the
+specification <code>conf = 0.99</code> to the command
+<code>ciMean</code>.</p>
+</div>
+<div
+id="satisfaction-with-democracy-by-groups-of-consumption-of-information-in-social-networks"
+class="section level1">
+<h1>Satisfaction with democracy by groups of consumption of information
+in social networks</h1>
+<p>The 2018/19 report uses a variable that measures “frequent exposure
+to political information.” This variable is constructed in a complex
+way, based on the 3 social networks. In this case we are going to start
+with a simpler recoding to recreate the confidence intervals of the
+variable “satisfaction with democracy” by groups of consumption of
+information in each social network. Later the variable used in the
+report will be replicated. The frequency of information consumption
+(variables “smedia2” for Facebook, “smedia5” for Twitter and “smedia8”
+for WhatsApp) of each social network is measured on the following
+scale:</p>
+<ol style="list-style-type: decimal">
+<li>Daily</li>
+<li>A few times a week</li>
+<li>A few times a month</li>
+<li>A few times a year</li>
+<li>Never</li>
+</ol>
+<p>We are going to recode these variables in such a way that those who
+respond daily or a few times a week will be classified as “high use”,
+those who respond from 3 to 4 will be classified as “low use” and those
+who respond “never”. they will be classified as “non-users”. A similar
+classification scheme is used to define the users of the 3 social
+networks. The new recoded variables are converted to a factor and
+labeled.</p>
+<pre class="r"><code>table(lapop18$smedia2)</code></pre>
+<pre><code>## 
+##    1    2    3    4    5 
+## 8633 4927 1286  282  231</code></pre>
+<pre class="r"><code>table(lapop18$smedia5)</code></pre>
+<pre><code>## 
+##   1   2   3   4   5 
+## 795 728 422 193 220</code></pre>
+<pre class="r"><code>table(lapop18$smedia8)</code></pre>
+<pre><code>## 
+##     1     2     3     4     5 
+## 14151  2646   495    50    87</code></pre>
+<pre class="r"><code>lapop18$smedia2r = car::recode(lapop18$smedia2, &quot;1:2=1; 3:4=2; 5=3&quot;)
+lapop18$smedia5r = car::recode(lapop18$smedia5, &quot;1:2=1; 3:4=2; 5=3&quot;)
+lapop18$smedia8r = car::recode(lapop18$smedia8, &quot;1:2=1; 3:4=2; 5=3&quot;)
+lapop18$smedia2r = as.factor(lapop18$smedia2r)
+lapop18$smedia5r = as.factor(lapop18$smedia5r)
+lapop18$smedia8r = as.factor(lapop18$smedia8r)
+levels(lapop18$smedia2r) = c(&quot;High use&quot;, &quot;Low use&quot;, &quot;Non user&quot;)
+levels(lapop18$smedia5r) = c(&quot;High use&quot;, &quot;Low use&quot;, &quot;Non user&quot;)
+levels(lapop18$smedia8r) = c(&quot;High use&quot;, &quot;Low use&quot;, &quot;Non user&quot;)
+table(lapop18$smedia2r)</code></pre>
+<pre><code>## 
+## High use  Low use Non user 
+##    13560     1568      231</code></pre>
+<pre class="r"><code>table(lapop18$smedia5r)</code></pre>
+<pre><code>## 
+## High use  Low use Non user 
+##     1523      615      220</code></pre>
+<pre class="r"><code>table(lapop18$smedia8r)</code></pre>
+<pre><code>## 
+## High use  Low use Non user 
+##    16797      545       87</code></pre>
+<p>With these recoded variables, it is possible to calculate the mean
+(which are the percentages) of satisfaction with democracy for each
+group of information consumption in social networks. This can be done in
+multiple ways. If you want to compare the means, you can use the command
+<code>tapply</code>.</p>
+<pre class="r"><code>tapply(lapop18$pn4rr, lapop18$smedia2r, mean, na.rm=T) #Facebook</code></pre>
+<pre><code>## High use  Low use Non user 
+## 37.55182 37.94466 40.74074</code></pre>
+<pre class="r"><code>tapply(lapop18$pn4rr, lapop18$smedia5r, mean, na.rm=T) #Twitter</code></pre>
+<pre><code>## High use  Low use Non user 
+## 39.66777 37.37542 41.78404</code></pre>
+<pre class="r"><code>tapply(lapop18$pn4rr, lapop18$smedia8r, mean, na.rm=T) #Whatsapp</code></pre>
+<pre><code>## High use  Low use Non user 
+## 37.39093 38.92100 43.37349</code></pre>
+<p>Other option that can display both the mean and the standard
+deviation is through the library <code>plyr</code> and the command
+<code>ddply</code>. The code for Facebook would be:</p>
+<pre class="r"><code>library(plyr)
+ddply(lapop18, &quot;smedia2r&quot;, summarise, mean=mean(pn4rr, na.rm=T), sd=sd(pn4rr, na.rm=T))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["smedia2r"],"name":[1],"type":["fct"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"High use","2":"37.55182","3":"48.42747"},{"1":"Low use","2":"37.94466","3":"48.54092"},{"1":"Non user","2":"40.74074","3":"49.24932"},{"1":"NA","2":"41.80890","3":"49.32656"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>It is important to note that in this case we have not indicated that
+internally we do not work with missing values (using the specification
+<code>filter(!is.na(wa_user))</code>), so the table above presents a row
+of NA, observations with no information of using of the social network,
+where the average and the standard deviation of the variable
+satisfaction with democracy are calculated. Finally, an option that
+allows you to display many statistics for each group is
+<code>describeBy</code> from the library <code>psych</code>. The code
+for Twitter is:</p>
+<pre class="r"><code>library(psych)
+describeBy(lapop18$pn4rr, group=lapop18$smedia5r)</code></pre>
+<pre><code>## 
+##  Descriptive statistics by group 
+## group: High use
+##    vars    n  mean    sd median trimmed mad min max range skew kurtosis   se
+## X1    1 1505 39.67 48.94      0    37.1   0   0 100   100 0.42    -1.82 1.26
+## ------------------------------------------------------------ 
+## group: Low use
+##    vars   n  mean    sd median trimmed mad min max range skew kurtosis   se
+## X1    1 602 37.38 48.42      0   34.23   0   0 100   100 0.52    -1.73 1.97
+## ------------------------------------------------------------ 
+## group: Non user
+##    vars   n  mean    sd median trimmed mad min max range skew kurtosis   se
+## X1    1 213 41.78 49.44      0   39.77   0   0 100   100 0.33     -1.9 3.39</code></pre>
+<p>However, what interests us is to calculate the confidence intervals
+for each group. Figure 3.9 of the report presents the mean of
+satisfaction with democracy, shown as a point, and the confidence
+intervals for each group, shown as a gray area with lower and upper
+limits. The library <code>Rmisc</code> and the command
+<code>group.CI</code> can be used to calculate the confidence intervals
+of the variable satisfaction with democracy by groups of information
+consumption on Facebook.</p>
+<pre class="r"><code>library(Rmisc)
+group.CI(pn4rr~smedia2r, lapop18)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["smedia2r"],"name":[1],"type":["fct"],"align":["left"]},{"label":["pn4rr.upper"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["pn4rr.mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["pn4rr.lower"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"High use","2":"38.37595","3":"37.55182","4":"36.72770"},{"1":"Low use","2":"40.38847","3":"37.94466","4":"35.50086"},{"1":"Non user","2":"47.34574","3":"40.74074","4":"34.13574"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>With these data, for example, the average satisfaction with democracy
+among the group with high use of information on Facebook is 37.6%. The
+lower limit of the confidence interval is 36.7% and the upper limit is
+38.4%. With these data, a bar chart similar to 3.9 could be
+replicated.</p>
+</div>
+<div
+id="confidence-intervals-for-satisfaction-with-democracy-by-groups-of-twitter-users"
+class="section level1">
+<h1>Confidence Intervals for satisfaction with democracy by groups of
+Twitter users</h1>
+<p>The easiest way to plot confidence intervals by groups is to use the
+command <code>plotmeans</code>.</p>
+<pre class="r"><code>library(gplots)
+plotmeans(lapop18$pn4rr~lapop18$smedia5r,
+          xlab=&quot;Type of Twitter user&quot;,
+          ylab=&quot;Satisfaction with democracy&quot;,
+          ylim=c(0, 50),
+          mean.labels=T, digits=1,
+          connect=F
+         )</code></pre>
+<p><img src="IC_files/figure-html/grafxgrup-1.png" /><!-- --></p>
+<p>This option displays the confidence intervals but is difficult if you
+want to plot the bars. The library <code>ggplot</code> gives us more
+options and allows us to plot in a similar way to Figure 3.9 of the
+report. For this, a “tw.use” dataframe is first saved with the data of
+the mean and the upper and lower limits of each group, using the command
+<code>group.CI</code>. It is the data from this dataframe that is used
+with <code>ggplot</code> and a graph is created which is saved in a
+“graf1” object. With this library, the layer <code>geom_bar()</code> is
+added to define that you want a bar graph of the variables specified in
+<code>aes</code>. Then the layer <code>geom_errorbar()</code> is added
+to add the error bars and then the mean values with
+<code>geom_text()</code>. Finally, the X and Y axis are labeled with
+<code>xlab</code> and <code>ylab</code> and the limits of the Y axis are
+defined with <code>ylim</code>.</p>
+<pre class="r"><code>tw.use &lt;- group.CI(pn4rr~smedia5r, lapop18)
+library(ggplot2)
+graf1 &lt;- ggplot(tw.use, aes(x=smedia5r, y=pn4rr.mean))+
+  geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=pn4rr.lower, ymax=pn4rr.upper), width=0.2)+
+  geom_text(aes(label=paste(round(pn4rr.mean, 1), &quot;%&quot;)), vjust=-4.2, size=4)+
+  xlab(&quot;Type of Twitter user&quot;) + ylab(&quot;Satisfaction with democracy (%)&quot;)+
+  ylim(0, 50)
+graf1</code></pre>
+<p><img src="IC_files/figure-html/grafxgrup2-1.png" /><!-- --></p>
+<p>According to these results, satisfaction with democracy is higher in
+non-Twitter users, compared to users, although the differences are not
+statistically significant from a visual comparison between confidence
+intervals.</p>
+</div>
+<div
+id="satisfaction-with-democracy-by-groups-of-type-of-user-of-social-networks"
+class="section level1">
+<h1>Satisfaction with democracy by groups of type of user of social
+networks</h1>
+<p>So far, confidence intervals of satisfaction with democracy have been
+created by type of Twitter user. The report aggregates the users of the
+three social networks to identify three types of users: high-users,
+low-users, and non-users of any social network. The way of recoding this
+type of user of three social networks is based on several conditions. As
+the report says: “We use the same coding as in the previous section, to
+distinguish between those who frequentle use social media (those with
+accounts that they access a few times a week or daily) and those who do
+not use social networks frequently (those with accounts that they access
+a few times a month or a few times a year). We also include non-users:
+those who do not have any social network accounts (those who indicate
+that they do not have an account on Facebook, Twitter or Whatsapp) and
+those who have an account, but never use it” (p.81). We first identify
+those who use each social network a few times a week or daily as 1 and
+if they use each social network a few times a month or a few times a
+year, as 0. For this we use the command <code>ifelse</code>. Then, we
+add the values of each social network in a single variable, with values
+between 0 and 3. The command <code>rowSums</code> is used, which allows
+the horizontal sum of defined variables, in this case those at position
+<code>[, 89:91]</code>. In this command, we use the specification
+<code>na.rm=T</code> so that the sum does not take missing values into
+account.</p>
+<pre class="r"><code>lapop18$sm2 = ifelse(lapop18$smedia2==1 | lapop18$smedia2==2, 1, 0)
+lapop18$sm5 = ifelse(lapop18$smedia5==1 | lapop18$smedia5==2, 1, 0)
+lapop18$sm8 = ifelse(lapop18$smedia8==1 | lapop18$smedia8==2, 1, 0)
+lapop18$anyhi = rowSums(lapop18[,89:91], na.rm=T)
+table(lapop18$anyhi)</code></pre>
+<pre><code>## 
+##     0     1     2     3 
+##  9831  5811 11131  1269</code></pre>
+<p>Starting from this variable, a variable is created that aggregates
+the three social networks, called “hi_lo_non”. First, this variable is
+created as a vector of NAs. Values of 1, 2, 3 or NA are then imputed to
+it, depending on the values of “anyhi” or the values of the social
+network variables. A new variable of type factor is then created, with
+identical values as “hi_lo_non” and is labeled. The definition of the
+conditionality is worked through the square brackets <code>[...]</code>.
+In this way, the conditions are defined as follows:</p>
+<ul>
+<li><p>The variable “hi_lo_non is equal to 1 if the variable anyhi is
+greater than or equal to 1 (use daily or a few times a week) =
+<code>lapop18$hi_lo_non[lapop18$anyhi&gt;=1] = 1</code></p></li>
+<li><p>The variable “hi_lo_non is equal to 2 if the variable anyhi is
+equal to 0 (use a few times a year or never) =
+<code>lapop18$hi_lo_non[lapop18$anyhi==0] = 2</code></p></li>
+<li><p>The variable “hi_lo_non is equal to 3 if the variables of account
+holding are equal to 2 (No) =
+<code>lapop18$hi_lo_non[lapop18$smedia1==2 &amp; lapop18$smedia4==2 &amp; lapop18$smedia7==2] = 3</code></p></li>
+</ul>
+<p>The following coding rules follow the same logic of combining other
+variables to impute the value 3 or NA.</p>
+<pre class="r"><code>lapop18$hi_lo_non = NA #create a vector with NAs#
+lapop18$hi_lo_non[lapop18$anyhi&gt;=1] = 1 #1 is coded for those who use a social network daily or a few times a week.#
+lapop18$hi_lo_non[lapop18$anyhi==0] = 2 #Those who use a social network a few times a month and a year are coded as 2#
+lapop18$hi_lo_non[lapop18$smedia1==2 &amp; lapop18$smedia4==2 &amp; lapop18$smedia7==2] = 3 #Those who do not have social networks are coded as 3#
+lapop18$hi_lo_non[lapop18$smedia2==5 &amp; lapop18$smedia5==5 &amp; lapop18$smedia8==5] = 3 #Those who never use any social network are coded as 3#
+lapop18$hi_lo_non[lapop18$pais==3 &amp; (lapop18$smedia2==5 | lapop18$smedia5==5 | lapop18$smedia8==5)] = 3 #A particular code is applied to country 3#
+lapop18$hi_lo_non[lapop18$pais==3 &amp; (lapop18$smedia1==2 | lapop18$smedia4==2 | lapop18$smedia7==2)] = 3 #A particular code is applied to country 3#
+
+lapop18$hilon = as.factor(lapop18$hi_lo_non)
+levels(lapop18$hilon) = c(&quot;High use&quot;, &quot;Low use&quot;, &quot;Non user&quot;)
+prop.table(table(lapop18$hilon))*100</code></pre>
+<pre><code>## 
+##  High use   Low use  Non user 
+## 64.941873  3.480494 31.577634</code></pre>
+<p>According to these data, 64.9% of those interviewed report a high use
+of social networks, while, at the other extreme, there are 31.6% who do
+not use any social network. These data differ slightly from those
+reported in the Appendix to the report, available <a
+href="https://www.vanderbilt.edu/lapop/ab2018/Appendix_Material_for_2018-19_AmericasBarometer_Report-Comparative_Chapters_10.13.19.pdf">here</a>,
+where 65.34% of high use and 31.60% of non-users are reported. These
+differences may be due to differences in the interpretation of the
+coding rules from Stata to R.</p>
+<p>In the same way that the graph of average satisfaction with democracy
+by type of Twitter user was produced using <code>ggplot</code>, now the
+same will be done but for the users of the three social networks,
+variable “hilon”.</p>
+<pre class="r"><code>library(Rmisc)
+satis.use = group.CI(pn4rr~hilon, lapop18)
+library(ggplot2)
+fig3.9 = ggplot(satis.use, aes(x=hilon, y=pn4rr.mean))+
+  geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=pn4rr.lower, ymax=pn4rr.upper), width=0.2)+
+  geom_text(aes(label=paste(round(pn4rr.mean, 1), &quot;%&quot;)), vjust=-2.5, size=4)+
+  xlab(&quot;Type of social network user&quot;) + ylab(&quot;Satisfaction with democracy (%)&quot;)+
+  ylim(0, 50)
+fig3.9</code></pre>
+<p><img src="IC_files/figure-html/graf3.9-1.png" /><!-- --></p>
+<p>This graph would be a replication of the one presented in the report
+(Figure 3.9 on page 62), with minor differences due to the encoding of
+the resulting data.</p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this section we have worked with a recoded dummy variable
+(satisfaction with democracy), which can be used as a numerical variable
+for calculating confidence intervals of proportions. With this variable,
+the confidence interval of the mean has been calculated, which would be
+that of the proportion of respondents who are satisfied with democracy.
+Then, these variables have been described by groups of a factor variable
+(consumption of political information). It has been presented how to
+calculate the confidence intervals of the numerical variable by groups
+of the factor variable. Finally, it has been presented how to plot the
+confidence intervals by groups.</p>
+</div>
+<div id="calculations-including-survey-weights" class="section level1">
+<h1>Calculations including survey weights</h1>
+<p>Other way to calculate the confidence interval, including the survey
+weight, is by using the library <code>survey</code> and the command
+<code>confint</code> along with the native command
+<code>svymean</code>.</p>
+<pre class="r"><code>library(survey)
+design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)</code></pre>
+<p>In the same way as in the previous section, the satisfaction with
+democracy variable can be described by incorporating survey weights
+using the command <code>svymean</code>.</p>
+<pre class="r"><code>svymean(~pn4rr, design18, na.rm=T)</code></pre>
+<pre><code>##         mean     SE
+## pn4rr 39.459 0.3317</code></pre>
+<p>To calculate the confidence interval, the above code has to be nested
+inside the command <code>confint</code>. This command calculates the 95%
+confidence interval by default. You could change this default value to
+99% confidence by adding the <code>conf = 0.99</code> specification to
+the command.</p>
+<pre class="r"><code>confint(svymean(~pn4rr, design18, na.rm=T))</code></pre>
+<pre><code>##          2.5 %   97.5 %
+## pn4rr 38.80884 40.10901</code></pre>
+<p>The mean and confidence interval of satisfaction with democracy can
+also be calculated incorporating the survey weight using the command
+<code>svyby</code>. Within this command, the numerical variable to be
+described (<code>~pn4rr</code>), the variable that forms the groups
+(<code>~smedia5r</code>), the sample design (<code>design18</code>), the
+function to be calculated ( <code>svymean</code>), that does not take
+into account missing values (<code>na.rm=T</code>) and the confidence
+interval of each group (<code>vartype="ci"</code>) are defined.</p>
+<pre class="r"><code>tw.uso.weighted &lt;- svyby(~pn4rr, ~smedia5r, design18, svymean, na.rm=T, vartype = &quot;ci&quot;)
+tw.uso.weighted</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["smedia5r"],"name":[1],"type":["fct"],"align":["left"]},{"label":["pn4rr"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["ci_l"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ci_u"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"High use","2":"39.46510","3":"36.98285","4":"41.94735","_rn_":"High use"},{"1":"Low use","2":"37.56570","3":"33.74961","4":"41.38179","_rn_":"Low use"},{"1":"Non user","2":"42.48075","3":"35.57877","4":"49.38274","_rn_":"Non user"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>To be able to plot, these calculations are saved in a
+“tw.uso.weighted” dataframe, which includes the mean data for each group
+and the lower and upper limit of the confidence interval. In the same
+way as with data that does not include the survey effect, the library
+<code>ggplot</code> is used and a plot is created which is saved in a
+“graf2” object. Very similar specifications to the previous examples are
+used.</p>
+<pre class="r"><code>graf2 &lt;- ggplot(tw.uso.weighted, aes(x=smedia5r, y=pn4rr))+
+  geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=ci_l, ymax=ci_u), width=0.2)+
+  geom_text(aes(label=paste(round(pn4rr, 1), &quot;%&quot;)), vjust=-4.2, size=4)+
+  xlab(&quot;Twitter user type&quot;) + ylab(&quot;Satisfaction with democracy (%)&quot;)+
+  ylim(0, 50)
+graf2</code></pre>
+<p><img src="IC_files/figure-html/weightedbars-1.png" /><!-- --></p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29uZmlkZW5jZSBpbnRlcnZhbHMgdXNpbmcgdGhlIEFtZXJpY2FzIEJhcm9tZXRlciIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29sbGFwc2VkOiBmYWxzZQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgdG9jX2RlcHRoOiAxCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogZmxhdGx5CiAgICBkZl9wcmludDogcGFnZWQKICAgIHNlbGZfY29udGFpbmVkOiBubwogICAga2VlcF9tZDogeWVzCmVkaXRvcl9vcHRpb25zOiAKICBtYXJrZG93bjogCiAgICB3cmFwOiBzZW50ZW5jZQotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQobWVzc2FnZT1GQUxTRSx3YXJuaW5nPUZBTFNFLCBjYWNoZT1UUlVFKQpgYGAKCmBgYHtjc3MgY29sb3IsIGVjaG89RkFMU0V9Ci5jb2x1bW5zIHtkaXNwbGF5OiBmbGV4O30KaDEge2NvbG9yOiAjMzM2NkNDO30KYGBgCgojIEludHJvZHVjdGlvbgoKSW4gdGhpcyBzZWN0aW9uIHdlIHdpbGwgc2VlIGhvdyB0byBjb25zdHJ1Y3QgY29uZmlkZW5jZSBpbnRlcnZhbHMgb2YgdGhlIG1lYW4gdXNpbmcgdGhlIGRhdGEgZnJvbSB0aGUgQW1lcmljYXNCYXJvbWV0ZXIuCkZvciB0aGF0LCB3ZSB3aWxsIHVzZSB0aGUgMjAyMSByZWdpb25hbCByZXBvcnQgIlRoZSBQdWxzZSBvZiBEZW1vY3JhY3kiLCBhdmFpbGFibGUgW2hlcmVdKGh0dHBzOi8vd3d3LnZhbmRlcmJpbHQuZWR1L2xhcG9wL2FiMjAyMS8yMDIxX0xBUE9QX0FtZXJpY2FzQmFyb21ldGVyXzIwMjFfUHVsc2Vfb2ZfRGVtb2NyYWN5LnBkZikgYW5kIHRoZSAyMDE4LzE5IHJlcG9ydCwgYXZhaWxhYmxlIFtoZXJlXShodHRwczovL3d3dy52YW5kZXJiaWx0LmVkdS9sYXBvcC9hYjIwMTgvMjAxOC0xOV9BbWVyaWNhc0Jhcm9tZXRlcl9SZWdpb25hbF9SZXBvcnRfU3BhbmlzaF9XXzAzLjI3LjIwLnBkZikuClRoZSAyMDIxIHJvdW5kIHJlcG9ydHMgZGF0YSBvbiBleGVjdXRpdmUgY291cHMuCkZpZ3VyZSAxLjcgc2hvd3MgdGhlIHBlcmNlbnRhZ2Ugb2YgY2l0aXplbnMgdGhhdCB0b2xlcmF0ZXMgYW4gZXhlY3V0aXZlIGNvdXAgYnkgY291bnRyeS4KSW4gYm90aCBjYXNlcywgcmVzdWx0cyBpbmNsdWRlIGRlc2NyaXB0aXZlIGVzdGltYXRvcnMgYW5kIGNvbmZpZGVuY2UgaW50ZXJ2YWxzLgpUaGUgMjAxOC8xOSByb3VuZCBvZiB0aGUgQW1lcmljYXNCYXJvbWV0ZXIgcmVwb3J0cyBkYXRhIG9uIHNvY2lhbCBuZXR3b3JrcyBhbmQgcG9saXRpY2FsIGF0dGl0dWRlcy4KSW4gcGFydGljdWxhciwgRmlndXJlIDMuOSByZXBvcnRzIHRoZSBkZWdyZWUgb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGJ5IHR5cGUgb2YgdXNlciBvZiBzb2NpYWwgbmV0d29ya3MuCgojIEFib3V0IHRoZSBkYXRhc2V0CgpUaGUgZGF0YSB3ZSBhcmUgZ29pbmcgdG8gdXNlIHNob3VsZCBiZSBjaXRlZCBhcyBmb2xsb3dzOiBTb3VyY2U6IEFtZXJpY2FzQmFyb21ldGVyIGJ5IHRoZSBMYXRpbiBBbWVyaWNhbiBQdWJsaWMgT3BpbmlvbiBQcm9qZWN0IChMQVBPUCksIHd3d3cuTGFwb3BTdXJ2ZXlzLm9yZy4KVGhpcyBkb2N1bWVudCBsb2FkcyBhIHRyaW1tZWQgZGF0YWJhc2UuClRoaXMgZGF0YWJhc2UgaXMgaG9zdGVkIGluIHRoZSAibWF0ZXJpYWxzX2VkdSIgcmVwb3NpdG9yeSBvZiB0aGUgTEFQT1AgYWNjb3VudCBvbiBHaXRIdWIuCkl0IGlzIHJlY29tbWVuZGVkIHRvIGNsZWFuIHRoZSBFbnZpcm9ubWVudCBiZWZvcmUgcHJvY2VlZGluZyB3aXRoIHRoaXMgc2VjdGlvbi4KClVzaW5nIHRoZSBsaWJyYXJ5IGByaW9gIGFuZCB0aGUgY29tbWFuZCBgaW1wb3J0YCwgd2UgY2FuIGltcG9ydCB0aGlzIGRhdGFiYXNlIGZyb20gdGhpcyByZXBvc2l0b3J5LgpJbiBhZGRpdGlvbiwgdGhlIGRhdGEgZnJvbSBjb3VudHJpZXMgd2l0aCBjb2RlcyBsZXNzIHRoYW4gb3IgZXF1YWwgdG8gMzUgYXJlIHNlbGVjdGVkLCB0aGF0IGlzLCB0aGUgb2JzZXJ2YXRpb25zIG9mIHRoZSBVbml0ZWQgU3RhdGVzIGFuZCBDYW5hZGEgYXJlIGVsaW1pbmF0ZWQuCgpgYGB7ciBiYXNlfQpsaWJyYXJ5KHJpbykKbGFwb3AxOCA9IGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9sYXBvcC1jZW50cmFsL21hdGVyaWFsc19lZHUvbWFpbi9MQVBPUF9BQl9NZXJnZV8yMDE4X3YxLjAuc2F2IikKbGFwb3AxOCA9IHN1YnNldChsYXBvcDE4LCBwYWlzPD0zNSkKYGBgCgpXZSBhbHNvIHVwbG9hZCB0aGUgZGF0YXNldCBmb3IgdGhlIDIwMjEgcm91bmQuCgpgYGB7cn0KbGFwb3AyMSA9IGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9sYXBvcC1jZW50cmFsL21hdGVyaWFsc19lZHUvbWFpbi9sYXBvcDIxLlJEYXRhIikKbGFwb3AyMSA9IHN1YnNldChsYXBvcDIxLCBwYWlzPD0zNSkKYGBgCgojIFRvbGVyYW5jZSB0byBleGVjdXRpdmUgY291cHMKCkZpZ3VyZSAxLjcgb2YgdGhlIHJlcG9ydCBUaGUgUHVsc2Ugb2YgRGVtb2NyYWN5IGZvciB0aGUgMjAyMSByb3VuZCBvZiB0aGUgQW1lcmljYXNCYXJvbWV0ZXIgc2hvd3MgdGhlIHJlc3VsdHMgb2YgdGhlIHBlcmNlbnRhZ2Ugb2YgY2l0aXplbnMgdGhhdCB0b2xlcmF0ZXMgYW4gZXhlY3V0aXZlIGNvdXAgYnkgY291bnRyeS4KVGhpcyBncmFwaCBhbHNvIGRpc3BsYXlzIHRoZSA5NSUgY29uZmlkZW5jZSBpbnRlcnZhbCBmb3IgZWFjaCBjb3VudHJ5LgoKIVtdKEZpZ3VyZTEuNy5wbmcpe3dpZHRoPSI1MjAifQoKVGhlIHZhcmlhYmxlIHVzZWQgaW4gdGhpcyBmaWd1cmUgaXMgImpjMTVhIi4KSXRzIHdvcmRpbmcgaXM6ICJEbyB5b3UgYmVsaWV2ZSB0aGF0IHdoZW4gdGhlIGNvdW50cnkgaXMgZmFjaW5nIHZlcnkgZGlmZmljdWx0IHRpbWVzLCBpdCBpcyBqdXN0aWZpYWJsZSBmb3IgdGhlIHByZXNpZGVudCBvZiB0aGUgY291bnRyeSB0byBjbG9zZSB0aGUgQ29uZ3Jlc3MgYW5kIGdvdmVybiB3aXRob3V0IENvbmdyZXNzPyIgVGhlIG9wdGlvbnMgYXJlOgoKMS4gIFllcywgaXQgaXMganVzdGlmaWVkCgoyLiAgTm8sIGl0IGlzIG5vdCBqdXN0aWZpZWQKCiMgRGVzY3JpYmluZyB0b2xlcmFuY2UgdG8gZXhlY3V0aXZlIGNvdXBzCgpUbyBjYWxjdWxhdGUgdGhlIHBlcmNlbnRhZ2Ugb2YgY2l0aXplbnMgdGhhdCBqdXN0aWZ5IG9yIHRvbGVyYXRlIGFuIGV4ZWN1dGl2ZSBjb3VwLCB3ZSBoYXZlIHRvIHJlY29kZSB0aGlzIHZhcmlhYmxlIGluIGEgd2F5IHRoYXQgdGhvc2Ugd2hvIGp1c3RpZnkgaGF2ZSBhIHZhbHVlIG9mIDEwMCBhbmQgdGhvc2Ugd2hvIGRvIG5vdCBqdXN0aWZ5IGhhdmUgYSB2YWx1ZSBvZiAwLgpJbiB0aGlzIGNhc2UsIHdlIHVzZSB0aGUgY29tbWFuZCBgcmVjb2RlYCBhbmQgd2UgdGFidWxhdGUgd2l0aCBgdGFibGVgIHRvIHZlcmlmeSB0aGUgcmVjb2RpZmljYXRpb24uCgpgYGB7cn0KbGFwb3AyMSRqYzE1YXIgPSBjYXI6OnJlY29kZShsYXBvcDIxJGpjMTVhLCAiMT0xMDA7IDI9MCIpCnRhYmxlKGxhcG9wMjEkamMxNWFyKQpgYGAKClRvIGNhbGN1bGF0ZSB0aGUgcGVyY2VudHNhZ2Ugb2YgY2l0aXplbnMgd2hvIHRvbGVyYXRlIGFuIGV4ZWN1dGl2ZSBjb3VwIHdlIGNhbiB1c2UgdGhlIGNvbW1hbmQgYHRhYmxlYCBhbmQgYHByb3AudGFibGVgLgpUaGUgbmV3IHZhcmlhYmxlICJqYzE1YXIiIGlzIGEgZHVtbXkgdmFyaWFibGUuCldpdGggdGhpcyB0eXBlIG9mIHZhcmlhYmxlLCB0aGUgbWVhbiBpcyB0aGUgcHJvcG9ydGlvbiBvZiByZXNwb25zZXMgd2l0aCAxMDAuCkl0IG1lYW5zIHRoYXQgaWYgd2UgY2FsY3VsYXRlIHRoZSBtZWFuIG9mIHRoaXMgdmFyaWFibGUsIHRoZSByZXN1bHRzIGlzIHRoZSBwZXJjZW50YWdlIGZvciBhbGwgcmVzcG9uZGVudHMuCkluIHRoaXMgc2VjdGlvbiB3ZSBwcm9jZWVkIGFzIHRoaXMgdmFyaWFibGUgaXMgbnVtZXJpYy4KSW4gc3RyaWN0IHNlbnNlLCB0aGlzIGlzIGEgY2F0ZWdvcmljYWwgbm9taW5hbCB2YXJpYWJsZS4KVGhlIGNhbGN1bGF0aW9uIG9mIHN0YW5kYXJkIGRldmlhdGlvbnMgYW5kIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIGFyZSB0aGVuIHJlZmVyZW50aWFsLgoKVGhlIHJlc3VsdCBpbmRpY2F0ZXMgdGhhdCB0aGUgcGVyY2VudGFnZSBvZiBjaXRpemVucyB0aGF0IHRvbGVyYXRlcyBhbiBleGVjdXRpdmUgY291cCBpcyAyOC43JSBmb3IgdGhlIHdob2xlIHNhbXBsZS4KCmBgYHtyfQpzdW1tYXJ5KGxhcG9wMjEkamMxNWFyKQpgYGAKCiMgQ29uZmlkZW5jZSBpbnRlcnZhbHMgZm9yIHRvbGVyYW5jZSB0byBleGVjdXRpdmUgY291cHMKClRvIGNhbGN1bGF0ZSB0aGUgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgb2YgdGhpcyBwZXJjZW50YWdlLCB3ZSBjYW4gdXNlIHRoZSBjb21tYW5kIGB0LnRlc3RgIG9yIHRoZSBsaWJyYXJ5IGBsc3JgIHRoYXQgaGFzIHRoZSBjb21tYW5kIGBjaU1lYW5gLgoKYGBge3J9CnQudGVzdChsYXBvcDIxJGpjMTVhcikKbGlicmFyeShsc3IpCmNpTWVhbihhcy5udW1lcmljKGxhcG9wMjEkamMxNWFyKSwgbmEucm0gPSBUKQpgYGAKCiMgVG9sZXJhbmNlIHRvIGV4ZWN1dGl2ZSBjb3VwcyBieSBjb3VudHJ5CgpGaWd1cmUgMS43IHNob3dzIHRoZSBwZXJjZW50YWdlIG9mIGNpdGl6ZW5zIHRoYXQgdG9sZXJhdGVzIGFuIGV4ZWN1dGl2ZSBjb3VwIGJ5IGNvdW50cnkgVG8gcmVwbGljYXRlIHRoaXMgcmVzdWx0cywgd2UgaGF2ZSB0byBkZWZpbmUgdGhlIHZhcmlhYmxlICJwYWlzIiBhcyBmYWN0b3IuCldlIHNhdmVkIHRoaXMgY2hhbmdlIGluIGEgbmV3IHZhcmlhYmxlICJwYWlzZXMiIHRoYXQgd2UgbGFiZWwgd2l0aCB0aGUgaW5pdGlhbHMgb2YgZWFjaCBjb3VudHJ5LgoKYGBge3J9CmxhcG9wMjEkcGFpc2VzID0gYXMuZmFjdG9yKGxhcG9wMjEkcGFpcykKbGV2ZWxzKGxhcG9wMjEkcGFpc2VzKSA8LSBjKCJNWCIsICJHVCIsICJTViIsICJITiIsICJOSSIsICJDUiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAiUE4iLCAiQ08iLCAiRUMiLCAiQk8iLCAiUEUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIlBZIiwgIkNMIiwgIlVZIiwgIkJSIiwgIkFSIiwgIkRPIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICJIVCIsICJKQSIsICJHVSIpCnRhYmxlKGxhcG9wMjEkcGFpc2VzKQpgYGAKClRvIGNhbGN1bGF0ZSB0aGVzZSBwZXJjZW50YWdlcyBieSBjb3VudHJ5LCB3ZSBjYW4gdXNlIHNldmVyYWwgYWx0ZXJuYXRpdmVzLgpGb3IgZXhhbXBsZSwgdGhlIGNvbW1hbmQgYHRhcHBseWAgYWxsb3dzIHRvIGNhbGN1bGF0ZSB0aGUgbWVhbiBvZiBhIHZhcmlhYmxlIGJ5IGdyb3VwcyBvZiBvdGhlciB2YXJpYWJsZS4KCmBgYHtyfQp0YXBwbHkobGFwb3AyMSRqYzE1YXIsIGxhcG9wMjEkcGFpc2VzLCBtZWFuLCBuYS5ybT1UKQpgYGAKCk90aGVyIHdheSBpcyB0byB1ZGUgdGhlIGxpYnJhcnkgYHBseXJgIGFuZCBgZHBseXJgIHRoYXQgaW5jbHVkZSB0aGUgY29tbWFuZCBgZGRwbHlgLgpUaGlzIGNvbW1hbmQgcmVxdWlyZXMgYSBkZWZpbml0aW9uIG9mIGEgZGF0YWZyYW1lICJsYXBvcDIxIiwgdGhlIGdyb3VwaW5nIHZhcmlhYmxlICJwYWlzZXMiLCBhbmQgdGhlbiB0aGUgZnVuY3Rpb25zIHRvIGNhbGN1bGF0ZSBpbiBlYWNoIGdyb3VwLCAibWVhbiIgYW5kICJzZCIuCgpgYGB7cn0KbGlicmFyeShwbHlyKQpsaWJyYXJ5KGRwbHlyKQpkZHBseShsYXBvcDIxLCAicGFpc2VzIiwgc3VtbWFyaXNlLCBtZWFuPW1lYW4oamMxNWFyLCBuYS5ybT1UKSwgc2Q9c2QoamMxNWFyLCBuYS5ybT1UKSkKYGBgCgpBcyB3ZSBvYnNlcnZlIGluIHRoZSB0YWJsZSwgdGhlcmUgaXMgbm8gZGF0YSBmb3IgQ29zdGEgUmljYSwgbm9yIEd1eWFuYS4KV2l0aCB0aGUgc3RhbmRhcmQgZGV2aWF0aW9uLCB3ZSBjYW4gY2FsY3VsYXRlIHRoZSBsb3dlciBhbmQgdXBwZXIgbGltaXRzIG9mIHRoZSBjb25maWRlbmNlIGludGVydmFsLgoKV2UgY2FuIGRvIHRoaXMgZGlyZWN0bHkgd2l0aCB0aGUgbGlicmFyeSBgUm1pc2NgLgpUaGlzIGxpYnJhcnkgaGFzIHRoZSBjb21tYW5kIGBncm91cC5DSWAgdGhhdCBjYWxjdWxhdGVzIHRoZSBtZWFuLCB0aGUgdXBwZXIgbGltaXQgYW5kIHRoZSBsb3dlciBsaW1pdCBvZiBhIHZhcmlhYmxlIGJ5IGdyb3VwcyBvZiBvdGhlciB2YXJpYWJsZS4KVGhpcyB0YWJsZSBpcyBzYXZlZCBpbiBhbiBvYmplY3QgImNvdXAiLgpUaGlzIGNvbW1hbmQgZG9lcyBub3QgaW5jbHVkZSByb3dzIG9mIGNvdW50cmllcyB3aXRoIG5vIGRhdGEsIHNvIHRoZXJlIGFyZSBubyByb3dzIGZvciBDb3N0YSBSaWNhIGFuZCBHdXlhbmEuCgpgYGB7cn0KbGlicmFyeShSbWlzYykKY291cCA9IGdyb3VwLkNJKGpjMTVhcn5wYWlzZXMsIGxhcG9wMjEpCmNvdXAKYGBgCgpXaXRoIHRoaXMgdGFibGUsIHdlIGNhbiByZXBsaWNhdGUgRmlndXJlIDEuNyB3aXRoIHRoZSBsaWJyYXJ5IGBnZ3Bsb3RgLgpJbiBhIHByZXZpb3VzIHNlY3Rpb24sIHdlIHByb2R1Y2UgYSBiYXIgZ3JhcGggYnkgY291bnRyeSwgc3BlY2lmeWluZyB2YXJpYWJsZXMgaW4gYXhpcyB3aXRoIGBhZXNgIGFuZCB1c2luZyBgZ2VvbV9iYXIo4oCmKWAuCk5vdywgd2Ugd2FudCB0byBhZGQgY29uZmlkZW5jZSBpbnRlcnZhbHMuCkZvciB0aGlzLCB3ZSBhZGQgYSBuZXcgbGF5ZXIgd2l0aCB0aGUgc3BlY2lmaWNhdGlvbiBgZ2VvbV9lcnJvcmJhcijigKYpYC4KVGhpcyBzcGVjaWZpY2F0aW9uIHJlcXVpcmVzIGEgbmV3IGBhZXNgIHdoZXJlIHdlIGhhdmUgdG8gc3BlY2lmeSBhICJ5bWluIiBhbmQgYSAieW1heCIgb2YgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWwuClRoZSB0YWJsZSAiY291cCIgaGFzIHRoZSBpbmZvcm1hdGlvbiBmb3IgInltaW4iIGluIHRoZSBjb2x1bW4gImpjMTVhci5sb3dlciIgYW5kIHRoZSBpbmZvcm1hdGlvbiBmb3IgInltYXgiIGluIHRoZSBjb2x1bW4gImpjMTVhci51cHBlciIuCgpXZSBhbHNvIGhhdmUgb3B0aW9ucyBsaWtlIGB3aWR0aGAgdG8gc3BlY2lmeSB0aGUgd2lkdGggb2YgdGhlIHdoaXNrZXJzIG9mIHRoZSBlcnJvciBiYXJzLCBgY29sb3JgIHRvIHNwZWNpZnkgdGhlIGNvbG9yIG9mIGVycm9yIGJhcnMsIGBjZXhgIHRvIHNwZWNpZnkgdGhlIHdpZHRoIG9mIGxpbmVzIGFuZCBgbGluZXR5cGVgIHRvIHNwZWNpZnkgdGhlIHR5cGUgb2YgbGluZSwgaW4gdGhpcyBjYXNlIGRhc2hlZCBsaW5lcy4KCmBgYHtyfQpsaWJyYXJ5KGdncGxvdDIpCmZpZzEuNyA9IGdncGxvdChjb3VwLCBhZXMoeD1yZW9yZGVyKHBhaXNlcywgLWpjMTVhci5tZWFuKSwgeT1qYzE1YXIubWVhbikpKwogIGdlb21fYmFyKHdpZHRoPTAuNSwgZmlsbD0iZGFya3NsYXRlZ3JheTMiLCBjb2xvdXI9IiM2OWIzYTIiLCBzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fZXJyb3JiYXIoYWVzKHltaW49amMxNWFyLmxvd2VyLCB5bWF4PWpjMTVhci51cHBlciksIHdpZHRoPTAuNCwgCiAgICAgICAgICAgICAgICBjb2xvcj0iZGFya2N5YW4iLCBjZXg9MC40LCBsaW5ldHlwZT0zKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHJvdW5kKGpjMTVhci5tZWFuLCAxKSwgIiUiKSksIHZqdXN0PS00LjQsIHNpemU9Mi41KSsKICB4bGFiKCJDb3VudHJ5IikgKyB5bGFiKCJUb2xlcmFuY2UgdG8gZXhlY3V0aXZlIGNvdXBzICglKSIpKwogIHlsaW0oMCwgNjApCmZpZzEuNwpgYGAKClRoZXNlIHJlc3VsdHMsIGhvd2V2ZXIsIGFyZSBub3QgZXF1YWwgdG8gdGhvc2UgcHJlc2VudGVkIGluIEZpZ3VyZSAxLjcuClRoaXMgaXMgZHVlIHRvIHRoZSBmYWN0IHRoYXQgdGhlc2UgY2FsY3VsYXRpb25zIGRvIG5vdCBpbmNsdWRlIHN1cnZleSB3ZWlnaHRzLgpCZWxvdywgd2Ugd2lsbCBzaG93IGhvdyB0byBpbmNsdWRlIHN1cnZleSB3ZWlnaHRzIGluIGNhbGN1bGF0aW9ucyB0byByZXBsaWNhdGUgdGhpcyBmaWd1cmUuCgojIERlc2NyaWJpbmcgb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5CgpGaWd1cmUgMy45IHByZXNlbnRzIHRoZSBwZXJjZW50YWdlIG9mIHJlc3BvbmRlbnRzIHdobyBhcmUgc2F0aXNmaWVkIHdpdGggZGVtb2NyYWN5IGJ5IHR5cGUgb2Ygc29jaWFsIG5ldHdvcmsgdXNlci4KCiFbXShGaWd1cmUzLjkuSlBHKXt3aWR0aD0iNDM2In0KClRoZSB2YXJpYWJsZSBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgaXMgY2FsbGVkICJwbjQiIGFuZCBpcyBjb2RlZCBhcyBmb2xsb3dzOgoKMS4gIFZlcnkgc2F0aXNmaWVkCjIuICBTYXRpc2ZpZWQKMy4gIERpc3NhdGlzZmllZAo0LiAgVmVyeSBkaXNzYXRpc2ZpZWQKCkZvb3Rub3RlIDIxIGluZGljYXRlcyB0aGF0ICJJbnRlcnZpZXdlZXMgd2hvIHNlbGVjdCAoMSkgb3IgKDIpIGFyZSBjb2RlZCBhcyBzYXRpc2ZpZWQgd2l0aCBkZW1vY3JhY3kuIiBUaGVyZWZvcmUsIHRoaXMgdmFyaWFibGUgaGFzIHRvIGJlIHJlY29kZWQuCkluIHRoaXMgY2FzZSwgdGhlIGNvbW1hbmQgYHJlY29kZWAgaXMgdXNlZCBhbmQgdGFidWxhdGVkLCB2aWEgYHRhYmxlYCwgdG8gdmVyaWZ5IHRoZSByZWNvZGluZy4KCmBgYHtyIHJlY29kZSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShjYXIpCnRhYmxlKGxhcG9wMTgkcG40KQpsYXBvcDE4JHBuNHJyID0gY2FyOjpyZWNvZGUobGFwb3AxOCRwbjQsICIxOjI9MTAwOyAzOjQ9MCIpCnRhYmxlKGxhcG9wMTgkcG40cnIpCmBgYAoKVGhlIG5ldyB2YXJpYWJsZSAicG40cnIiIGlzIGEgZHVtbXkgdmFyaWFibGUuCkluIHRoaXMgdHlwZSBvZiB2YXJpYWJsZXMsIHRoZSBtZWFuIGNvcnJlc3BvbmRzIHRvIHRoZSBwcm9wb3J0aW9uIG9mIHJlc3BvbnNlcyBvZiAxMDAuClRoYXQgaXMsIGlmIHdlIGNhbGN1bGF0ZSB0aGUgbWVhbiBvZiB0aGlzIHZhcmlhYmxlLCB3ZSBhcmUgY2FsY3VsYXRpbmcgdGhlIHBlcmNlbnRhZ2UgZm9yIGFsbCB0aGUgaW50ZXJ2aWV3ZWVzLgpJbiB0aGlzIHNlY3Rpb24gd2Ugd2lsbCB0cmVhdCB0aGlzIHZhcmlhYmxlIGFzIGlmIGl0IHdlcmUgYSBudW1lcmljIHZhcmlhYmxlLgpTdHJpY3RseSBzcGVha2luZywgaXQgaXMgYSBub21pbmFsIGNhdGVnb3JpY2FsIHZhcmlhYmxlLgpUaGUgY2FsY3VsYXRpb25zIG9mIHN0YW5kYXJkIGRldmlhdGlvbnMgYW5kIHRoZW4gb2YgY29uZmlkZW5jZSBpbnRlcnZhbHMsIHRoZXJlZm9yZSwgYXJlIHJlZmVyZW50aWFsLgoKYGBge3IgZGVzY3JpYmV9CnN1bW1hcnkobGFwb3AxOCRwbjRycikKYGBgCgpUaGVzZSByZXN1bHRzIHNob3cgYW4gYXZlcmFnZSBvZiAzOS41LCB0aGF0IGlzLCAzOS41JSBvZiB0aG9zZSBpbnRlcnZpZXdlZCBhcmUgc2F0aXNmaWVkIHdpdGggZGVtb2NyYWN5LgpXZSBjYW4gYWxzbyBjYWxjdWxhdGUgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgZm9yIHRoaXMgdmFyaWFibGUgaW4gc2V2ZXJhbCB3YXlzLgpBIGZpcnN0IHdheSBpcyBieSBwZXJmb3JtaW5nIGEgb25lLXNhbXBsZSB0LXRlc3QsIHVzaW5nIHRoZSBjb21tYW5kIGB0LnRlc3RgLgpPdGhlciB3YXkgaXMgdXNpbmcgdGhlIGNvbW1hbmQgYGNpTWVhbmAgZnJvbSB0aGUgbGlicmFyeSBgbHNyYC4KCmBgYHtyIElDfQp0LnRlc3QobGFwb3AxOCRwbjRycikKbGlicmFyeShsc3IpCmNpTWVhbihsYXBvcDE4JHBuNHJyLCBuYS5ybT1UKQpgYGAKClRoZXNlIHJlc3VsdHMgaW5kaWNhdGUgdGhhdCB0aGUgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgb2YgdGhlIG1lYW4gZm9yIHNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSB2YXJpZXMgYmV0d2VlbiAzOC45JSBhbmQgNDAuMSUgLgpXZSBjb3VsZCBjaGFuZ2UgdGhpcyBkZWZhdWx0IHZhbHVlIHRvIDk5JSBjb25maWRlbmNlIGJ5IGFkZGluZyB0aGUgc3BlY2lmaWNhdGlvbiBgY29uZiA9IDAuOTlgIHRvIHRoZSBjb21tYW5kIGBjaU1lYW5gLgoKIyBTYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYnkgZ3JvdXBzIG9mIGNvbnN1bXB0aW9uIG9mIGluZm9ybWF0aW9uIGluIHNvY2lhbCBuZXR3b3JrcwoKVGhlIDIwMTgvMTkgcmVwb3J0IHVzZXMgYSB2YXJpYWJsZSB0aGF0IG1lYXN1cmVzICJmcmVxdWVudCBleHBvc3VyZSB0byBwb2xpdGljYWwgaW5mb3JtYXRpb24uIiBUaGlzIHZhcmlhYmxlIGlzIGNvbnN0cnVjdGVkIGluIGEgY29tcGxleCB3YXksIGJhc2VkIG9uIHRoZSAzIHNvY2lhbCBuZXR3b3Jrcy4KSW4gdGhpcyBjYXNlIHdlIGFyZSBnb2luZyB0byBzdGFydCB3aXRoIGEgc2ltcGxlciByZWNvZGluZyB0byByZWNyZWF0ZSB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgb2YgdGhlIHZhcmlhYmxlICJzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kiIGJ5IGdyb3VwcyBvZiBjb25zdW1wdGlvbiBvZiBpbmZvcm1hdGlvbiBpbiBlYWNoIHNvY2lhbCBuZXR3b3JrLgpMYXRlciB0aGUgdmFyaWFibGUgdXNlZCBpbiB0aGUgcmVwb3J0IHdpbGwgYmUgcmVwbGljYXRlZC4KVGhlIGZyZXF1ZW5jeSBvZiBpbmZvcm1hdGlvbiBjb25zdW1wdGlvbiAodmFyaWFibGVzICJzbWVkaWEyIiBmb3IgRmFjZWJvb2ssICJzbWVkaWE1IiBmb3IgVHdpdHRlciBhbmQgInNtZWRpYTgiIGZvciBXaGF0c0FwcCkgb2YgZWFjaCBzb2NpYWwgbmV0d29yayBpcyBtZWFzdXJlZCBvbiB0aGUgZm9sbG93aW5nIHNjYWxlOgoKMS4gIERhaWx5CjIuICBBIGZldyB0aW1lcyBhIHdlZWsKMy4gIEEgZmV3IHRpbWVzIGEgbW9udGgKNC4gIEEgZmV3IHRpbWVzIGEgeWVhcgo1LiAgTmV2ZXIKCldlIGFyZSBnb2luZyB0byByZWNvZGUgdGhlc2UgdmFyaWFibGVzIGluIHN1Y2ggYSB3YXkgdGhhdCB0aG9zZSB3aG8gcmVzcG9uZCBkYWlseSBvciBhIGZldyB0aW1lcyBhIHdlZWsgd2lsbCBiZSBjbGFzc2lmaWVkIGFzICJoaWdoIHVzZSIsIHRob3NlIHdobyByZXNwb25kIGZyb20gMyB0byA0IHdpbGwgYmUgY2xhc3NpZmllZCBhcyAibG93IHVzZSIgYW5kIHRob3NlIHdobyByZXNwb25kICJuZXZlciIuCnRoZXkgd2lsbCBiZSBjbGFzc2lmaWVkIGFzICJub24tdXNlcnMiLgpBIHNpbWlsYXIgY2xhc3NpZmljYXRpb24gc2NoZW1lIGlzIHVzZWQgdG8gZGVmaW5lIHRoZSB1c2VycyBvZiB0aGUgMyBzb2NpYWwgbmV0d29ya3MuClRoZSBuZXcgcmVjb2RlZCB2YXJpYWJsZXMgYXJlIGNvbnZlcnRlZCB0byBhIGZhY3RvciBhbmQgbGFiZWxlZC4KCmBgYHtyIHJlY29kaW5nfQp0YWJsZShsYXBvcDE4JHNtZWRpYTIpCnRhYmxlKGxhcG9wMTgkc21lZGlhNSkKdGFibGUobGFwb3AxOCRzbWVkaWE4KQpsYXBvcDE4JHNtZWRpYTJyID0gY2FyOjpyZWNvZGUobGFwb3AxOCRzbWVkaWEyLCAiMToyPTE7IDM6ND0yOyA1PTMiKQpsYXBvcDE4JHNtZWRpYTVyID0gY2FyOjpyZWNvZGUobGFwb3AxOCRzbWVkaWE1LCAiMToyPTE7IDM6ND0yOyA1PTMiKQpsYXBvcDE4JHNtZWRpYThyID0gY2FyOjpyZWNvZGUobGFwb3AxOCRzbWVkaWE4LCAiMToyPTE7IDM6ND0yOyA1PTMiKQpsYXBvcDE4JHNtZWRpYTJyID0gYXMuZmFjdG9yKGxhcG9wMTgkc21lZGlhMnIpCmxhcG9wMTgkc21lZGlhNXIgPSBhcy5mYWN0b3IobGFwb3AxOCRzbWVkaWE1cikKbGFwb3AxOCRzbWVkaWE4ciA9IGFzLmZhY3RvcihsYXBvcDE4JHNtZWRpYThyKQpsZXZlbHMobGFwb3AxOCRzbWVkaWEycikgPSBjKCJIaWdoIHVzZSIsICJMb3cgdXNlIiwgIk5vbiB1c2VyIikKbGV2ZWxzKGxhcG9wMTgkc21lZGlhNXIpID0gYygiSGlnaCB1c2UiLCAiTG93IHVzZSIsICJOb24gdXNlciIpCmxldmVscyhsYXBvcDE4JHNtZWRpYThyKSA9IGMoIkhpZ2ggdXNlIiwgIkxvdyB1c2UiLCAiTm9uIHVzZXIiKQp0YWJsZShsYXBvcDE4JHNtZWRpYTJyKQp0YWJsZShsYXBvcDE4JHNtZWRpYTVyKQp0YWJsZShsYXBvcDE4JHNtZWRpYThyKQpgYGAKCldpdGggdGhlc2UgcmVjb2RlZCB2YXJpYWJsZXMsIGl0IGlzIHBvc3NpYmxlIHRvIGNhbGN1bGF0ZSB0aGUgbWVhbiAod2hpY2ggYXJlIHRoZSBwZXJjZW50YWdlcykgb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGZvciBlYWNoIGdyb3VwIG9mIGluZm9ybWF0aW9uIGNvbnN1bXB0aW9uIGluIHNvY2lhbCBuZXR3b3Jrcy4KVGhpcyBjYW4gYmUgZG9uZSBpbiBtdWx0aXBsZSB3YXlzLgpJZiB5b3Ugd2FudCB0byBjb21wYXJlIHRoZSBtZWFucywgeW91IGNhbiB1c2UgdGhlIGNvbW1hbmQgYHRhcHBseWAuCgpgYGB7ciBhdmVyYWdlIGJ5IG5ldHdvcmtzfQp0YXBwbHkobGFwb3AxOCRwbjRyciwgbGFwb3AxOCRzbWVkaWEyciwgbWVhbiwgbmEucm09VCkgI0ZhY2Vib29rCnRhcHBseShsYXBvcDE4JHBuNHJyLCBsYXBvcDE4JHNtZWRpYTVyLCBtZWFuLCBuYS5ybT1UKSAjVHdpdHRlcgp0YXBwbHkobGFwb3AxOCRwbjRyciwgbGFwb3AxOCRzbWVkaWE4ciwgbWVhbiwgbmEucm09VCkgI1doYXRzYXBwCmBgYAoKT3RoZXIgb3B0aW9uIHRoYXQgY2FuIGRpc3BsYXkgYm90aCB0aGUgbWVhbiBhbmQgdGhlIHN0YW5kYXJkIGRldmlhdGlvbiBpcyB0aHJvdWdoIHRoZSBsaWJyYXJ5IGBwbHlyYCBhbmQgdGhlIGNvbW1hbmQgYGRkcGx5YC4KVGhlIGNvZGUgZm9yIEZhY2Vib29rIHdvdWxkIGJlOgoKYGBge3IgbWVkaWFwb3JyZWRlczIsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkocGx5cikKZGRwbHkobGFwb3AxOCwgInNtZWRpYTJyIiwgc3VtbWFyaXNlLCBtZWFuPW1lYW4ocG40cnIsIG5hLnJtPVQpLCBzZD1zZChwbjRyciwgbmEucm09VCkpCmBgYAoKSXQgaXMgaW1wb3J0YW50IHRvIG5vdGUgdGhhdCBpbiB0aGlzIGNhc2Ugd2UgaGF2ZSBub3QgaW5kaWNhdGVkIHRoYXQgaW50ZXJuYWxseSB3ZSBkbyBub3Qgd29yayB3aXRoIG1pc3NpbmcgdmFsdWVzICh1c2luZyB0aGUgc3BlY2lmaWNhdGlvbiBgZmlsdGVyKCFpcy5uYSh3YV91c2VyKSlgKSwgc28gdGhlIHRhYmxlIGFib3ZlIHByZXNlbnRzIGEgcm93IG9mIE5BLCBvYnNlcnZhdGlvbnMgd2l0aCBubyBpbmZvcm1hdGlvbiBvZiB1c2luZyBvZiB0aGUgc29jaWFsIG5ldHdvcmssIHdoZXJlIHRoZSBhdmVyYWdlIGFuZCB0aGUgc3RhbmRhcmQgZGV2aWF0aW9uIG9mIHRoZSB2YXJpYWJsZSBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYXJlIGNhbGN1bGF0ZWQuCkZpbmFsbHksIGFuIG9wdGlvbiB0aGF0IGFsbG93cyB5b3UgdG8gZGlzcGxheSBtYW55IHN0YXRpc3RpY3MgZm9yIGVhY2ggZ3JvdXAgaXMgYGRlc2NyaWJlQnlgIGZyb20gdGhlIGxpYnJhcnkgYHBzeWNoYC4KVGhlIGNvZGUgZm9yIFR3aXR0ZXIgaXM6CgpgYGB7ciBtZWRpYXBvcnJlZGVzMywgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShwc3ljaCkKZGVzY3JpYmVCeShsYXBvcDE4JHBuNHJyLCBncm91cD1sYXBvcDE4JHNtZWRpYTVyKQpgYGAKCkhvd2V2ZXIsIHdoYXQgaW50ZXJlc3RzIHVzIGlzIHRvIGNhbGN1bGF0ZSB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgZm9yIGVhY2ggZ3JvdXAuCkZpZ3VyZSAzLjkgb2YgdGhlIHJlcG9ydCBwcmVzZW50cyB0aGUgbWVhbiBvZiBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3ksIHNob3duIGFzIGEgcG9pbnQsIGFuZCB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgZm9yIGVhY2ggZ3JvdXAsIHNob3duIGFzIGEgZ3JheSBhcmVhIHdpdGggbG93ZXIgYW5kIHVwcGVyIGxpbWl0cy4KVGhlIGxpYnJhcnkgYFJtaXNjYCBhbmQgdGhlIGNvbW1hbmQgYGdyb3VwLkNJYCBjYW4gYmUgdXNlZCB0byBjYWxjdWxhdGUgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIG9mIHRoZSB2YXJpYWJsZSBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYnkgZ3JvdXBzIG9mIGluZm9ybWF0aW9uIGNvbnN1bXB0aW9uIG9uIEZhY2Vib29rLgoKYGBge3IgaWNieWdyb3VwLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KFJtaXNjKQpncm91cC5DSShwbjRycn5zbWVkaWEyciwgbGFwb3AxOCkKYGBgCgpXaXRoIHRoZXNlIGRhdGEsIGZvciBleGFtcGxlLCB0aGUgYXZlcmFnZSBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYW1vbmcgdGhlIGdyb3VwIHdpdGggaGlnaCB1c2Ugb2YgaW5mb3JtYXRpb24gb24gRmFjZWJvb2sgaXMgMzcuNiUuClRoZSBsb3dlciBsaW1pdCBvZiB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbCBpcyAzNi43JSBhbmQgdGhlIHVwcGVyIGxpbWl0IGlzIDM4LjQlLgpXaXRoIHRoZXNlIGRhdGEsIGEgYmFyIGNoYXJ0IHNpbWlsYXIgdG8gMy45IGNvdWxkIGJlIHJlcGxpY2F0ZWQuCgojIENvbmZpZGVuY2UgSW50ZXJ2YWxzIGZvciBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYnkgZ3JvdXBzIG9mIFR3aXR0ZXIgdXNlcnMKClRoZSBlYXNpZXN0IHdheSB0byBwbG90IGNvbmZpZGVuY2UgaW50ZXJ2YWxzIGJ5IGdyb3VwcyBpcyB0byB1c2UgdGhlIGNvbW1hbmQgYHBsb3RtZWFuc2AuCgpgYGB7ciBncmFmeGdydXAsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoZ3Bsb3RzKQpwbG90bWVhbnMobGFwb3AxOCRwbjRycn5sYXBvcDE4JHNtZWRpYTVyLAogICAgICAgICAgeGxhYj0iVHlwZSBvZiBUd2l0dGVyIHVzZXIiLAogICAgICAgICAgeWxhYj0iU2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IiwKICAgICAgICAgIHlsaW09YygwLCA1MCksCiAgICAgICAgICBtZWFuLmxhYmVscz1ULCBkaWdpdHM9MSwKICAgICAgICAgIGNvbm5lY3Q9RgogICAgICAgICApCmBgYAoKVGhpcyBvcHRpb24gZGlzcGxheXMgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIGJ1dCBpcyBkaWZmaWN1bHQgaWYgeW91IHdhbnQgdG8gcGxvdCB0aGUgYmFycy4KVGhlIGxpYnJhcnkgYGdncGxvdGAgZ2l2ZXMgdXMgbW9yZSBvcHRpb25zIGFuZCBhbGxvd3MgdXMgdG8gcGxvdCBpbiBhIHNpbWlsYXIgd2F5IHRvIEZpZ3VyZSAzLjkgb2YgdGhlIHJlcG9ydC4KRm9yIHRoaXMsIGEgInR3LnVzZSIgZGF0YWZyYW1lIGlzIGZpcnN0IHNhdmVkIHdpdGggdGhlIGRhdGEgb2YgdGhlIG1lYW4gYW5kIHRoZSB1cHBlciBhbmQgbG93ZXIgbGltaXRzIG9mIGVhY2ggZ3JvdXAsIHVzaW5nIHRoZSBjb21tYW5kIGBncm91cC5DSWAuCkl0IGlzIHRoZSBkYXRhIGZyb20gdGhpcyBkYXRhZnJhbWUgdGhhdCBpcyB1c2VkIHdpdGggYGdncGxvdGAgYW5kIGEgZ3JhcGggaXMgY3JlYXRlZCB3aGljaCBpcyBzYXZlZCBpbiBhICJncmFmMSIgb2JqZWN0LgpXaXRoIHRoaXMgbGlicmFyeSwgdGhlIGxheWVyIGBnZW9tX2JhcigpYCBpcyBhZGRlZCB0byBkZWZpbmUgdGhhdCB5b3Ugd2FudCBhIGJhciBncmFwaCBvZiB0aGUgdmFyaWFibGVzIHNwZWNpZmllZCBpbiBgYWVzYC4KVGhlbiB0aGUgbGF5ZXIgYGdlb21fZXJyb3JiYXIoKWAgaXMgYWRkZWQgdG8gYWRkIHRoZSBlcnJvciBiYXJzIGFuZCB0aGVuIHRoZSBtZWFuIHZhbHVlcyB3aXRoIGBnZW9tX3RleHQoKWAuCkZpbmFsbHksIHRoZSBYIGFuZCBZIGF4aXMgYXJlIGxhYmVsZWQgd2l0aCBgeGxhYmAgYW5kIGB5bGFiYCBhbmQgdGhlIGxpbWl0cyBvZiB0aGUgWSBheGlzIGFyZSBkZWZpbmVkIHdpdGggYHlsaW1gLgoKYGBge3IgZ3JhZnhncnVwMiwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KdHcudXNlIDwtIGdyb3VwLkNJKHBuNHJyfnNtZWRpYTVyLCBsYXBvcDE4KQpsaWJyYXJ5KGdncGxvdDIpCmdyYWYxIDwtIGdncGxvdCh0dy51c2UsIGFlcyh4PXNtZWRpYTVyLCB5PXBuNHJyLm1lYW4pKSsKICBnZW9tX2Jhcih3aWR0aD0wLjUsIGZpbGw9ImRhcmtjeWFuIiwgY29sb3VyPSJibGFjayIsIHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbj1wbjRyci5sb3dlciwgeW1heD1wbjRyci51cHBlciksIHdpZHRoPTAuMikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChwbjRyci5tZWFuLCAxKSwgIiUiKSksIHZqdXN0PS00LjIsIHNpemU9NCkrCiAgeGxhYigiVHlwZSBvZiBUd2l0dGVyIHVzZXIiKSArIHlsYWIoIlNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSAoJSkiKSsKICB5bGltKDAsIDUwKQpncmFmMQpgYGAKCkFjY29yZGluZyB0byB0aGVzZSByZXN1bHRzLCBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgaXMgaGlnaGVyIGluIG5vbi1Ud2l0dGVyIHVzZXJzLCBjb21wYXJlZCB0byB1c2VycywgYWx0aG91Z2ggdGhlIGRpZmZlcmVuY2VzIGFyZSBub3Qgc3RhdGlzdGljYWxseSBzaWduaWZpY2FudCBmcm9tIGEgdmlzdWFsIGNvbXBhcmlzb24gYmV0d2VlbiBjb25maWRlbmNlIGludGVydmFscy4KCiMgU2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGJ5IGdyb3VwcyBvZiB0eXBlIG9mIHVzZXIgb2Ygc29jaWFsIG5ldHdvcmtzCgpTbyBmYXIsIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIG9mIHNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSBoYXZlIGJlZW4gY3JlYXRlZCBieSB0eXBlIG9mIFR3aXR0ZXIgdXNlci4KVGhlIHJlcG9ydCBhZ2dyZWdhdGVzIHRoZSB1c2VycyBvZiB0aGUgdGhyZWUgc29jaWFsIG5ldHdvcmtzIHRvIGlkZW50aWZ5IHRocmVlIHR5cGVzIG9mIHVzZXJzOiBoaWdoLXVzZXJzLCBsb3ctdXNlcnMsIGFuZCBub24tdXNlcnMgb2YgYW55IHNvY2lhbCBuZXR3b3JrLgpUaGUgd2F5IG9mIHJlY29kaW5nIHRoaXMgdHlwZSBvZiB1c2VyIG9mIHRocmVlIHNvY2lhbCBuZXR3b3JrcyBpcyBiYXNlZCBvbiBzZXZlcmFsIGNvbmRpdGlvbnMuCkFzIHRoZSByZXBvcnQgc2F5czogIldlIHVzZSB0aGUgc2FtZSBjb2RpbmcgYXMgaW4gdGhlIHByZXZpb3VzIHNlY3Rpb24sIHRvIGRpc3Rpbmd1aXNoIGJldHdlZW4gdGhvc2Ugd2hvIGZyZXF1ZW50bGUgdXNlIHNvY2lhbCBtZWRpYSAodGhvc2Ugd2l0aCBhY2NvdW50cyB0aGF0IHRoZXkgYWNjZXNzIGEgZmV3IHRpbWVzIGEgd2VlayBvciBkYWlseSkgYW5kIHRob3NlIHdobyBkbyBub3QgdXNlIHNvY2lhbCBuZXR3b3JrcyBmcmVxdWVudGx5ICh0aG9zZSB3aXRoIGFjY291bnRzIHRoYXQgdGhleSBhY2Nlc3MgYSBmZXcgdGltZXMgYSBtb250aCBvciBhIGZldyB0aW1lcyBhIHllYXIpLiBXZSBhbHNvIGluY2x1ZGUgbm9uLXVzZXJzOiB0aG9zZSB3aG8gZG8gbm90IGhhdmUgYW55IHNvY2lhbCBuZXR3b3JrIGFjY291bnRzICh0aG9zZSB3aG8gaW5kaWNhdGUgdGhhdCB0aGV5IGRvIG5vdCBoYXZlIGFuIGFjY291bnQgb24gRmFjZWJvb2ssIFR3aXR0ZXIgb3IgV2hhdHNhcHApIGFuZCB0aG9zZSB3aG8gaGF2ZSBhbiBhY2NvdW50LCBidXQgbmV2ZXIgdXNlIGl0IiAocC44MSkuCldlIGZpcnN0IGlkZW50aWZ5IHRob3NlIHdobyB1c2UgZWFjaCBzb2NpYWwgbmV0d29yayBhIGZldyB0aW1lcyBhIHdlZWsgb3IgZGFpbHkgYXMgMSBhbmQgaWYgdGhleSB1c2UgZWFjaCBzb2NpYWwgbmV0d29yayBhIGZldyB0aW1lcyBhIG1vbnRoIG9yIGEgZmV3IHRpbWVzIGEgeWVhciwgYXMgMC4KRm9yIHRoaXMgd2UgdXNlIHRoZSBjb21tYW5kIGBpZmVsc2VgLgpUaGVuLCB3ZSBhZGQgdGhlIHZhbHVlcyBvZiBlYWNoIHNvY2lhbCBuZXR3b3JrIGluIGEgc2luZ2xlIHZhcmlhYmxlLCB3aXRoIHZhbHVlcyBiZXR3ZWVuIDAgYW5kIDMuClRoZSBjb21tYW5kIGByb3dTdW1zYCBpcyB1c2VkLCB3aGljaCBhbGxvd3MgdGhlIGhvcml6b250YWwgc3VtIG9mIGRlZmluZWQgdmFyaWFibGVzLCBpbiB0aGlzIGNhc2UgdGhvc2UgYXQgcG9zaXRpb24gYFssIDg5OjkxXWAuCkluIHRoaXMgY29tbWFuZCwgd2UgdXNlIHRoZSBzcGVjaWZpY2F0aW9uIGBuYS5ybT1UYCBzbyB0aGF0IHRoZSBzdW0gZG9lcyBub3QgdGFrZSBtaXNzaW5nIHZhbHVlcyBpbnRvIGFjY291bnQuCgpgYGB7ciBuZXR3b3Jrc3VzZXJzfQpsYXBvcDE4JHNtMiA9IGlmZWxzZShsYXBvcDE4JHNtZWRpYTI9PTEgfCBsYXBvcDE4JHNtZWRpYTI9PTIsIDEsIDApCmxhcG9wMTgkc201ID0gaWZlbHNlKGxhcG9wMTgkc21lZGlhNT09MSB8IGxhcG9wMTgkc21lZGlhNT09MiwgMSwgMCkKbGFwb3AxOCRzbTggPSBpZmVsc2UobGFwb3AxOCRzbWVkaWE4PT0xIHwgbGFwb3AxOCRzbWVkaWE4PT0yLCAxLCAwKQpsYXBvcDE4JGFueWhpID0gcm93U3VtcyhsYXBvcDE4Wyw4OTo5MV0sIG5hLnJtPVQpCnRhYmxlKGxhcG9wMTgkYW55aGkpCmBgYAoKU3RhcnRpbmcgZnJvbSB0aGlzIHZhcmlhYmxlLCBhIHZhcmlhYmxlIGlzIGNyZWF0ZWQgdGhhdCBhZ2dyZWdhdGVzIHRoZSB0aHJlZSBzb2NpYWwgbmV0d29ya3MsIGNhbGxlZCAiaGlfbG9fbm9uIi4KRmlyc3QsIHRoaXMgdmFyaWFibGUgaXMgY3JlYXRlZCBhcyBhIHZlY3RvciBvZiBOQXMuClZhbHVlcyBvZiAxLCAyLCAzIG9yIE5BIGFyZSB0aGVuIGltcHV0ZWQgdG8gaXQsIGRlcGVuZGluZyBvbiB0aGUgdmFsdWVzIG9mICJhbnloaSIgb3IgdGhlIHZhbHVlcyBvZiB0aGUgc29jaWFsIG5ldHdvcmsgdmFyaWFibGVzLgpBIG5ldyB2YXJpYWJsZSBvZiB0eXBlIGZhY3RvciBpcyB0aGVuIGNyZWF0ZWQsIHdpdGggaWRlbnRpY2FsIHZhbHVlcyBhcyAiaGlfbG9fbm9uIiBhbmQgaXMgbGFiZWxlZC4KVGhlIGRlZmluaXRpb24gb2YgdGhlIGNvbmRpdGlvbmFsaXR5IGlzIHdvcmtlZCB0aHJvdWdoIHRoZSBzcXVhcmUgYnJhY2tldHMgYFsuLi5dYC4KSW4gdGhpcyB3YXksIHRoZSBjb25kaXRpb25zIGFyZSBkZWZpbmVkIGFzIGZvbGxvd3M6CgotICAgVGhlIHZhcmlhYmxlICJoaV9sb19ub24gaXMgZXF1YWwgdG8gMSBpZiB0aGUgdmFyaWFibGUgYW55aGkgaXMgZ3JlYXRlciB0aGFuIG9yIGVxdWFsIHRvIDEgKHVzZSBkYWlseSBvciBhIGZldyB0aW1lcyBhIHdlZWspID0gYGxhcG9wMTgkaGlfbG9fbm9uW2xhcG9wMTgkYW55aGk+PTFdID0gMWAKCi0gICBUaGUgdmFyaWFibGUgImhpX2xvX25vbiBpcyBlcXVhbCB0byAyIGlmIHRoZSB2YXJpYWJsZSBhbnloaSBpcyBlcXVhbCB0byAwICh1c2UgYSBmZXcgdGltZXMgYSB5ZWFyIG9yIG5ldmVyKSA9IGBsYXBvcDE4JGhpX2xvX25vbltsYXBvcDE4JGFueWhpPT0wXSA9IDJgCgotICAgVGhlIHZhcmlhYmxlICJoaV9sb19ub24gaXMgZXF1YWwgdG8gMyBpZiB0aGUgdmFyaWFibGVzIG9mIGFjY291bnQgaG9sZGluZyBhcmUgZXF1YWwgdG8gMiAoTm8pID0gYGxhcG9wMTgkaGlfbG9fbm9uW2xhcG9wMTgkc21lZGlhMT09MiAmIGxhcG9wMTgkc21lZGlhND09MiAmIGxhcG9wMTgkc21lZGlhNz09Ml0gPSAzYAoKVGhlIGZvbGxvd2luZyBjb2RpbmcgcnVsZXMgZm9sbG93IHRoZSBzYW1lIGxvZ2ljIG9mIGNvbWJpbmluZyBvdGhlciB2YXJpYWJsZXMgdG8gaW1wdXRlIHRoZSB2YWx1ZSAzIG9yIE5BLgoKYGBge3IgaGlsb25vbn0KbGFwb3AxOCRoaV9sb19ub24gPSBOQSAjY3JlYXRlIGEgdmVjdG9yIHdpdGggTkFzIwpsYXBvcDE4JGhpX2xvX25vbltsYXBvcDE4JGFueWhpPj0xXSA9IDEgIzEgaXMgY29kZWQgZm9yIHRob3NlIHdobyB1c2UgYSBzb2NpYWwgbmV0d29yayBkYWlseSBvciBhIGZldyB0aW1lcyBhIHdlZWsuIwpsYXBvcDE4JGhpX2xvX25vbltsYXBvcDE4JGFueWhpPT0wXSA9IDIgI1Rob3NlIHdobyB1c2UgYSBzb2NpYWwgbmV0d29yayBhIGZldyB0aW1lcyBhIG1vbnRoIGFuZCBhIHllYXIgYXJlIGNvZGVkIGFzIDIjCmxhcG9wMTgkaGlfbG9fbm9uW2xhcG9wMTgkc21lZGlhMT09MiAmIGxhcG9wMTgkc21lZGlhND09MiAmIGxhcG9wMTgkc21lZGlhNz09Ml0gPSAzICNUaG9zZSB3aG8gZG8gbm90IGhhdmUgc29jaWFsIG5ldHdvcmtzIGFyZSBjb2RlZCBhcyAzIwpsYXBvcDE4JGhpX2xvX25vbltsYXBvcDE4JHNtZWRpYTI9PTUgJiBsYXBvcDE4JHNtZWRpYTU9PTUgJiBsYXBvcDE4JHNtZWRpYTg9PTVdID0gMyAjVGhvc2Ugd2hvIG5ldmVyIHVzZSBhbnkgc29jaWFsIG5ldHdvcmsgYXJlIGNvZGVkIGFzIDMjCmxhcG9wMTgkaGlfbG9fbm9uW2xhcG9wMTgkcGFpcz09MyAmIChsYXBvcDE4JHNtZWRpYTI9PTUgfCBsYXBvcDE4JHNtZWRpYTU9PTUgfCBsYXBvcDE4JHNtZWRpYTg9PTUpXSA9IDMgI0EgcGFydGljdWxhciBjb2RlIGlzIGFwcGxpZWQgdG8gY291bnRyeSAzIwpsYXBvcDE4JGhpX2xvX25vbltsYXBvcDE4JHBhaXM9PTMgJiAobGFwb3AxOCRzbWVkaWExPT0yIHwgbGFwb3AxOCRzbWVkaWE0PT0yIHwgbGFwb3AxOCRzbWVkaWE3PT0yKV0gPSAzICNBIHBhcnRpY3VsYXIgY29kZSBpcyBhcHBsaWVkIHRvIGNvdW50cnkgMyMKCmxhcG9wMTgkaGlsb24gPSBhcy5mYWN0b3IobGFwb3AxOCRoaV9sb19ub24pCmxldmVscyhsYXBvcDE4JGhpbG9uKSA9IGMoIkhpZ2ggdXNlIiwgIkxvdyB1c2UiLCAiTm9uIHVzZXIiKQpwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkaGlsb24pKSoxMDAKYGBgCgpBY2NvcmRpbmcgdG8gdGhlc2UgZGF0YSwgNjQuOSUgb2YgdGhvc2UgaW50ZXJ2aWV3ZWQgcmVwb3J0IGEgaGlnaCB1c2Ugb2Ygc29jaWFsIG5ldHdvcmtzLCB3aGlsZSwgYXQgdGhlIG90aGVyIGV4dHJlbWUsIHRoZXJlIGFyZSAzMS42JSB3aG8gZG8gbm90IHVzZSBhbnkgc29jaWFsIG5ldHdvcmsuClRoZXNlIGRhdGEgZGlmZmVyIHNsaWdodGx5IGZyb20gdGhvc2UgcmVwb3J0ZWQgaW4gdGhlIEFwcGVuZGl4IHRvIHRoZSByZXBvcnQsIGF2YWlsYWJsZSBbaGVyZV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDE4L0FwcGVuZGl4X01hdGVyaWFsX2Zvcl8yMDE4LTE5X0FtZXJpY2FzQmFyb21ldGVyX1JlcG9ydC1Db21wYXJhdGl2ZV9DaGFwdGVyc18xMC4xMy4xOS5wZGYpLCB3aGVyZSA2NS4zNCUgb2YgaGlnaCB1c2UgYW5kIDMxLjYwJSBvZiBub24tdXNlcnMgYXJlIHJlcG9ydGVkLgpUaGVzZSBkaWZmZXJlbmNlcyBtYXkgYmUgZHVlIHRvIGRpZmZlcmVuY2VzIGluIHRoZSBpbnRlcnByZXRhdGlvbiBvZiB0aGUgY29kaW5nIHJ1bGVzIGZyb20gU3RhdGEgdG8gUi4KCkluIHRoZSBzYW1lIHdheSB0aGF0IHRoZSBncmFwaCBvZiBhdmVyYWdlIHNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSBieSB0eXBlIG9mIFR3aXR0ZXIgdXNlciB3YXMgcHJvZHVjZWQgdXNpbmcgYGdncGxvdGAsIG5vdyB0aGUgc2FtZSB3aWxsIGJlIGRvbmUgYnV0IGZvciB0aGUgdXNlcnMgb2YgdGhlIHRocmVlIHNvY2lhbCBuZXR3b3JrcywgdmFyaWFibGUgImhpbG9uIi4KCmBgYHtyIGdyYWYzLjl9CmxpYnJhcnkoUm1pc2MpCnNhdGlzLnVzZSA9IGdyb3VwLkNJKHBuNHJyfmhpbG9uLCBsYXBvcDE4KQpsaWJyYXJ5KGdncGxvdDIpCmZpZzMuOSA9IGdncGxvdChzYXRpcy51c2UsIGFlcyh4PWhpbG9uLCB5PXBuNHJyLm1lYW4pKSsKICBnZW9tX2Jhcih3aWR0aD0wLjUsIGZpbGw9ImRhcmtjeWFuIiwgY29sb3VyPSJibGFjayIsIHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbj1wbjRyci5sb3dlciwgeW1heD1wbjRyci51cHBlciksIHdpZHRoPTAuMikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChwbjRyci5tZWFuLCAxKSwgIiUiKSksIHZqdXN0PS0yLjUsIHNpemU9NCkrCiAgeGxhYigiVHlwZSBvZiBzb2NpYWwgbmV0d29yayB1c2VyIikgKyB5bGFiKCJTYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgKCUpIikrCiAgeWxpbSgwLCA1MCkKZmlnMy45CmBgYAoKVGhpcyBncmFwaCB3b3VsZCBiZSBhIHJlcGxpY2F0aW9uIG9mIHRoZSBvbmUgcHJlc2VudGVkIGluIHRoZSByZXBvcnQgKEZpZ3VyZSAzLjkgb24gcGFnZSA2MiksIHdpdGggbWlub3IgZGlmZmVyZW5jZXMgZHVlIHRvIHRoZSBlbmNvZGluZyBvZiB0aGUgcmVzdWx0aW5nIGRhdGEuCgojIFN1bW1hcnkKCkluIHRoaXMgc2VjdGlvbiB3ZSBoYXZlIHdvcmtlZCB3aXRoIGEgcmVjb2RlZCBkdW1teSB2YXJpYWJsZSAoc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5KSwgd2hpY2ggY2FuIGJlIHVzZWQgYXMgYSBudW1lcmljYWwgdmFyaWFibGUgZm9yIGNhbGN1bGF0aW5nIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIG9mIHByb3BvcnRpb25zLgpXaXRoIHRoaXMgdmFyaWFibGUsIHRoZSBjb25maWRlbmNlIGludGVydmFsIG9mIHRoZSBtZWFuIGhhcyBiZWVuIGNhbGN1bGF0ZWQsIHdoaWNoIHdvdWxkIGJlIHRoYXQgb2YgdGhlIHByb3BvcnRpb24gb2YgcmVzcG9uZGVudHMgd2hvIGFyZSBzYXRpc2ZpZWQgd2l0aCBkZW1vY3JhY3kuClRoZW4sIHRoZXNlIHZhcmlhYmxlcyBoYXZlIGJlZW4gZGVzY3JpYmVkIGJ5IGdyb3VwcyBvZiBhIGZhY3RvciB2YXJpYWJsZSAoY29uc3VtcHRpb24gb2YgcG9saXRpY2FsIGluZm9ybWF0aW9uKS4KSXQgaGFzIGJlZW4gcHJlc2VudGVkIGhvdyB0byBjYWxjdWxhdGUgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIG9mIHRoZSBudW1lcmljYWwgdmFyaWFibGUgYnkgZ3JvdXBzIG9mIHRoZSBmYWN0b3IgdmFyaWFibGUuCkZpbmFsbHksIGl0IGhhcyBiZWVuIHByZXNlbnRlZCBob3cgdG8gcGxvdCB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgYnkgZ3JvdXBzLgoKIyBDYWxjdWxhdGlvbnMgaW5jbHVkaW5nIHN1cnZleSB3ZWlnaHRzCgpPdGhlciB3YXkgdG8gY2FsY3VsYXRlIHRoZSBjb25maWRlbmNlIGludGVydmFsLCBpbmNsdWRpbmcgdGhlIHN1cnZleSB3ZWlnaHQsIGlzIGJ5IHVzaW5nIHRoZSBsaWJyYXJ5IGBzdXJ2ZXlgIGFuZCB0aGUgY29tbWFuZCBgY29uZmludGAgYWxvbmcgd2l0aCB0aGUgbmF0aXZlIGNvbW1hbmQgYHN2eW1lYW5gLgoKYGBge3IgZGVzaWdufQpsaWJyYXJ5KHN1cnZleSkKZGVzaWduMTggPSBzdnlkZXNpZ24oaWRzID0gfnVwbSwgc3RyYXRhID0gfmVzdHJhdG9wcmksIHdlaWdodHMgPSB+d2VpZ2h0MTUwMCwgbmVzdD1UUlVFLCBkYXRhPWxhcG9wMTgpCmBgYAoKSW4gdGhlIHNhbWUgd2F5IGFzIGluIHRoZSBwcmV2aW91cyBzZWN0aW9uLCB0aGUgc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IHZhcmlhYmxlIGNhbiBiZSBkZXNjcmliZWQgYnkgaW5jb3Jwb3JhdGluZyBzdXJ2ZXkgd2VpZ2h0cyB1c2luZyB0aGUgY29tbWFuZCBgc3Z5bWVhbmAuCgpgYGB7ciB3ZWlnaHRlZHBuNH0Kc3Z5bWVhbih+cG40cnIsIGRlc2lnbjE4LCBuYS5ybT1UKQpgYGAKClRvIGNhbGN1bGF0ZSB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbCwgdGhlIGFib3ZlIGNvZGUgaGFzIHRvIGJlIG5lc3RlZCBpbnNpZGUgdGhlIGNvbW1hbmQgYGNvbmZpbnRgLgpUaGlzIGNvbW1hbmQgY2FsY3VsYXRlcyB0aGUgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgYnkgZGVmYXVsdC4KWW91IGNvdWxkIGNoYW5nZSB0aGlzIGRlZmF1bHQgdmFsdWUgdG8gOTklIGNvbmZpZGVuY2UgYnkgYWRkaW5nIHRoZSBgY29uZiA9IDAuOTlgIHNwZWNpZmljYXRpb24gdG8gdGhlIGNvbW1hbmQuCgpgYGB7ciB3ZWlnaHRlZGNpfQpjb25maW50KHN2eW1lYW4ofnBuNHJyLCBkZXNpZ24xOCwgbmEucm09VCkpCmBgYAoKVGhlIG1lYW4gYW5kIGNvbmZpZGVuY2UgaW50ZXJ2YWwgb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGNhbiBhbHNvIGJlIGNhbGN1bGF0ZWQgaW5jb3Jwb3JhdGluZyB0aGUgc3VydmV5IHdlaWdodCB1c2luZyB0aGUgY29tbWFuZCBgc3Z5YnlgLgpXaXRoaW4gdGhpcyBjb21tYW5kLCB0aGUgbnVtZXJpY2FsIHZhcmlhYmxlIHRvIGJlIGRlc2NyaWJlZCAoYH5wbjRycmApLCB0aGUgdmFyaWFibGUgdGhhdCBmb3JtcyB0aGUgZ3JvdXBzIChgfnNtZWRpYTVyYCksIHRoZSBzYW1wbGUgZGVzaWduIChgZGVzaWduMThgKSwgdGhlIGZ1bmN0aW9uIHRvIGJlIGNhbGN1bGF0ZWQgKCBgc3Z5bWVhbmApLCB0aGF0IGRvZXMgbm90IHRha2UgaW50byBhY2NvdW50IG1pc3NpbmcgdmFsdWVzIChgbmEucm09VGApIGFuZCB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbCBvZiBlYWNoIGdyb3VwIChgdmFydHlwZT0iY2kiYCkgYXJlIGRlZmluZWQuCgpgYGB7ciB3ZWlnaHRlZGNpeGdyb3Vwc30KdHcudXNvLndlaWdodGVkIDwtIHN2eWJ5KH5wbjRyciwgfnNtZWRpYTVyLCBkZXNpZ24xOCwgc3Z5bWVhbiwgbmEucm09VCwgdmFydHlwZSA9ICJjaSIpCnR3LnVzby53ZWlnaHRlZApgYGAKClRvIGJlIGFibGUgdG8gcGxvdCwgdGhlc2UgY2FsY3VsYXRpb25zIGFyZSBzYXZlZCBpbiBhICJ0dy51c28ud2VpZ2h0ZWQiIGRhdGFmcmFtZSwgd2hpY2ggaW5jbHVkZXMgdGhlIG1lYW4gZGF0YSBmb3IgZWFjaCBncm91cCBhbmQgdGhlIGxvd2VyIGFuZCB1cHBlciBsaW1pdCBvZiB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbC4KSW4gdGhlIHNhbWUgd2F5IGFzIHdpdGggZGF0YSB0aGF0IGRvZXMgbm90IGluY2x1ZGUgdGhlIHN1cnZleSBlZmZlY3QsIHRoZSBsaWJyYXJ5IGBnZ3Bsb3RgIGlzIHVzZWQgYW5kIGEgcGxvdCBpcyBjcmVhdGVkIHdoaWNoIGlzIHNhdmVkIGluIGEgImdyYWYyIiBvYmplY3QuClZlcnkgc2ltaWxhciBzcGVjaWZpY2F0aW9ucyB0byB0aGUgcHJldmlvdXMgZXhhbXBsZXMgYXJlIHVzZWQuCgpgYGB7ciB3ZWlnaHRlZGJhcnN9CmdyYWYyIDwtIGdncGxvdCh0dy51c28ud2VpZ2h0ZWQsIGFlcyh4PXNtZWRpYTVyLCB5PXBuNHJyKSkrCiAgZ2VvbV9iYXIod2lkdGg9MC41LCBmaWxsPSJkYXJrY3lhbiIsIGNvbG91cj0iYmxhY2siLCBzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fZXJyb3JiYXIoYWVzKHltaW49Y2lfbCwgeW1heD1jaV91KSwgd2lkdGg9MC4yKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHJvdW5kKHBuNHJyLCAxKSwgIiUiKSksIHZqdXN0PS00LjIsIHNpemU9NCkrCiAgeGxhYigiVHdpdHRlciB1c2VyIHR5cGUiKSArIHlsYWIoIlNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSAoJSkiKSsKICB5bGltKDAsIDUwKQpncmFmMgpgYGAK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("IC.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
