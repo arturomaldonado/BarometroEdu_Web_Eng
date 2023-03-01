@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Comparing 2 means with the AmericasBarometer</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LAPOP_edu</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="install.html">Installing R and RStudio</a>
+    </li>
+    <li>
+      <a href="basic.html">Basic procedures</a>
+    </li>
+    <li>
+      <a href="bases.html">Importing datasets</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    First steps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Manipulation.html">Data manipulation</a>
+    </li>
+    <li>
+      <a href="Expansion.html">Survey weights</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Describing and plotting data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Descriptives.html">Descriptive statistics: nominal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives2.html">Descriptive statistics: ordinal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives3.html">Descriptive statistics: numerical variables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Basic inference
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="IC.html">Confidence intervals</a>
+    </li>
+    <li>
+      <a href="ttest.html">Compararing 2 means</a>
+    </li>
+    <li>
+      <a href="anova.html">Comparing more than 2 means</a>
+    </li>
+    <li>
+      <a href="chi.html">Crosstables and chi-square analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="correlacion.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regresion1.html">Simple linear regresion</a>
+    </li>
+    <li>
+      <a href="regresion2.html">Multiple linear regresion</a>
+    </li>
+    <li>
+      <a href="logit.html">Logistic regresion</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapas.html">Maps</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Contact</a>
+</li>
+<li>
+  <a href="https://arturomaldonado.github.io/BarometroEdu_Web/index.html">Spanish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Comparing 2 means with the
+AmericasBarometer</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this section we will see how to compare two means and know if the
+differences can be inferred to the population, through the means
+comparison t-test. For that, we will continue to use the latest regional
+report “The Pulse of Democracy”, available <a
+href="https://www.vanderbilt.edu/lapop/ab2021/2021_LAPOP_AmericasBarometer_2021_Pulse_of_Democracy.pdf">here</a>,
+where the main findings of the 2018/19 round of the AmericasBarometer
+are presented. This report shows the results on support for electoral
+democracy, a variable that is crossed with some other sociodemographic
+variables such as gender or place of residence (see Figure 1.5).</p>
+</div>
+<div id="about-the-dataset" class="section level1">
+<h1>About the dataset</h1>
+<p>The data we are going to use should be cited as follows: Source:
+AmericasBarometer by the Latin American Public Opinion Project (LAPOP),
+wwww.LapopSurveys.org. This section reloads a trimmed database. It is
+recommended to clean the Environment before starting this section.</p>
+<p>This database is hosted in the “materials_edu” repository of the
+LAPOP account on GitHub. Using the <code>rio</code> library and the
+<code>import</code> command, you can import this database from this
+repository. In addition, the data from countries with codes less than or
+equal to 35 are selected, that is, the observations of the United States
+and Canada are eliminated.</p>
+<pre class="r"><code>library(rio)
+lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)
+lapop18 = subset(lapop18, pais&lt;=35)</code></pre>
+<p>We also load the dataset for the 2021 round of the
+AmericasBarometer.</p>
+<pre class="r"><code>lapop21 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData&quot;)
+lapop21 = subset(lapop21, pais&lt;=35)</code></pre>
+</div>
+<div id="crime-victimization" class="section level1">
+<h1>Crime victimization</h1>
+<p>Victimization for crime is measure with the variable “vic1ext”. The
+question is worded: “Now, changing the subject, have you been a victim
+of any type of crime in the past 12 months? That is, have you been a
+victim of robbery, burglary, assault, fraud, blackmail, extortion,
+violent threats or <strong>any other type</strong> of crime in the past
+12 months?”.</p>
+<p>This variable is coded 1 “Yes” and 2 “No”. To be able to replicate
+the results in Figure 3.12, we have to recode this variable. As we
+indicate in a previous section, this recodification allows to calculate
+the percentage of victims for crime with the command <code>mean</code>.
+The results indicate that 22% of citizens report having been victim of
+crime.</p>
+<pre class="r"><code>library(car)
+lapop21$crime = car::recode(lapop21$vic1ext, &quot;1=100; 2=0&quot;)
+mean(lapop21$crime, na.rm=T)</code></pre>
+<pre><code>## [1] 21.92233</code></pre>
+<p>Figure 3.12 shows a comparison of victimization for crime crossed by
+four sociodemographic variables: gender, age, education and quintiles of
+wealth.</p>
+<p><img src="Figure3.12.png" width="512" /><br />
+To replicate difference between gender, we have to recode variable
+“q1tb” and then declare this new variable as factor.</p>
+<pre class="r"><code>lapop21$gender = car::recode(lapop21$q1tb, &quot;1=2; 2=1; 3=1&quot;)
+lapop21$gender = as.factor(lapop21$gender)
+levels(lapop21$gender) = c(&quot;Female&quot;, &quot;Male&quot;)
+table(lapop21$gender)</code></pre>
+<pre><code>## 
+## Female   Male 
+##  31487  29174</code></pre>
+<p>In the same way as in the section about confidence intervals, we use
+the command <code>tapply</code> to calculate the percentage of crime
+victimization by groups of gender.</p>
+<pre class="r"><code>tapply(lapop21$crime, lapop21$gender, mean, na.rm=T) #Para género</code></pre>
+<pre><code>##   Female     Male 
+## 20.87127 23.06949</code></pre>
+<p>To reproduce the bar plot, including the confidence intervals, first
+we have to produce a table that saves the percentages for each group and
+the upper and lower limits of the confidence intervals. We can do this
+with the command <code>group.CI</code> of the library <code>Rmisc</code>
+.</p>
+<p>With this table, we can use the library <code>ggplot</code> to
+reproduce the first pane of Figure 3.12. Results are not the same due to
+we have not used survey weights.</p>
+<pre class="r"><code>library(Rmisc)
+crxgen = group.CI(crime~gender, lapop21)
+library(ggplot2)
+graf3.12a = ggplot(crxgen, aes(x=gender, y=crime.mean))+
+  geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=crime.lower, ymax=crime.upper), width=0.2)+
+  geom_text(aes(label=paste(round(crime.mean, 1), &quot;%&quot;)), vjust=-1.5, size=4)+
+  xlab(&quot;Gender&quot;) + ylab(&quot;Crime victimización (%)&quot;)+
+  ylim(0, 40)
+graf3.12a</code></pre>
+<p><img
+src="ttest_files/figure-html/unnamed-chunk-5-1.png" /><!-- --></p>
+<p>We can compare visually the confidence intervals between groups in
+this graph. Because they do not overlap, we can conclude that the
+difference between men and women in crime victimization is statistically
+significant (initially).</p>
+<p>This result, however, has to be confirmed formally with a
+significance test that we will see below.</p>
+</div>
+<div id="support-for-democracy" class="section level1">
+<h1>Support for Democracy</h1>
+<p>Support for democracy, variable “ING4”, measured on a scale from 1 to
+7, where 1 means “strongly disagree” and 7 means “strongly agree”, has
+to be recoded. According to the report “Responses are considered in the
+portion of the scale that indicates agreement, this is the values from 5
+to 7, to indicate the percentage that supports democracy” (p. 11). The
+command <code>mean</code> is used to report the regional average of
+support for democracy. We specify <code>na.rm=T</code> so that the
+command does not take missing values into account in the
+calculation.</p>
+<pre class="r"><code>library(car)
+lapop18$ing4r = car::recode(lapop18$ing4, &quot;1:4=0; 5:7=100&quot;)
+mean(lapop18$ing4r, na.rm=T)</code></pre>
+<pre><code>## [1] 57.67924</code></pre>
+<p>It is observed that in general, 57.7% of those interviewed support
+democracy in the set of countries evaluated in 2018.</p>
+</div>
+<div id="factors-associated-with-support-for-democracy"
+class="section level1">
+<h1>Factors associated with support for democracy</h1>
+<p>Figure 1.5 shows how support for democracy varies by sociodemographic
+groups. In particular, the results are presented for the variable place
+of residence that distinguishes the urban and rural areas, and for the
+variable gender, which distinguishes between men and women.</p>
+<p><img src="Figure1.5.JPG" width="395" /></p>
+<p>As we saw in the section on confidence intervals, the percentage of
+support for each group can be calculated. First, we are going to create
+new factor variables for place of residence and gender, which are
+imported as numeric variables. These new variables are then labeled.</p>
+<pre class="r"><code>lapop18$gender = as.factor(lapop18$q1)
+levels(lapop18$gender) = c(&quot;Male&quot;, &quot;Female&quot;)
+lapop18$ambito = as.factor(lapop18$ur)
+levels(lapop18$ambito) = c(&quot;Urban&quot;, &quot;Rural&quot;)</code></pre>
+<p>As in the section on confidence intervals, we use the command
+<code>tapply</code> to calculate average support for democracy by gender
+and urban/rural setting.</p>
+<pre class="r"><code>tapply(lapop18$ing4r, lapop18$gender, mean, na.rm=T) #To gender</code></pre>
+<pre><code>##     Male   Female 
+## 59.42899 55.90933</code></pre>
+<pre class="r"><code>tapply(lapop18$ing4r, lapop18$ambito, mean, na.rm=T) #To urban-rural</code></pre>
+<pre><code>##    Urban    Rural 
+## 58.71664 55.07453</code></pre>
+<p>We can reproduce the bar plots that compare the average support for
+democracy between groups by gender and urban/rural. First, for gender,
+you have to create a table with the data of the mean and the limits of
+the confidence intervals for each group. We will do this with the
+command <code>group.CI</code> which is part of the library
+<code>Rmisc</code>. We save this data in an R object called
+“sdxgen”.</p>
+<p>This table saves the results of the mean support for democracy for
+each group (“ing4r.mean” column) and the upper and lower limits of the
+confidence intervals (“ing4r.lower” and “ing4r.upper” columns). It also
+saves the “gender” column with the names of the groups.</p>
+<p>Figure 1.5 is reproduced using the command <code>ggplot</code> in the
+same way as in previous sections.</p>
+<pre class="r"><code>library(Rmisc)
+sdxgen = group.CI(ing4r~gender, lapop18)
+library(ggplot2)
+graf1.5 = ggplot(sdxgen, aes(x=gender, y=ing4r.mean))+
+  geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=ing4r.lower, ymax=ing4r.upper), width=0.2)+
+  geom_text(aes(label=paste(round(ing4r.mean, 1), &quot;%&quot;)), vjust=-1.5, size=4)+
+  xlab(&quot;Gender&quot;) + ylab(&quot;Support for democracy (%)&quot;)+
+  ylim(0, 70)
+graf1.5</code></pre>
+<p><img src="ttest_files/figure-html/apoyoxgen-1.png" /><!-- --></p>
+<p>A similar graph can be generated that presents the percentage of
+support for democracy and the confidence intervals by urban and rural
+groups.</p>
+<pre class="r"><code>sdxamb &lt;- group.CI(ing4r~ambito, lapop18)
+library(ggplot2)
+graf1.5_2 = ggplot(sdxamb, aes(x=ambito, y=ing4r.mean))+
+  geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=ing4r.lower, ymax=ing4r.upper), width=0.2)+
+  geom_text(aes(label=paste(round(ing4r.mean, 1), &quot;%&quot;)), vjust=-1.5, size=4)+
+  xlab(&quot;Place of residence&quot;) + ylab(&quot;Support for democracy (%)&quot;)+
+  ylim(0, 70)
+graf1.5_2</code></pre>
+<p><img src="ttest_files/figure-html/apoyoxamb-1.png" /><!-- --></p>
+<p>The LAPOP Lab generally presents the confidence intervals of each
+group in its graphs. These gray bars on the report serve as a quick way
+to compare. If the bars overlap, that would mean that there would be no
+statistically significant differences between the groups. On the
+contrary, if the gray bars do not overlap, it would mean that the
+difference between the groups is significant at 95% confidence. However,
+to check these conclusions, a statistical test has to be calculated.
+When the comparison is between the means of two groups, the appropriate
+statistical test is the t-test for differences of means. In this section
+we are assuming that we can treat the variable “jc15a” and “ing4r” as
+numerical variables, from which the mean and standard deviation can be
+calculated, although these variables are strictly a nominal qualitative
+type.</p>
+</div>
+<div id="t-test" class="section level1">
+<h1>T-test</h1>
+<p>Student’s t tests the following hypotheses:</p>
+<p><span class="math display">\[
+H_0: µ_1 = µ_2
+\]</span></p>
+<p><span class="math display">\[
+H_a: µ_1 ≠ µ_2
+\]</span></p>
+<p>The t-test statistic is calculated with a standard error that depends
+on whether the variances appear different or whether the variances
+appear equal. To determine this condition, the first thing is to
+calculate a test of equality of variances between the groups, called
+Levene’s test.</p>
+<p><span class="math display">\[
+H_0: var_1 = var_2
+\]</span></p>
+<p><span class="math display">\[
+H_a: var_1 ≠ var_2
+\]</span></p>
+<div
+id="t-test-for-the-difference-in-means-of-crime-victimization-by-gender"
+class="section level2">
+<h2>T-test for the difference in means of crime victimization by
+gender</h2>
+<p>The first step is to run the Levene test to evaluate if variances are
+equal or different, which is a condition that then is used in the
+t-test. To run this test, we use the library <code>DescTools</code> that
+includes the command <code>LeveneTest</code>.</p>
+<pre class="r"><code>library(DescTools)
+LeveneTest(lapop21$crime, lapop21$gender)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["F value"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"21.36284","3":"3.816323e-06","_rn_":"group"},{"1":"30305","2":"NA","3":"NA","_rn_":""}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Because the p-value (Pr(&gt;F)) is lower than 0.05, we reject the
+null hypothesis and affirm that variances are different. With this
+result, we can run the command <code>t.test</code>, which null
+hypothesis indicates that means of crime victimization are equal between
+men and women, and the alternative hypothesis indicates that both means
+are different. We include the specification <code>var.equal = F</code>
+because the results of the Levene test indicates that variances seem
+different.</p>
+<pre class="r"><code>t.test(crime ~ gender, data = lapop21, var.equal=F)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  crime by gender
+## t = -4.6147, df = 29850, p-value = 3.952e-06
+## alternative hypothesis: true difference in means between group Female and group Male is not equal to 0
+## 95 percent confidence interval:
+##  -3.131886 -1.264558
+## sample estimates:
+## mean in group Female   mean in group Male 
+##             20.87127             23.06949</code></pre>
+<p>The p-value is lower than 0.05. With this result, we can reject the
+null hypotesis and affirm the alternative hypothesis that means between
+both groups are different. We conclude that men report a higher crime
+victimization than women in the region.</p>
+</div>
+<div
+id="t-test-for-the-difference-in-means-of-support-for-democracy-by-gender"
+class="section level2">
+<h2>T-test for the difference in means of support for democracy by
+gender</h2>
+<p>The first step is to do the Levene test. To run this test, the
+library <code>DescTools</code> is used, which includes the command
+<code>LeveneTest</code>.</p>
+<pre class="r"><code>library(DescTools)
+LeveneTest(lapop18$ing4r, lapop18$gender)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["F value"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"34.38526","3":"4.573811e-09","_rn_":"group"},{"1":"27069","2":"NA","3":"NA","_rn_":""}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>As the p-value (Pr(&gt;F) is less than 0.05, the null hypothesis is
+rejected and it is stated that the variances are different. With this
+result, the command <code>t.test</code> can be run, whose null
+hypothesis indicates that the means of support for democracy are the
+same between men and women and the alternative hypothesis indicates that
+both means are different. The specification <code>var.equal = F</code>
+is included due to the result of Levene’s test indicating that the
+variances appear different.</p>
+<pre class="r"><code>t.test(ing4r ~ gender, data = lapop18, var.equal=F)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  ing4r by gender
+## t = 5.8633, df = 27046, p-value = 4.59e-09
+## alternative hypothesis: true difference in means between group Male and group Female is not equal to 0
+## 95 percent confidence interval:
+##  2.343068 4.696255
+## sample estimates:
+##   mean in group Male mean in group Female 
+##             59.42899             55.90933</code></pre>
+<p>The value of the p-value (4.59e-09) is less than 0.05, so the null
+hypothesis is rejected and the alternative is affirmed, concluding that
+the differences are different in the population at 95% confidence.</p>
+</div>
+<div
+id="t-test-for-the-difference-in-means-of-support-for-democracy-by-domain-groups"
+class="section level2">
+<h2>T-test for the difference in means of support for democracy by
+domain groups</h2>
+<p>In the same way as in the previous case, Levene’s test is first run
+to analyze the equality of variances.</p>
+<pre class="r"><code>LeveneTest(lapop18$ing4r, lapop18$ambito)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["F value"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"30.01406","3":"4.327404e-08","_rn_":"group"},{"1":"27084","2":"NA","3":"NA","_rn_":""}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Again, the p-value is less than 0.05, which rejects the hypothesis of
+equality of variances. The t-test is then run with the specification of
+different variances.</p>
+<pre class="r"><code>t.test(ing4r ~ ambito, data = lapop18, var.equal=F)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  ing4r by ambito
+## t = 5.4543, df = 14056, p-value = 5e-08
+## alternative hypothesis: true difference in means between group Urban and group Rural is not equal to 0
+## 95 percent confidence interval:
+##  2.333228 4.950988
+## sample estimates:
+## mean in group Urban mean in group Rural 
+##            58.71664            55.07453</code></pre>
+<p>In this comparison, the p-value is also less than 0.05, so the null
+hypothesis is rejected and it is found that the differences in support
+for democracy between urban and rural areas is statistically significant
+at 95% confidence. As the report indicates, “Considering the region as a
+whole, Figure 1.5 shows statistically significant relationships between
+five demographic variables and socioeconomic groups (education, wealth,
+urban/rural residence, gender, and age) and support for democracy”
+(p. 13). In this section we have checked these statistical results for
+demographic variables of two groups, such as gender and urban/rural
+residence.</p>
+</div>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this section we have described and plotted a variable, such as
+support for democracy, by groups of other variable, such as gender.
+Starting from the comparison of confidence intervals, we formalize this
+comparison with a statistical test, such as the t-test, to conclude
+whether the differences between groups are statistically
+significant.</p>
+</div>
+<div id="calculations-including-survey-weights" class="section level1">
+<h1>Calculations including survey weights</h1>
+<div id="for-crime-victimization" class="section level2">
+<h2>For crime victimization</h2>
+<p>To calculate the difference of means including a survey weight, we
+can use the library <code>survey</code>. This library requires a change
+in the dataset, in the same way as we did in this <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives2.html">section</a>.</p>
+<p>Once we fit the dataset, we have to define the sampling design with
+the command <code>svydesign</code> and we save this design in an object
+called “design21”.</p>
+<pre class="r"><code>library(survey)
+design21 = svydesign(ids = ~upm, strata = ~strata, weights = ~weight1500, nest=TRUE, data=lapop21)</code></pre>
+<p>Now we can calculate the table of the mean of crime victimization for
+each group of gender, including the survey weight. In the same way as we
+see in the section on <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/IC.html">confidence
+intervals</a>, we use the command <code>svyby</code>.</p>
+<pre class="r"><code>crxgen.w = svyby(~crime, ~gender, design21, svymean, na.rm=T, vartype = &quot;ci&quot;)
+crxgen.w</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["gender"],"name":[1],"type":["fct"],"align":["left"]},{"label":["crime"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["ci_l"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ci_u"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Female","2":"19.89003","3":"19.13471","4":"20.64535","_rn_":"Female"},{"1":"Male","2":"22.37644","3":"21.55720","4":"23.19569","_rn_":"Male"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>It should be noted that these results are equal to those presented in
+Figure 3.12. With this table we can proceed to replicate the left panel
+of this figure, in the same manner as we did above in this section.</p>
+<p>For the calculation of the t-test of difference of means, the library
+<code>survey</code> has a native command, called <code>svyttest</code>,
+that allows to perform this test. However, we do not have a command to
+evaluate the variances, as the Levene test. The command
+<code>svyttest</code> is a development of a more general command for
+generalized linear models, which assume variances are equal. If we would
+like to validate this assumption, we can do it manually, as explained in
+this <a
+href="https://stats.stackexchange.com/questions/148314/f-test-for-equality-of-variances-with-weighted-survey-data">link</a>.
+Here we are going to proceed as if assumption is correct. We observe
+this command get results very similar to those obtained with no survey
+weights and, for all effect, we arrive to the same conclusions. The
+p-value is lower than 0.05, so we can reject the null hypothesis and
+affirm there are differences between men and women in their levels of
+crime victimization, taking into account the survey weights.</p>
+<pre class="r"><code>svyttest(crime~gender, design21)</code></pre>
+<pre><code>## 
+##  Design-based t-test
+## 
+## data:  crime ~ gender
+## t = 4.3654, df = 30282, p-value = 1.273e-05
+## alternative hypothesis: true difference in mean is not equal to 0
+## 95 percent confidence interval:
+##  1.370025 3.602805
+## sample estimates:
+## difference in mean 
+##           2.486415</code></pre>
+</div>
+<div id="for-support-for-democracy" class="section level2">
+<h2>For support for democracy</h2>
+<p>Other way to calculate the difference of means including the survey
+wieight is by using the library <code>survey</code>. For this we have to
+define the sample design with the command <code>svydesign</code> and
+save this design in an object, here called “design18”.</p>
+<pre class="r"><code>library(survey)
+design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)</code></pre>
+<p>First, the table of the mean support for democracy can be calculated
+for each value of the variable gender, including the survey weight. In
+the same way as seen in the section on <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web/IC.html">confidence
+intervals</a>, and use the command <code>svyby</code>.</p>
+<pre class="r"><code>sdxgen.w = svyby(~ing4r, ~gender, design18, svymean, na.rm=T, vartype = &quot;ci&quot;)
+sdxgen.w</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["gender"],"name":[1],"type":["fct"],"align":["left"]},{"label":["ing4r"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["ci_l"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ci_u"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Male","2":"59.45019","3":"58.60266","4":"60.29772","_rn_":"Male"},{"1":"Female","2":"55.95399","3":"55.09168","4":"56.81630","_rn_":"Female"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>With this table you can proceed to create the bar plot, in the same
+way that was done above in this section.</p>
+<p>For the calculation of the t-test for difference of means, the
+package <code>survey</code> has a native command
+<code>svyttest</code>that allows this calculation.</p>
+<pre class="r"><code>svyttest(ing4r~gender, design18)</code></pre>
+<pre><code>## 
+##  Design-based t-test
+## 
+## data:  ing4r ~ gender
+## t = -5.8332, df = 1329, p-value = 6.822e-09
+## alternative hypothesis: true difference in mean is not equal to 0
+## 95 percent confidence interval:
+##  -4.672004 -2.320395
+## sample estimates:
+## difference in mean 
+##          -3.496199</code></pre>
+<p>Because the p-value is lower than 0.05, we conclude there are
+differences between men and women in their levels of support for
+democracy in the region.</p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29tcGFyaW5nIDIgbWVhbnMgd2l0aCB0aGUgQW1lcmljYXNCYXJvbWV0ZXIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGZsYXRseQogICAgZGZfcHJpbnQ6IHBhZ2VkCiAgICBzZWxmX2NvbnRhaW5lZDogbm8KICAgIGtlZXBfbWQ6IHllcwplZGl0b3Jfb3B0aW9uczogCiAgbWFya2Rvd246IAogICAgd3JhcDogc2VudGVuY2UKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KG1lc3NhZ2U9RkFMU0Usd2FybmluZz1GQUxTRSwgY2FjaGU9VFJVRSkKYGBgCgpgYGB7Y3NzIGNvbG9yLCBlY2hvPUZBTFNFfQouY29sdW1ucyB7ZGlzcGxheTogZmxleDt9CmgxIHtjb2xvcjogIzMzNjZDQzt9CmBgYAoKIyBJbnRyb2R1Y3Rpb24KCkluIHRoaXMgc2VjdGlvbiB3ZSB3aWxsIHNlZSBob3cgdG8gY29tcGFyZSB0d28gbWVhbnMgYW5kIGtub3cgaWYgdGhlIGRpZmZlcmVuY2VzIGNhbiBiZSBpbmZlcnJlZCB0byB0aGUgcG9wdWxhdGlvbiwgdGhyb3VnaCB0aGUgbWVhbnMgY29tcGFyaXNvbiB0LXRlc3QuCkZvciB0aGF0LCB3ZSB3aWxsIGNvbnRpbnVlIHRvIHVzZSB0aGUgbGF0ZXN0IHJlZ2lvbmFsIHJlcG9ydCAiVGhlIFB1bHNlIG9mIERlbW9jcmFjeSIsIGF2YWlsYWJsZSBbaGVyZV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDIxLzIwMjFfTEFQT1BfQW1lcmljYXNCYXJvbWV0ZXJfMjAyMV9QdWxzZV9vZl9EZW1vY3JhY3kucGRmKSwgd2hlcmUgdGhlIG1haW4gZmluZGluZ3Mgb2YgdGhlIDIwMTgvMTkgcm91bmQgb2YgdGhlIEFtZXJpY2FzQmFyb21ldGVyIGFyZSBwcmVzZW50ZWQuClRoaXMgcmVwb3J0IHNob3dzIHRoZSByZXN1bHRzIG9uIHN1cHBvcnQgZm9yIGVsZWN0b3JhbCBkZW1vY3JhY3ksIGEgdmFyaWFibGUgdGhhdCBpcyBjcm9zc2VkIHdpdGggc29tZSBvdGhlciBzb2Npb2RlbW9ncmFwaGljIHZhcmlhYmxlcyBzdWNoIGFzIGdlbmRlciBvciBwbGFjZSBvZiByZXNpZGVuY2UgKHNlZSBGaWd1cmUgMS41KS4KCiMgQWJvdXQgdGhlIGRhdGFzZXQKClRoZSBkYXRhIHdlIGFyZSBnb2luZyB0byB1c2Ugc2hvdWxkIGJlIGNpdGVkIGFzIGZvbGxvd3M6IFNvdXJjZTogQW1lcmljYXNCYXJvbWV0ZXIgYnkgdGhlIExhdGluIEFtZXJpY2FuIFB1YmxpYyBPcGluaW9uIFByb2plY3QgKExBUE9QKSwgd3d3dy5MYXBvcFN1cnZleXMub3JnLgpUaGlzIHNlY3Rpb24gcmVsb2FkcyBhIHRyaW1tZWQgZGF0YWJhc2UuCkl0IGlzIHJlY29tbWVuZGVkIHRvIGNsZWFuIHRoZSBFbnZpcm9ubWVudCBiZWZvcmUgc3RhcnRpbmcgdGhpcyBzZWN0aW9uLgoKVGhpcyBkYXRhYmFzZSBpcyBob3N0ZWQgaW4gdGhlICJtYXRlcmlhbHNfZWR1IiByZXBvc2l0b3J5IG9mIHRoZSBMQVBPUCBhY2NvdW50IG9uIEdpdEh1Yi4KVXNpbmcgdGhlIGByaW9gIGxpYnJhcnkgYW5kIHRoZSBgaW1wb3J0YCBjb21tYW5kLCB5b3UgY2FuIGltcG9ydCB0aGlzIGRhdGFiYXNlIGZyb20gdGhpcyByZXBvc2l0b3J5LgpJbiBhZGRpdGlvbiwgdGhlIGRhdGEgZnJvbSBjb3VudHJpZXMgd2l0aCBjb2RlcyBsZXNzIHRoYW4gb3IgZXF1YWwgdG8gMzUgYXJlIHNlbGVjdGVkLCB0aGF0IGlzLCB0aGUgb2JzZXJ2YXRpb25zIG9mIHRoZSBVbml0ZWQgU3RhdGVzIGFuZCBDYW5hZGEgYXJlIGVsaW1pbmF0ZWQuCgpgYGB7ciBiYXNlfQpsaWJyYXJ5KHJpbykKbGFwb3AxOCA9IGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9sYXBvcC1jZW50cmFsL21hdGVyaWFsc19lZHUvbWFpbi9MQVBPUF9BQl9NZXJnZV8yMDE4X3YxLjAuc2F2IikKbGFwb3AxOCA9IHN1YnNldChsYXBvcDE4LCBwYWlzPD0zNSkKYGBgCgpXZSBhbHNvIGxvYWQgdGhlIGRhdGFzZXQgZm9yIHRoZSAyMDIxIHJvdW5kIG9mIHRoZSBBbWVyaWNhc0Jhcm9tZXRlci4KCmBgYHtyfQpsYXBvcDIxID0gaW1wb3J0KCJodHRwczovL3Jhdy5naXRodWIuY29tL2xhcG9wLWNlbnRyYWwvbWF0ZXJpYWxzX2VkdS9tYWluL2xhcG9wMjEuUkRhdGEiKQpsYXBvcDIxID0gc3Vic2V0KGxhcG9wMjEsIHBhaXM8PTM1KQpgYGAKCiMgQ3JpbWUgdmljdGltaXphdGlvbgoKVmljdGltaXphdGlvbiBmb3IgY3JpbWUgaXMgbWVhc3VyZSB3aXRoIHRoZSB2YXJpYWJsZSAidmljMWV4dCIuClRoZSBxdWVzdGlvbiBpcyB3b3JkZWQ6ICJOb3csIGNoYW5naW5nIHRoZSBzdWJqZWN0LCBoYXZlIHlvdSBiZWVuIGEgdmljdGltIG9mIGFueSB0eXBlIG9mIGNyaW1lIGluIHRoZSBwYXN0IDEyIG1vbnRocz8gVGhhdCBpcywgaGF2ZSB5b3UgYmVlbiBhIHZpY3RpbSBvZiByb2JiZXJ5LCBidXJnbGFyeSwgYXNzYXVsdCwgZnJhdWQsIGJsYWNrbWFpbCwgZXh0b3J0aW9uLCB2aW9sZW50IHRocmVhdHMgb3IgKiphbnkgb3RoZXIgdHlwZSoqIG9mIGNyaW1lIGluIHRoZSBwYXN0IDEyIG1vbnRocz8iLgoKVGhpcyB2YXJpYWJsZSBpcyBjb2RlZCAxICJZZXMiIGFuZCAyICJObyIuClRvIGJlIGFibGUgdG8gcmVwbGljYXRlIHRoZSByZXN1bHRzIGluIEZpZ3VyZSAzLjEyLCB3ZSBoYXZlIHRvIHJlY29kZSB0aGlzIHZhcmlhYmxlLgpBcyB3ZSBpbmRpY2F0ZSBpbiBhIHByZXZpb3VzIHNlY3Rpb24sIHRoaXMgcmVjb2RpZmljYXRpb24gYWxsb3dzIHRvIGNhbGN1bGF0ZSB0aGUgcGVyY2VudGFnZSBvZiB2aWN0aW1zIGZvciBjcmltZSB3aXRoIHRoZSBjb21tYW5kIGBtZWFuYC4KVGhlIHJlc3VsdHMgaW5kaWNhdGUgdGhhdCAyMiUgb2YgY2l0aXplbnMgcmVwb3J0IGhhdmluZyBiZWVuIHZpY3RpbSBvZiBjcmltZS4KCmBgYHtyfQpsaWJyYXJ5KGNhcikKbGFwb3AyMSRjcmltZSA9IGNhcjo6cmVjb2RlKGxhcG9wMjEkdmljMWV4dCwgIjE9MTAwOyAyPTAiKQptZWFuKGxhcG9wMjEkY3JpbWUsIG5hLnJtPVQpCmBgYAoKRmlndXJlIDMuMTIgc2hvd3MgYSBjb21wYXJpc29uIG9mIHZpY3RpbWl6YXRpb24gZm9yIGNyaW1lIGNyb3NzZWQgYnkgZm91ciBzb2Npb2RlbW9ncmFwaGljIHZhcmlhYmxlczogZ2VuZGVyLCBhZ2UsIGVkdWNhdGlvbiBhbmQgcXVpbnRpbGVzIG9mIHdlYWx0aC4KCiFbXShGaWd1cmUzLjEyLnBuZyl7d2lkdGg9IjUxMiJ9XApUbyByZXBsaWNhdGUgZGlmZmVyZW5jZSBiZXR3ZWVuIGdlbmRlciwgd2UgaGF2ZSB0byByZWNvZGUgdmFyaWFibGUgInExdGIiIGFuZCB0aGVuIGRlY2xhcmUgdGhpcyBuZXcgdmFyaWFibGUgYXMgZmFjdG9yLgoKYGBge3J9CmxhcG9wMjEkZ2VuZGVyID0gY2FyOjpyZWNvZGUobGFwb3AyMSRxMXRiLCAiMT0yOyAyPTE7IDM9MSIpCmxhcG9wMjEkZ2VuZGVyID0gYXMuZmFjdG9yKGxhcG9wMjEkZ2VuZGVyKQpsZXZlbHMobGFwb3AyMSRnZW5kZXIpID0gYygiRmVtYWxlIiwgIk1hbGUiKQp0YWJsZShsYXBvcDIxJGdlbmRlcikKYGBgCgpJbiB0aGUgc2FtZSB3YXkgYXMgaW4gdGhlIHNlY3Rpb24gYWJvdXQgY29uZmlkZW5jZSBpbnRlcnZhbHMsIHdlIHVzZSB0aGUgY29tbWFuZCBgdGFwcGx5YCB0byBjYWxjdWxhdGUgdGhlIHBlcmNlbnRhZ2Ugb2YgY3JpbWUgdmljdGltaXphdGlvbiBieSBncm91cHMgb2YgZ2VuZGVyLgoKYGBge3J9CnRhcHBseShsYXBvcDIxJGNyaW1lLCBsYXBvcDIxJGdlbmRlciwgbWVhbiwgbmEucm09VCkgI1BhcmEgZ8OpbmVybwpgYGAKClRvIHJlcHJvZHVjZSB0aGUgYmFyIHBsb3QsIGluY2x1ZGluZyB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMsIGZpcnN0IHdlIGhhdmUgdG8gcHJvZHVjZSBhIHRhYmxlIHRoYXQgc2F2ZXMgdGhlIHBlcmNlbnRhZ2VzIGZvciBlYWNoIGdyb3VwIGFuZCB0aGUgdXBwZXIgYW5kIGxvd2VyIGxpbWl0cyBvZiB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMuCldlIGNhbiBkbyB0aGlzIHdpdGggdGhlIGNvbW1hbmQgYGdyb3VwLkNJYCBvZiB0aGUgbGlicmFyeSBgUm1pc2NgIC4KCldpdGggdGhpcyB0YWJsZSwgd2UgY2FuIHVzZSB0aGUgbGlicmFyeSBgZ2dwbG90YCB0byByZXByb2R1Y2UgdGhlIGZpcnN0IHBhbmUgb2YgRmlndXJlIDMuMTIuClJlc3VsdHMgYXJlIG5vdCB0aGUgc2FtZSBkdWUgdG8gd2UgaGF2ZSBub3QgdXNlZCBzdXJ2ZXkgd2VpZ2h0cy4KCmBgYHtyfQpsaWJyYXJ5KFJtaXNjKQpjcnhnZW4gPSBncm91cC5DSShjcmltZX5nZW5kZXIsIGxhcG9wMjEpCmxpYnJhcnkoZ2dwbG90MikKZ3JhZjMuMTJhID0gZ2dwbG90KGNyeGdlbiwgYWVzKHg9Z2VuZGVyLCB5PWNyaW1lLm1lYW4pKSsKICBnZW9tX2Jhcih3aWR0aD0wLjUsIGZpbGw9ImRhcmtjeWFuIiwgY29sb3VyPSJibGFjayIsIHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbj1jcmltZS5sb3dlciwgeW1heD1jcmltZS51cHBlciksIHdpZHRoPTAuMikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChjcmltZS5tZWFuLCAxKSwgIiUiKSksIHZqdXN0PS0xLjUsIHNpemU9NCkrCiAgeGxhYigiR2VuZGVyIikgKyB5bGFiKCJDcmltZSB2aWN0aW1pemFjacOzbiAoJSkiKSsKICB5bGltKDAsIDQwKQpncmFmMy4xMmEKYGBgCgpXZSBjYW4gY29tcGFyZSB2aXN1YWxseSB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgYmV0d2VlbiBncm91cHMgaW4gdGhpcyBncmFwaC4KQmVjYXVzZSB0aGV5IGRvIG5vdCBvdmVybGFwLCB3ZSBjYW4gY29uY2x1ZGUgdGhhdCB0aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIG1lbiBhbmQgd29tZW4gaW4gY3JpbWUgdmljdGltaXphdGlvbiBpcyBzdGF0aXN0aWNhbGx5IHNpZ25pZmljYW50IChpbml0aWFsbHkpLgoKVGhpcyByZXN1bHQsIGhvd2V2ZXIsIGhhcyB0byBiZSBjb25maXJtZWQgZm9ybWFsbHkgd2l0aCBhIHNpZ25pZmljYW5jZSB0ZXN0IHRoYXQgd2Ugd2lsbCBzZWUgYmVsb3cuCgojIFN1cHBvcnQgZm9yIERlbW9jcmFjeQoKU3VwcG9ydCBmb3IgZGVtb2NyYWN5LCB2YXJpYWJsZSAiSU5HNCIsIG1lYXN1cmVkIG9uIGEgc2NhbGUgZnJvbSAxIHRvIDcsIHdoZXJlIDEgbWVhbnMgInN0cm9uZ2x5IGRpc2FncmVlIiBhbmQgNyBtZWFucyAic3Ryb25nbHkgYWdyZWUiLCBoYXMgdG8gYmUgcmVjb2RlZC4KQWNjb3JkaW5nIHRvIHRoZSByZXBvcnQgIlJlc3BvbnNlcyBhcmUgY29uc2lkZXJlZCBpbiB0aGUgcG9ydGlvbiBvZiB0aGUgc2NhbGUgdGhhdCBpbmRpY2F0ZXMgYWdyZWVtZW50LCB0aGlzIGlzIHRoZSB2YWx1ZXMgZnJvbSA1IHRvIDcsIHRvIGluZGljYXRlIHRoZSBwZXJjZW50YWdlIHRoYXQgc3VwcG9ydHMgZGVtb2NyYWN5IiAocC4gMTEpLgpUaGUgY29tbWFuZCBgbWVhbmAgaXMgdXNlZCB0byByZXBvcnQgdGhlIHJlZ2lvbmFsIGF2ZXJhZ2Ugb2Ygc3VwcG9ydCBmb3IgZGVtb2NyYWN5LgpXZSBzcGVjaWZ5IGBuYS5ybT1UYCBzbyB0aGF0IHRoZSBjb21tYW5kIGRvZXMgbm90IHRha2UgbWlzc2luZyB2YWx1ZXMgaW50byBhY2NvdW50IGluIHRoZSBjYWxjdWxhdGlvbi4KCmBgYHtyIHJlY29kZX0KbGlicmFyeShjYXIpCmxhcG9wMTgkaW5nNHIgPSBjYXI6OnJlY29kZShsYXBvcDE4JGluZzQsICIxOjQ9MDsgNTo3PTEwMCIpCm1lYW4obGFwb3AxOCRpbmc0ciwgbmEucm09VCkKYGBgCgpJdCBpcyBvYnNlcnZlZCB0aGF0IGluIGdlbmVyYWwsIDU3LjclIG9mIHRob3NlIGludGVydmlld2VkIHN1cHBvcnQgZGVtb2NyYWN5IGluIHRoZSBzZXQgb2YgY291bnRyaWVzIGV2YWx1YXRlZCBpbiAyMDE4LgoKIyBGYWN0b3JzIGFzc29jaWF0ZWQgd2l0aCBzdXBwb3J0IGZvciBkZW1vY3JhY3kKCkZpZ3VyZSAxLjUgc2hvd3MgaG93IHN1cHBvcnQgZm9yIGRlbW9jcmFjeSB2YXJpZXMgYnkgc29jaW9kZW1vZ3JhcGhpYyBncm91cHMuCkluIHBhcnRpY3VsYXIsIHRoZSByZXN1bHRzIGFyZSBwcmVzZW50ZWQgZm9yIHRoZSB2YXJpYWJsZSBwbGFjZSBvZiByZXNpZGVuY2UgdGhhdCBkaXN0aW5ndWlzaGVzIHRoZSB1cmJhbiBhbmQgcnVyYWwgYXJlYXMsIGFuZCBmb3IgdGhlIHZhcmlhYmxlIGdlbmRlciwgd2hpY2ggZGlzdGluZ3Vpc2hlcyBiZXR3ZWVuIG1lbiBhbmQgd29tZW4uCgohW10oRmlndXJlMS41LkpQRyl7d2lkdGg9IjM5NSJ9CgpBcyB3ZSBzYXcgaW4gdGhlIHNlY3Rpb24gb24gY29uZmlkZW5jZSBpbnRlcnZhbHMsIHRoZSBwZXJjZW50YWdlIG9mIHN1cHBvcnQgZm9yIGVhY2ggZ3JvdXAgY2FuIGJlIGNhbGN1bGF0ZWQuCkZpcnN0LCB3ZSBhcmUgZ29pbmcgdG8gY3JlYXRlIG5ldyBmYWN0b3IgdmFyaWFibGVzIGZvciBwbGFjZSBvZiByZXNpZGVuY2UgYW5kIGdlbmRlciwgd2hpY2ggYXJlIGltcG9ydGVkIGFzIG51bWVyaWMgdmFyaWFibGVzLgpUaGVzZSBuZXcgdmFyaWFibGVzIGFyZSB0aGVuIGxhYmVsZWQuCgpgYGB7ciBmYWN0b3JzfQpsYXBvcDE4JGdlbmRlciA9IGFzLmZhY3RvcihsYXBvcDE4JHExKQpsZXZlbHMobGFwb3AxOCRnZW5kZXIpID0gYygiTWFsZSIsICJGZW1hbGUiKQpsYXBvcDE4JGFtYml0byA9IGFzLmZhY3RvcihsYXBvcDE4JHVyKQpsZXZlbHMobGFwb3AxOCRhbWJpdG8pID0gYygiVXJiYW4iLCAiUnVyYWwiKQpgYGAKCkFzIGluIHRoZSBzZWN0aW9uIG9uIGNvbmZpZGVuY2UgaW50ZXJ2YWxzLCB3ZSB1c2UgdGhlIGNvbW1hbmQgYHRhcHBseWAgdG8gY2FsY3VsYXRlIGF2ZXJhZ2Ugc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGJ5IGdlbmRlciBhbmQgdXJiYW4vcnVyYWwgc2V0dGluZy4KCmBgYHtyIGdyb3VwIHN1cHBvcnR9CnRhcHBseShsYXBvcDE4JGluZzRyLCBsYXBvcDE4JGdlbmRlciwgbWVhbiwgbmEucm09VCkgI1RvIGdlbmRlcgp0YXBwbHkobGFwb3AxOCRpbmc0ciwgbGFwb3AxOCRhbWJpdG8sIG1lYW4sIG5hLnJtPVQpICNUbyB1cmJhbi1ydXJhbApgYGAKCldlIGNhbiByZXByb2R1Y2UgdGhlIGJhciBwbG90cyB0aGF0IGNvbXBhcmUgdGhlIGF2ZXJhZ2Ugc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGJldHdlZW4gZ3JvdXBzIGJ5IGdlbmRlciBhbmQgdXJiYW4vcnVyYWwuCkZpcnN0LCBmb3IgZ2VuZGVyLCB5b3UgaGF2ZSB0byBjcmVhdGUgYSB0YWJsZSB3aXRoIHRoZSBkYXRhIG9mIHRoZSBtZWFuIGFuZCB0aGUgbGltaXRzIG9mIHRoZSBjb25maWRlbmNlIGludGVydmFscyBmb3IgZWFjaCBncm91cC4KV2Ugd2lsbCBkbyB0aGlzIHdpdGggdGhlIGNvbW1hbmQgYGdyb3VwLkNJYCB3aGljaCBpcyBwYXJ0IG9mIHRoZSBsaWJyYXJ5IGBSbWlzY2AuCldlIHNhdmUgdGhpcyBkYXRhIGluIGFuIFIgb2JqZWN0IGNhbGxlZCAic2R4Z2VuIi4KClRoaXMgdGFibGUgc2F2ZXMgdGhlIHJlc3VsdHMgb2YgdGhlIG1lYW4gc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGZvciBlYWNoIGdyb3VwICgiaW5nNHIubWVhbiIgY29sdW1uKSBhbmQgdGhlIHVwcGVyIGFuZCBsb3dlciBsaW1pdHMgb2YgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzICgiaW5nNHIubG93ZXIiIGFuZCAiaW5nNHIudXBwZXIiIGNvbHVtbnMpLgpJdCBhbHNvIHNhdmVzIHRoZSAiZ2VuZGVyIiBjb2x1bW4gd2l0aCB0aGUgbmFtZXMgb2YgdGhlIGdyb3Vwcy4KCkZpZ3VyZSAxLjUgaXMgcmVwcm9kdWNlZCB1c2luZyB0aGUgY29tbWFuZCBgZ2dwbG90YCBpbiB0aGUgc2FtZSB3YXkgYXMgaW4gcHJldmlvdXMgc2VjdGlvbnMuCgpgYGB7ciBhcG95b3hnZW59CmxpYnJhcnkoUm1pc2MpCnNkeGdlbiA9IGdyb3VwLkNJKGluZzRyfmdlbmRlciwgbGFwb3AxOCkKbGlicmFyeShnZ3Bsb3QyKQpncmFmMS41ID0gZ2dwbG90KHNkeGdlbiwgYWVzKHg9Z2VuZGVyLCB5PWluZzRyLm1lYW4pKSsKICBnZW9tX2Jhcih3aWR0aD0wLjUsIGZpbGw9ImRhcmtjeWFuIiwgY29sb3VyPSJibGFjayIsIHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbj1pbmc0ci5sb3dlciwgeW1heD1pbmc0ci51cHBlciksIHdpZHRoPTAuMikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChpbmc0ci5tZWFuLCAxKSwgIiUiKSksIHZqdXN0PS0xLjUsIHNpemU9NCkrCiAgeGxhYigiR2VuZGVyIikgKyB5bGFiKCJTdXBwb3J0IGZvciBkZW1vY3JhY3kgKCUpIikrCiAgeWxpbSgwLCA3MCkKZ3JhZjEuNQpgYGAKCkEgc2ltaWxhciBncmFwaCBjYW4gYmUgZ2VuZXJhdGVkIHRoYXQgcHJlc2VudHMgdGhlIHBlcmNlbnRhZ2Ugb2Ygc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGFuZCB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgYnkgdXJiYW4gYW5kIHJ1cmFsIGdyb3Vwcy4KCmBgYHtyIGFwb3lveGFtYn0Kc2R4YW1iIDwtIGdyb3VwLkNJKGluZzRyfmFtYml0bywgbGFwb3AxOCkKbGlicmFyeShnZ3Bsb3QyKQpncmFmMS41XzIgPSBnZ3Bsb3Qoc2R4YW1iLCBhZXMoeD1hbWJpdG8sIHk9aW5nNHIubWVhbikpKwogIGdlb21fYmFyKHdpZHRoPTAuNSwgZmlsbD0iZGFya2N5YW4iLCBjb2xvdXI9ImJsYWNrIiwgc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX2Vycm9yYmFyKGFlcyh5bWluPWluZzRyLmxvd2VyLCB5bWF4PWluZzRyLnVwcGVyKSwgd2lkdGg9MC4yKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHJvdW5kKGluZzRyLm1lYW4sIDEpLCAiJSIpKSwgdmp1c3Q9LTEuNSwgc2l6ZT00KSsKICB4bGFiKCJQbGFjZSBvZiByZXNpZGVuY2UiKSArIHlsYWIoIlN1cHBvcnQgZm9yIGRlbW9jcmFjeSAoJSkiKSsKICB5bGltKDAsIDcwKQpncmFmMS41XzIKYGBgCgpUaGUgTEFQT1AgTGFiIGdlbmVyYWxseSBwcmVzZW50cyB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgb2YgZWFjaCBncm91cCBpbiBpdHMgZ3JhcGhzLgpUaGVzZSBncmF5IGJhcnMgb24gdGhlIHJlcG9ydCBzZXJ2ZSBhcyBhIHF1aWNrIHdheSB0byBjb21wYXJlLgpJZiB0aGUgYmFycyBvdmVybGFwLCB0aGF0IHdvdWxkIG1lYW4gdGhhdCB0aGVyZSB3b3VsZCBiZSBubyBzdGF0aXN0aWNhbGx5IHNpZ25pZmljYW50IGRpZmZlcmVuY2VzIGJldHdlZW4gdGhlIGdyb3Vwcy4KT24gdGhlIGNvbnRyYXJ5LCBpZiB0aGUgZ3JheSBiYXJzIGRvIG5vdCBvdmVybGFwLCBpdCB3b3VsZCBtZWFuIHRoYXQgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiB0aGUgZ3JvdXBzIGlzIHNpZ25pZmljYW50IGF0IDk1JSBjb25maWRlbmNlLgpIb3dldmVyLCB0byBjaGVjayB0aGVzZSBjb25jbHVzaW9ucywgYSBzdGF0aXN0aWNhbCB0ZXN0IGhhcyB0byBiZSBjYWxjdWxhdGVkLgpXaGVuIHRoZSBjb21wYXJpc29uIGlzIGJldHdlZW4gdGhlIG1lYW5zIG9mIHR3byBncm91cHMsIHRoZSBhcHByb3ByaWF0ZSBzdGF0aXN0aWNhbCB0ZXN0IGlzIHRoZSB0LXRlc3QgZm9yIGRpZmZlcmVuY2VzIG9mIG1lYW5zLgpJbiB0aGlzIHNlY3Rpb24gd2UgYXJlIGFzc3VtaW5nIHRoYXQgd2UgY2FuIHRyZWF0IHRoZSB2YXJpYWJsZSAiamMxNWEiIGFuZCAiaW5nNHIiIGFzIG51bWVyaWNhbCB2YXJpYWJsZXMsIGZyb20gd2hpY2ggdGhlIG1lYW4gYW5kIHN0YW5kYXJkIGRldmlhdGlvbiBjYW4gYmUgY2FsY3VsYXRlZCwgYWx0aG91Z2ggdGhlc2UgdmFyaWFibGVzIGFyZSBzdHJpY3RseSBhIG5vbWluYWwgcXVhbGl0YXRpdmUgdHlwZS4KCiMgVC10ZXN0CgpTdHVkZW50J3MgdCB0ZXN0cyB0aGUgZm9sbG93aW5nIGh5cG90aGVzZXM6CgokJApIXzA6IMK1XzEgPSDCtV8yCiQkCgokJApIX2E6IMK1XzEg4omgIMK1XzIKJCQKClRoZSB0LXRlc3Qgc3RhdGlzdGljIGlzIGNhbGN1bGF0ZWQgd2l0aCBhIHN0YW5kYXJkIGVycm9yIHRoYXQgZGVwZW5kcyBvbiB3aGV0aGVyIHRoZSB2YXJpYW5jZXMgYXBwZWFyIGRpZmZlcmVudCBvciB3aGV0aGVyIHRoZSB2YXJpYW5jZXMgYXBwZWFyIGVxdWFsLgpUbyBkZXRlcm1pbmUgdGhpcyBjb25kaXRpb24sIHRoZSBmaXJzdCB0aGluZyBpcyB0byBjYWxjdWxhdGUgYSB0ZXN0IG9mIGVxdWFsaXR5IG9mIHZhcmlhbmNlcyBiZXR3ZWVuIHRoZSBncm91cHMsIGNhbGxlZCBMZXZlbmUncyB0ZXN0LgoKJCQKSF8wOiB2YXJfMSA9IHZhcl8yCiQkCgokJApIX2E6IHZhcl8xIOKJoCB2YXJfMgokJAoKIyMgVC10ZXN0IGZvciB0aGUgZGlmZmVyZW5jZSBpbiBtZWFucyBvZiBjcmltZSB2aWN0aW1pemF0aW9uIGJ5IGdlbmRlcgoKVGhlIGZpcnN0IHN0ZXAgaXMgdG8gcnVuIHRoZSBMZXZlbmUgdGVzdCB0byBldmFsdWF0ZSBpZiB2YXJpYW5jZXMgYXJlIGVxdWFsIG9yIGRpZmZlcmVudCwgd2hpY2ggaXMgYSBjb25kaXRpb24gdGhhdCB0aGVuIGlzIHVzZWQgaW4gdGhlIHQtdGVzdC4KVG8gcnVuIHRoaXMgdGVzdCwgd2UgdXNlIHRoZSBsaWJyYXJ5IGBEZXNjVG9vbHNgIHRoYXQgaW5jbHVkZXMgdGhlIGNvbW1hbmQgYExldmVuZVRlc3RgLgoKYGBge3J9CmxpYnJhcnkoRGVzY1Rvb2xzKQpMZXZlbmVUZXN0KGxhcG9wMjEkY3JpbWUsIGxhcG9wMjEkZ2VuZGVyKQpgYGAKCkJlY2F1c2UgdGhlIHAtdmFsdWUgKFByKFw+RikpIGlzIGxvd2VyIHRoYW4gMC4wNSwgd2UgcmVqZWN0IHRoZSBudWxsIGh5cG90aGVzaXMgYW5kIGFmZmlybSB0aGF0IHZhcmlhbmNlcyBhcmUgZGlmZmVyZW50LgpXaXRoIHRoaXMgcmVzdWx0LCB3ZSBjYW4gcnVuIHRoZSBjb21tYW5kIGB0LnRlc3RgLCB3aGljaCBudWxsIGh5cG90aGVzaXMgaW5kaWNhdGVzIHRoYXQgbWVhbnMgb2YgY3JpbWUgdmljdGltaXphdGlvbiBhcmUgZXF1YWwgYmV0d2VlbiBtZW4gYW5kIHdvbWVuLCBhbmQgdGhlIGFsdGVybmF0aXZlIGh5cG90aGVzaXMgaW5kaWNhdGVzIHRoYXQgYm90aCBtZWFucyBhcmUgZGlmZmVyZW50LgpXZSBpbmNsdWRlIHRoZSBzcGVjaWZpY2F0aW9uIGB2YXIuZXF1YWwgPSBGYCBiZWNhdXNlIHRoZSByZXN1bHRzIG9mIHRoZSBMZXZlbmUgdGVzdCBpbmRpY2F0ZXMgdGhhdCB2YXJpYW5jZXMgc2VlbSBkaWZmZXJlbnQuCgpgYGB7cn0KdC50ZXN0KGNyaW1lIH4gZ2VuZGVyLCBkYXRhID0gbGFwb3AyMSwgdmFyLmVxdWFsPUYpCmBgYAoKVGhlIHAtdmFsdWUgaXMgbG93ZXIgdGhhbiAwLjA1LgpXaXRoIHRoaXMgcmVzdWx0LCB3ZSBjYW4gcmVqZWN0IHRoZSBudWxsIGh5cG90ZXNpcyBhbmQgYWZmaXJtIHRoZSBhbHRlcm5hdGl2ZSBoeXBvdGhlc2lzIHRoYXQgbWVhbnMgYmV0d2VlbiBib3RoIGdyb3VwcyBhcmUgZGlmZmVyZW50LgpXZSBjb25jbHVkZSB0aGF0IG1lbiByZXBvcnQgYSBoaWdoZXIgY3JpbWUgdmljdGltaXphdGlvbiB0aGFuIHdvbWVuIGluIHRoZSByZWdpb24uCgojIyBULXRlc3QgZm9yIHRoZSBkaWZmZXJlbmNlIGluIG1lYW5zIG9mIHN1cHBvcnQgZm9yIGRlbW9jcmFjeSBieSBnZW5kZXIKClRoZSBmaXJzdCBzdGVwIGlzIHRvIGRvIHRoZSBMZXZlbmUgdGVzdC4KVG8gcnVuIHRoaXMgdGVzdCwgdGhlIGxpYnJhcnkgYERlc2NUb29sc2AgaXMgdXNlZCwgd2hpY2ggaW5jbHVkZXMgdGhlIGNvbW1hbmQgYExldmVuZVRlc3RgLgoKYGBge3IgTGV2ZW5lfQpsaWJyYXJ5KERlc2NUb29scykKTGV2ZW5lVGVzdChsYXBvcDE4JGluZzRyLCBsYXBvcDE4JGdlbmRlcikKYGBgCgpBcyB0aGUgcC12YWx1ZSAoUHIoXD5GKSBpcyBsZXNzIHRoYW4gMC4wNSwgdGhlIG51bGwgaHlwb3RoZXNpcyBpcyByZWplY3RlZCBhbmQgaXQgaXMgc3RhdGVkIHRoYXQgdGhlIHZhcmlhbmNlcyBhcmUgZGlmZmVyZW50LgpXaXRoIHRoaXMgcmVzdWx0LCB0aGUgY29tbWFuZCBgdC50ZXN0YCBjYW4gYmUgcnVuLCB3aG9zZSBudWxsIGh5cG90aGVzaXMgaW5kaWNhdGVzIHRoYXQgdGhlIG1lYW5zIG9mIHN1cHBvcnQgZm9yIGRlbW9jcmFjeSBhcmUgdGhlIHNhbWUgYmV0d2VlbiBtZW4gYW5kIHdvbWVuIGFuZCB0aGUgYWx0ZXJuYXRpdmUgaHlwb3RoZXNpcyBpbmRpY2F0ZXMgdGhhdCBib3RoIG1lYW5zIGFyZSBkaWZmZXJlbnQuClRoZSBzcGVjaWZpY2F0aW9uIGB2YXIuZXF1YWwgPSBGYCBpcyBpbmNsdWRlZCBkdWUgdG8gdGhlIHJlc3VsdCBvZiBMZXZlbmUncyB0ZXN0IGluZGljYXRpbmcgdGhhdCB0aGUgdmFyaWFuY2VzIGFwcGVhciBkaWZmZXJlbnQuCgpgYGB7ciB0LXRlc3R9CnQudGVzdChpbmc0ciB+IGdlbmRlciwgZGF0YSA9IGxhcG9wMTgsIHZhci5lcXVhbD1GKQpgYGAKClRoZSB2YWx1ZSBvZiB0aGUgcC12YWx1ZSAoNC41OWUtMDkpIGlzIGxlc3MgdGhhbiAwLjA1LCBzbyB0aGUgbnVsbCBoeXBvdGhlc2lzIGlzIHJlamVjdGVkIGFuZCB0aGUgYWx0ZXJuYXRpdmUgaXMgYWZmaXJtZWQsIGNvbmNsdWRpbmcgdGhhdCB0aGUgZGlmZmVyZW5jZXMgYXJlIGRpZmZlcmVudCBpbiB0aGUgcG9wdWxhdGlvbiBhdCA5NSUgY29uZmlkZW5jZS4KCiMjIFQtdGVzdCBmb3IgdGhlIGRpZmZlcmVuY2UgaW4gbWVhbnMgb2Ygc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGJ5IGRvbWFpbiBncm91cHMKCkluIHRoZSBzYW1lIHdheSBhcyBpbiB0aGUgcHJldmlvdXMgY2FzZSwgTGV2ZW5lJ3MgdGVzdCBpcyBmaXJzdCBydW4gdG8gYW5hbHl6ZSB0aGUgZXF1YWxpdHkgb2YgdmFyaWFuY2VzLgoKYGBge3IgTGV2ZW5lIDJ9CkxldmVuZVRlc3QobGFwb3AxOCRpbmc0ciwgbGFwb3AxOCRhbWJpdG8pCmBgYAoKQWdhaW4sIHRoZSBwLXZhbHVlIGlzIGxlc3MgdGhhbiAwLjA1LCB3aGljaCByZWplY3RzIHRoZSBoeXBvdGhlc2lzIG9mIGVxdWFsaXR5IG9mIHZhcmlhbmNlcy4KVGhlIHQtdGVzdCBpcyB0aGVuIHJ1biB3aXRoIHRoZSBzcGVjaWZpY2F0aW9uIG9mIGRpZmZlcmVudCB2YXJpYW5jZXMuCgpgYGB7ciB0LXRlc3QgMn0KdC50ZXN0KGluZzRyIH4gYW1iaXRvLCBkYXRhID0gbGFwb3AxOCwgdmFyLmVxdWFsPUYpCmBgYAoKSW4gdGhpcyBjb21wYXJpc29uLCB0aGUgcC12YWx1ZSBpcyBhbHNvIGxlc3MgdGhhbiAwLjA1LCBzbyB0aGUgbnVsbCBoeXBvdGhlc2lzIGlzIHJlamVjdGVkIGFuZCBpdCBpcyBmb3VuZCB0aGF0IHRoZSBkaWZmZXJlbmNlcyBpbiBzdXBwb3J0IGZvciBkZW1vY3JhY3kgYmV0d2VlbiB1cmJhbiBhbmQgcnVyYWwgYXJlYXMgaXMgc3RhdGlzdGljYWxseSBzaWduaWZpY2FudCBhdCA5NSUgY29uZmlkZW5jZS4KQXMgdGhlIHJlcG9ydCBpbmRpY2F0ZXMsICJDb25zaWRlcmluZyB0aGUgcmVnaW9uIGFzIGEgd2hvbGUsIEZpZ3VyZSAxLjUgc2hvd3Mgc3RhdGlzdGljYWxseSBzaWduaWZpY2FudCByZWxhdGlvbnNoaXBzIGJldHdlZW4gZml2ZSBkZW1vZ3JhcGhpYyB2YXJpYWJsZXMgYW5kIHNvY2lvZWNvbm9taWMgZ3JvdXBzIChlZHVjYXRpb24sIHdlYWx0aCwgdXJiYW4vcnVyYWwgcmVzaWRlbmNlLCBnZW5kZXIsIGFuZCBhZ2UpIGFuZCBzdXBwb3J0IGZvciBkZW1vY3JhY3kiIChwLiAxMykuCkluIHRoaXMgc2VjdGlvbiB3ZSBoYXZlIGNoZWNrZWQgdGhlc2Ugc3RhdGlzdGljYWwgcmVzdWx0cyBmb3IgZGVtb2dyYXBoaWMgdmFyaWFibGVzIG9mIHR3byBncm91cHMsIHN1Y2ggYXMgZ2VuZGVyIGFuZCB1cmJhbi9ydXJhbCByZXNpZGVuY2UuCgojIFN1bW1hcnkKCkluIHRoaXMgc2VjdGlvbiB3ZSBoYXZlIGRlc2NyaWJlZCBhbmQgcGxvdHRlZCBhIHZhcmlhYmxlLCBzdWNoIGFzIHN1cHBvcnQgZm9yIGRlbW9jcmFjeSwgYnkgZ3JvdXBzIG9mIG90aGVyIHZhcmlhYmxlLCBzdWNoIGFzIGdlbmRlci4KU3RhcnRpbmcgZnJvbSB0aGUgY29tcGFyaXNvbiBvZiBjb25maWRlbmNlIGludGVydmFscywgd2UgZm9ybWFsaXplIHRoaXMgY29tcGFyaXNvbiB3aXRoIGEgc3RhdGlzdGljYWwgdGVzdCwgc3VjaCBhcyB0aGUgdC10ZXN0LCB0byBjb25jbHVkZSB3aGV0aGVyIHRoZSBkaWZmZXJlbmNlcyBiZXR3ZWVuIGdyb3VwcyBhcmUgc3RhdGlzdGljYWxseSBzaWduaWZpY2FudC4KCiMgQ2FsY3VsYXRpb25zIGluY2x1ZGluZyBzdXJ2ZXkgd2VpZ2h0cwoKIyMgRm9yIGNyaW1lIHZpY3RpbWl6YXRpb24KClRvIGNhbGN1bGF0ZSB0aGUgZGlmZmVyZW5jZSBvZiBtZWFucyBpbmNsdWRpbmcgYSBzdXJ2ZXkgd2VpZ2h0LCB3ZSBjYW4gdXNlIHRoZSBsaWJyYXJ5IGBzdXJ2ZXlgLgpUaGlzIGxpYnJhcnkgcmVxdWlyZXMgYSBjaGFuZ2UgaW4gdGhlIGRhdGFzZXQsIGluIHRoZSBzYW1lIHdheSBhcyB3ZSBkaWQgaW4gdGhpcyBbc2VjdGlvbl0oaHR0cHM6Ly9hcnR1cm9tYWxkb25hZG8uZ2l0aHViLmlvL0Jhcm9tZXRyb0VkdV9XZWJfRW5nL0Rlc2NyaXB0aXZlczIuaHRtbCkuCgpgYGB7ciBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCBpbmNsdWRlPUZBTFNFfQpsYXBvcDIxID0gc3Vic2V0KGxhcG9wMjEsICFpcy5uYSh3ZWlnaHQxNTAwKSkKc2FwcGx5KGxhcG9wMjEsIGhhdmVuOjp6YXBfbGFiZWxzKQpgYGAKCk9uY2Ugd2UgZml0IHRoZSBkYXRhc2V0LCB3ZSBoYXZlIHRvIGRlZmluZSB0aGUgc2FtcGxpbmcgZGVzaWduIHdpdGggdGhlIGNvbW1hbmQgYHN2eWRlc2lnbmAgYW5kIHdlIHNhdmUgdGhpcyBkZXNpZ24gaW4gYW4gb2JqZWN0IGNhbGxlZCAiZGVzaWduMjEiLgoKYGBge3J9CmxpYnJhcnkoc3VydmV5KQpkZXNpZ24yMSA9IHN2eWRlc2lnbihpZHMgPSB+dXBtLCBzdHJhdGEgPSB+c3RyYXRhLCB3ZWlnaHRzID0gfndlaWdodDE1MDAsIG5lc3Q9VFJVRSwgZGF0YT1sYXBvcDIxKQpgYGAKCk5vdyB3ZSBjYW4gY2FsY3VsYXRlIHRoZSB0YWJsZSBvZiB0aGUgbWVhbiBvZiBjcmltZSB2aWN0aW1pemF0aW9uIGZvciBlYWNoIGdyb3VwIG9mIGdlbmRlciwgaW5jbHVkaW5nIHRoZSBzdXJ2ZXkgd2VpZ2h0LgpJbiB0aGUgc2FtZSB3YXkgYXMgd2Ugc2VlIGluIHRoZSBzZWN0aW9uIG9uIFtjb25maWRlbmNlIGludGVydmFsc10oaHR0cHM6Ly9hcnR1cm9tYWxkb25hZG8uZ2l0aHViLmlvL0Jhcm9tZXRyb0VkdV9XZWJfRW5nL0lDLmh0bWwpLCB3ZSB1c2UgdGhlIGNvbW1hbmQgYHN2eWJ5YC4KCmBgYHtyfQpjcnhnZW4udyA9IHN2eWJ5KH5jcmltZSwgfmdlbmRlciwgZGVzaWduMjEsIHN2eW1lYW4sIG5hLnJtPVQsIHZhcnR5cGUgPSAiY2kiKQpjcnhnZW4udwpgYGAKCkl0IHNob3VsZCBiZSBub3RlZCB0aGF0IHRoZXNlIHJlc3VsdHMgYXJlIGVxdWFsIHRvIHRob3NlIHByZXNlbnRlZCBpbiBGaWd1cmUgMy4xMi4KV2l0aCB0aGlzIHRhYmxlIHdlIGNhbiBwcm9jZWVkIHRvIHJlcGxpY2F0ZSB0aGUgbGVmdCBwYW5lbCBvZiB0aGlzIGZpZ3VyZSwgaW4gdGhlIHNhbWUgbWFubmVyIGFzIHdlIGRpZCBhYm92ZSBpbiB0aGlzIHNlY3Rpb24uCgpGb3IgdGhlIGNhbGN1bGF0aW9uIG9mIHRoZSB0LXRlc3Qgb2YgZGlmZmVyZW5jZSBvZiBtZWFucywgdGhlIGxpYnJhcnkgYHN1cnZleWAgaGFzIGEgbmF0aXZlIGNvbW1hbmQsIGNhbGxlZCBgc3Z5dHRlc3RgLCB0aGF0IGFsbG93cyB0byBwZXJmb3JtIHRoaXMgdGVzdC4KSG93ZXZlciwgd2UgZG8gbm90IGhhdmUgYSBjb21tYW5kIHRvIGV2YWx1YXRlIHRoZSB2YXJpYW5jZXMsIGFzIHRoZSBMZXZlbmUgdGVzdC4KVGhlIGNvbW1hbmQgYHN2eXR0ZXN0YCBpcyBhIGRldmVsb3BtZW50IG9mIGEgbW9yZSBnZW5lcmFsIGNvbW1hbmQgZm9yIGdlbmVyYWxpemVkIGxpbmVhciBtb2RlbHMsIHdoaWNoIGFzc3VtZSB2YXJpYW5jZXMgYXJlIGVxdWFsLgpJZiB3ZSB3b3VsZCBsaWtlIHRvIHZhbGlkYXRlIHRoaXMgYXNzdW1wdGlvbiwgd2UgY2FuIGRvIGl0IG1hbnVhbGx5LCBhcyBleHBsYWluZWQgaW4gdGhpcyBbbGlua10oaHR0cHM6Ly9zdGF0cy5zdGFja2V4Y2hhbmdlLmNvbS9xdWVzdGlvbnMvMTQ4MzE0L2YtdGVzdC1mb3ItZXF1YWxpdHktb2YtdmFyaWFuY2VzLXdpdGgtd2VpZ2h0ZWQtc3VydmV5LWRhdGEpLgpIZXJlIHdlIGFyZSBnb2luZyB0byBwcm9jZWVkIGFzIGlmIGFzc3VtcHRpb24gaXMgY29ycmVjdC4KV2Ugb2JzZXJ2ZSB0aGlzIGNvbW1hbmQgZ2V0IHJlc3VsdHMgdmVyeSBzaW1pbGFyIHRvIHRob3NlIG9idGFpbmVkIHdpdGggbm8gc3VydmV5IHdlaWdodHMgYW5kLCBmb3IgYWxsIGVmZmVjdCwgd2UgYXJyaXZlIHRvIHRoZSBzYW1lIGNvbmNsdXNpb25zLgpUaGUgcC12YWx1ZSBpcyBsb3dlciB0aGFuIDAuMDUsIHNvIHdlIGNhbiByZWplY3QgdGhlIG51bGwgaHlwb3RoZXNpcyBhbmQgYWZmaXJtIHRoZXJlIGFyZSBkaWZmZXJlbmNlcyBiZXR3ZWVuIG1lbiBhbmQgd29tZW4gaW4gdGhlaXIgbGV2ZWxzIG9mIGNyaW1lIHZpY3RpbWl6YXRpb24sIHRha2luZyBpbnRvIGFjY291bnQgdGhlIHN1cnZleSB3ZWlnaHRzLgoKYGBge3J9CnN2eXR0ZXN0KGNyaW1lfmdlbmRlciwgZGVzaWduMjEpCmBgYAoKIyMgRm9yIHN1cHBvcnQgZm9yIGRlbW9jcmFjeQoKT3RoZXIgd2F5IHRvIGNhbGN1bGF0ZSB0aGUgZGlmZmVyZW5jZSBvZiBtZWFucyBpbmNsdWRpbmcgdGhlIHN1cnZleSB3aWVpZ2h0IGlzIGJ5IHVzaW5nIHRoZSBsaWJyYXJ5IGBzdXJ2ZXlgLgpGb3IgdGhpcyB3ZSBoYXZlIHRvIGRlZmluZSB0aGUgc2FtcGxlIGRlc2lnbiB3aXRoIHRoZSBjb21tYW5kIGBzdnlkZXNpZ25gIGFuZCBzYXZlIHRoaXMgZGVzaWduIGluIGFuIG9iamVjdCwgaGVyZSBjYWxsZWQgImRlc2lnbjE4Ii4KCmBgYHtyIHN1cnZleSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShzdXJ2ZXkpCmRlc2lnbjE4ID0gc3Z5ZGVzaWduKGlkcyA9IH51cG0sIHN0cmF0YSA9IH5lc3RyYXRvcHJpLCB3ZWlnaHRzID0gfndlaWdodDE1MDAsIG5lc3Q9VFJVRSwgZGF0YT1sYXBvcDE4KQpgYGAKCkZpcnN0LCB0aGUgdGFibGUgb2YgdGhlIG1lYW4gc3VwcG9ydCBmb3IgZGVtb2NyYWN5IGNhbiBiZSBjYWxjdWxhdGVkIGZvciBlYWNoIHZhbHVlIG9mIHRoZSB2YXJpYWJsZSBnZW5kZXIsIGluY2x1ZGluZyB0aGUgc3VydmV5IHdlaWdodC4KSW4gdGhlIHNhbWUgd2F5IGFzIHNlZW4gaW4gdGhlIHNlY3Rpb24gb24gW2NvbmZpZGVuY2UgaW50ZXJ2YWxzXShodHRwczovL2FydHVyb21hbGRvbmFkby5naXRodWIuaW8vQmFyb21ldHJvRWR1X1dlYi9JQy5odG1sKSwgYW5kIHVzZSB0aGUgY29tbWFuZCBgc3Z5YnlgLgoKYGBge3IgdGFibGV3ZWlnaHRlZH0Kc2R4Z2VuLncgPSBzdnlieSh+aW5nNHIsIH5nZW5kZXIsIGRlc2lnbjE4LCBzdnltZWFuLCBuYS5ybT1ULCB2YXJ0eXBlID0gImNpIikKc2R4Z2VuLncKYGBgCgpXaXRoIHRoaXMgdGFibGUgeW91IGNhbiBwcm9jZWVkIHRvIGNyZWF0ZSB0aGUgYmFyIHBsb3QsIGluIHRoZSBzYW1lIHdheSB0aGF0IHdhcyBkb25lIGFib3ZlIGluIHRoaXMgc2VjdGlvbi4KCkZvciB0aGUgY2FsY3VsYXRpb24gb2YgdGhlIHQtdGVzdCBmb3IgZGlmZmVyZW5jZSBvZiBtZWFucywgdGhlIHBhY2thZ2UgYHN1cnZleWAgaGFzIGEgbmF0aXZlIGNvbW1hbmQgYHN2eXR0ZXN0YHRoYXQgYWxsb3dzIHRoaXMgY2FsY3VsYXRpb24uCgpgYGB7ciB0d2VpZ2h0ZWR9CnN2eXR0ZXN0KGluZzRyfmdlbmRlciwgZGVzaWduMTgpCmBgYAoKQmVjYXVzZSB0aGUgcC12YWx1ZSBpcyBsb3dlciB0aGFuIDAuMDUsIHdlIGNvbmNsdWRlIHRoZXJlIGFyZSBkaWZmZXJlbmNlcyBiZXR3ZWVuIG1lbiBhbmQgd29tZW4gaW4gdGhlaXIgbGV2ZWxzIG9mIHN1cHBvcnQgZm9yIGRlbW9jcmFjeSBpbiB0aGUgcmVnaW9uLgo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("ttest.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

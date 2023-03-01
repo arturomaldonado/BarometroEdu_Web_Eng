@@ -31,7 +31,7 @@ navbar:
       - text: "Confidence intervals"
         href: IC.html
       - text: "Compararing 2 means"
-        href: pruebat.html
+        href: ttest.html
       - text: "Comparing more than 2 means"
         href: anova.html
       - text: "Crosstables and chi-square analysis"
