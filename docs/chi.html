@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Cross-tables with the Americas Barometer</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LAPOP_edu</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="install.html">Installing R and RStudio</a>
+    </li>
+    <li>
+      <a href="basic.html">Basic procedures</a>
+    </li>
+    <li>
+      <a href="bases.html">Importing datasets</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    First steps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Manipulation.html">Data manipulation</a>
+    </li>
+    <li>
+      <a href="Expansion.html">Survey weights</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Describing and plotting data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Descriptives.html">Descriptive statistics: nominal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives2.html">Descriptive statistics: ordinal variables</a>
+    </li>
+    <li>
+      <a href="Descriptives3.html">Descriptive statistics: numerical variables</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Basic inference
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="IC.html">Confidence intervals</a>
+    </li>
+    <li>
+      <a href="ttest.html">Compararing 2 means</a>
+    </li>
+    <li>
+      <a href="anova.html">Comparing more than 2 means</a>
+    </li>
+    <li>
+      <a href="chi.html">Cross-tables and chi-square analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modeling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="correlacion.html">Correlation</a>
+    </li>
+    <li>
+      <a href="regresion1.html">Simple linear regresion</a>
+    </li>
+    <li>
+      <a href="regresion2.html">Multiple linear regresion</a>
+    </li>
+    <li>
+      <a href="logit.html">Logistic regresion</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapas.html">Maps</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Links.html">Contact</a>
+</li>
+<li>
+  <a href="https://arturomaldonado.github.io/BarometroEdu_Web/index.html">Spanish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Cross-tables with the Americas
+Barometer</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The previous sections corresponding to the <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/ttest.html">t-test</a>
+and the <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/anova.html">ANOVA
+test</a> are about the relationship of a numerical variable with a
+categorical variable, in such a way that the goal is to compare and
+extrapolate the means of a numerical variable by groups of a categorical
+variable.</p>
+<p>In this section we will look at bivariate relationships between two
+categorical (or factor in R terminology) variables. This evaluation is
+done using cross-tables (or contingency tables) and is evaluated using
+the chi-square test.</p>
+</div>
+<div id="about-the-dataset" class="section level1">
+<h1>About the dataset</h1>
+<p>The data we are going to use should be cited as follows: Source:
+AmericasBarometer by the Latin American Public Opinion Project (LAPOP),
+wwww.LapopSurveys.org. We can download the data freely <a
+href="http://datasets.americasbarometer.org/database/login.php">here</a>.</p>
+<p>This section loads a trimmed database, originally in SPSS (.sav)
+format. It is recommended to clean the Environment before starting this
+section.</p>
+<p>This dataset is hosted in the “materials_edu” repository of the LAPOP
+account on GitHub. Using the library <code>rio</code> and the command
+<code>import</code>, we can import this database from this repository.
+In addition, the data from countries with codes less than or equal to 35
+are selected, that is, the observations of the United States and Canada
+are eliminated.</p>
+<pre class="r"><code>library(rio) 
+lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)
+lapop18 = subset(lapop18, pais&lt;=35)</code></pre>
+<p>We also load the dataset for the 2021 round.</p>
+<pre class="r"><code>lapop21 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData&quot;)
+lapop21 = subset(lapop21, pais&lt;=35)</code></pre>
+</div>
+<div id="votes-are-counted-fairly" class="section level1">
+<h1>Votes are counted fairly</h1>
+<p>The report The Pulse of Democracy for the 2021 round of the
+AmericasBarometer reports the results of variable
+<strong>COUNTFAIR1.</strong> Votes are counted correctly and fairly.
+Would you say it happens always, sometimes or never? Percentages are
+presented by countries.</p>
+<p>This figure is reporting the cross of a categorical variable (or
+factor in R language), called “countfair1” that has three categories
+(never, sometimes and always), with other categorical variables called
+“pais” that has 15 categories (each country presented).</p>
+<p><img src="Figure2.5.png" width="596" /></p>
+<p>This variable is imported in R as numeric. For be able to work with
+this variable, we have to declare it as a factor variable, using the
+command <code>as.factor</code>. We then label this variable with the
+command <code>levels</code>.</p>
+<pre class="r"><code>library(haven)
+lapop21$countfair1r = as.factor(lapop21$countfair1)
+levels(lapop21$countfair1r) = c(&quot;Always&quot;, &quot;Sometimes&quot;, &quot;Never&quot;)
+table(lapop21$countfair1r)</code></pre>
+<pre><code>## 
+##    Always Sometimes     Never 
+##      3477      5235      1698</code></pre>
+</div>
+<div id="cross-table-of-votes-are-counted-fairly-by-country"
+class="section level1">
+<h1>Cross-table of votes are counted fairly by country</h1>
+<p>Before replicating this figure, it is useful to see results in a
+cross-table. We can create this table with the command
+<code>table</code>. However, this table presents absolute frequencies.
+Also, this table shows that this question was not fielded in some
+countries.</p>
+<pre class="r"><code>table(lapop21$pais, lapop21$countfair1r)</code></pre>
+<pre><code>##     
+##      Always Sometimes Never
+##   1       0         0     0
+##   2       0         0     0
+##   3       0         0     0
+##   4       0         0     0
+##   5     186       351   173
+##   6     354       272    51
+##   7     215       445   120
+##   8     130       362   226
+##   9     158       435   143
+##   10    169       408   112
+##   11    177       430    97
+##   12    169       315   168
+##   13    428       201    39
+##   14    525       111    20
+##   15    346       257   116
+##   17    216       350   120
+##   21    170       406    99
+##   22      0         0     0
+##   23    122       464    97
+##   24    112       428   117</code></pre>
+<p>To reproduce the relative frequencies, we have to use the command
+<code>prop.table</code>. This command returns the percentages for the
+total by defect. We want to calculate percentages by rows (that is, by
+country) in this case.</p>
+<pre class="r"><code>prop.table(table(lapop21$pais, lapop21$countfair1r))</code></pre>
+<pre><code>##     
+##           Always   Sometimes       Never
+##   1  0.000000000 0.000000000 0.000000000
+##   2  0.000000000 0.000000000 0.000000000
+##   3  0.000000000 0.000000000 0.000000000
+##   4  0.000000000 0.000000000 0.000000000
+##   5  0.017867435 0.033717579 0.016618636
+##   6  0.034005764 0.026128722 0.004899135
+##   7  0.020653218 0.042747358 0.011527378
+##   8  0.012487992 0.034774256 0.021709894
+##   9  0.015177714 0.041786744 0.013736792
+##   10 0.016234390 0.039193084 0.010758886
+##   11 0.017002882 0.041306436 0.009317963
+##   12 0.016234390 0.030259366 0.016138329
+##   13 0.041114313 0.019308357 0.003746398
+##   14 0.050432277 0.010662824 0.001921230
+##   15 0.033237272 0.024687800 0.011143132
+##   17 0.020749280 0.033621518 0.011527378
+##   21 0.016330451 0.039000961 0.009510086
+##   22 0.000000000 0.000000000 0.000000000
+##   23 0.011719500 0.044572526 0.009317963
+##   24 0.010758886 0.041114313 0.011239193</code></pre>
+<p>To calculate the percentages by rows, we have to add the
+specification <code>, 1</code> in <code>prop.table</code>. We can also
+nest this code in the command <code>addmargins</code> to calculate the
+sum of horizontal percentages. These are the same percentages that are
+presented in a bar plot below. These percentages are not equal to those
+presented in Figure 2.5 because this calculation does not include survey
+weights.</p>
+<pre class="r"><code>addmargins(prop.table(table(lapop21$pais, lapop21$countfair1r), 1)*100, 2)</code></pre>
+<pre><code>##     
+##          Always  Sometimes      Never        Sum
+##   1                                             
+##   2                                             
+##   3                                             
+##   4                                             
+##   5   26.197183  49.436620  24.366197 100.000000
+##   6   52.289513  40.177253   7.533235 100.000000
+##   7   27.564103  57.051282  15.384615 100.000000
+##   8   18.105850  50.417827  31.476323 100.000000
+##   9   21.467391  59.103261  19.429348 100.000000
+##   10  24.528302  59.216255  16.255443 100.000000
+##   11  25.142045  61.079545  13.778409 100.000000
+##   12  25.920245  48.312883  25.766871 100.000000
+##   13  64.071856  30.089820   5.838323 100.000000
+##   14  80.030488  16.920732   3.048780 100.000000
+##   15  48.122392  35.744089  16.133519 100.000000
+##   17  31.486880  51.020408  17.492711 100.000000
+##   21  25.185185  60.148148  14.666667 100.000000
+##   22                                            
+##   23  17.862372  67.935578  14.202050 100.000000
+##   24  17.047184  65.144597  17.808219 100.000000</code></pre>
+</div>
+<div id="bar-graph-of-votes-are-counted-fairly-by-country"
+class="section level1">
+<h1>Bar graph of votes are counted fairly by country</h1>
+<p>In the same way as we did in the section about ordinal variables,
+available <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives2.html">here</a>,
+we can replicate the comparative graph by country we have to create a
+contingency table between variables “countfair1” and “pais”. This
+cross-table is saved in an abject “count_pais”. We should note that the
+dataframe include a row for each value of “countfair1” in each country.
+In this way, we have 3 options x 20 countries = 60 rows.</p>
+<pre class="r"><code>count_pais = as.data.frame(round(prop.table(table(lapop21$pais, lapop21$countfair1r), 1), 3)*100)
+count_pais</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Var2"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"Always","3":"NaN"},{"1":"2","2":"Always","3":"NaN"},{"1":"3","2":"Always","3":"NaN"},{"1":"4","2":"Always","3":"NaN"},{"1":"5","2":"Always","3":"26.2"},{"1":"6","2":"Always","3":"52.3"},{"1":"7","2":"Always","3":"27.6"},{"1":"8","2":"Always","3":"18.1"},{"1":"9","2":"Always","3":"21.5"},{"1":"10","2":"Always","3":"24.5"},{"1":"11","2":"Always","3":"25.1"},{"1":"12","2":"Always","3":"25.9"},{"1":"13","2":"Always","3":"64.1"},{"1":"14","2":"Always","3":"80.0"},{"1":"15","2":"Always","3":"48.1"},{"1":"17","2":"Always","3":"31.5"},{"1":"21","2":"Always","3":"25.2"},{"1":"22","2":"Always","3":"NaN"},{"1":"23","2":"Always","3":"17.9"},{"1":"24","2":"Always","3":"17.0"},{"1":"1","2":"Sometimes","3":"NaN"},{"1":"2","2":"Sometimes","3":"NaN"},{"1":"3","2":"Sometimes","3":"NaN"},{"1":"4","2":"Sometimes","3":"NaN"},{"1":"5","2":"Sometimes","3":"49.4"},{"1":"6","2":"Sometimes","3":"40.2"},{"1":"7","2":"Sometimes","3":"57.1"},{"1":"8","2":"Sometimes","3":"50.4"},{"1":"9","2":"Sometimes","3":"59.1"},{"1":"10","2":"Sometimes","3":"59.2"},{"1":"11","2":"Sometimes","3":"61.1"},{"1":"12","2":"Sometimes","3":"48.3"},{"1":"13","2":"Sometimes","3":"30.1"},{"1":"14","2":"Sometimes","3":"16.9"},{"1":"15","2":"Sometimes","3":"35.7"},{"1":"17","2":"Sometimes","3":"51.0"},{"1":"21","2":"Sometimes","3":"60.1"},{"1":"22","2":"Sometimes","3":"NaN"},{"1":"23","2":"Sometimes","3":"67.9"},{"1":"24","2":"Sometimes","3":"65.1"},{"1":"1","2":"Never","3":"NaN"},{"1":"2","2":"Never","3":"NaN"},{"1":"3","2":"Never","3":"NaN"},{"1":"4","2":"Never","3":"NaN"},{"1":"5","2":"Never","3":"24.4"},{"1":"6","2":"Never","3":"7.5"},{"1":"7","2":"Never","3":"15.4"},{"1":"8","2":"Never","3":"31.5"},{"1":"9","2":"Never","3":"19.4"},{"1":"10","2":"Never","3":"16.3"},{"1":"11","2":"Never","3":"13.8"},{"1":"12","2":"Never","3":"25.8"},{"1":"13","2":"Never","3":"5.8"},{"1":"14","2":"Never","3":"3.0"},{"1":"15","2":"Never","3":"16.1"},{"1":"17","2":"Never","3":"17.5"},{"1":"21","2":"Never","3":"14.7"},{"1":"22","2":"Never","3":"NaN"},{"1":"23","2":"Never","3":"14.2"},{"1":"24","2":"Never","3":"17.8"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>This table presents NAs for countries where the question “countfair1”
+was not asked. For this reason, we have to drop rows where there is no
+data. We can do this with the specification <code>[-c(rows)]</code>.
+After that we create a vector with the names of countries. We repeat
+names three times (15 countries x 3 options). We dd this vector to the
+dataframe in column “country”.</p>
+<pre class="r"><code>count_pais = count_pais[-c(1:4,18,21:24,38,41:44,58),]
+country = c(&quot;Nicaragua&quot;,&quot;Costa Rica&quot;, &quot;Panama&quot;, &quot;Colombia&quot;, &quot;Ecuador&quot;, &quot;Bolivia&quot;, &quot;Peru&quot;,
+        &quot;Paraguay&quot;, &quot;Chile&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, &quot;Argentina&quot;, &quot;Dom. Rep.&quot;,&quot;Jamaica&quot;, &quot;Guyana&quot;, &quot;Nicaragua&quot;,&quot;Costa Rica&quot;, &quot;Panama&quot;, &quot;Colombia&quot;, &quot;Ecuador&quot;, &quot;Bolivia&quot;, &quot;Peru&quot;,
+        &quot;Paraguay&quot;, &quot;Chile&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, &quot;Argentina&quot;, &quot;Dom. Rep.&quot;,&quot;Jamaica&quot;, &quot;Guyana&quot;,&quot;Nicaragua&quot;,&quot;Costa Rica&quot;, &quot;Panama&quot;, &quot;Colombia&quot;, &quot;Ecuador&quot;, &quot;Bolivia&quot;, &quot;Peru&quot;,
+        &quot;Paraguay&quot;, &quot;Chile&quot;, &quot;Uruguay&quot;, &quot;Brazil&quot;, &quot;Argentina&quot;, &quot;Dom. Rep.&quot;,&quot;Jamaica&quot;, &quot;Guyana&quot;)
+count_pais$country = country
+count_pais</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Var2"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["country"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"5","2":"Always","3":"26.2","4":"Nicaragua","_rn_":"5"},{"1":"6","2":"Always","3":"52.3","4":"Costa Rica","_rn_":"6"},{"1":"7","2":"Always","3":"27.6","4":"Panama","_rn_":"7"},{"1":"8","2":"Always","3":"18.1","4":"Colombia","_rn_":"8"},{"1":"9","2":"Always","3":"21.5","4":"Ecuador","_rn_":"9"},{"1":"10","2":"Always","3":"24.5","4":"Bolivia","_rn_":"10"},{"1":"11","2":"Always","3":"25.1","4":"Peru","_rn_":"11"},{"1":"12","2":"Always","3":"25.9","4":"Paraguay","_rn_":"12"},{"1":"13","2":"Always","3":"64.1","4":"Chile","_rn_":"13"},{"1":"14","2":"Always","3":"80.0","4":"Uruguay","_rn_":"14"},{"1":"15","2":"Always","3":"48.1","4":"Brazil","_rn_":"15"},{"1":"17","2":"Always","3":"31.5","4":"Argentina","_rn_":"16"},{"1":"21","2":"Always","3":"25.2","4":"Dom. Rep.","_rn_":"17"},{"1":"23","2":"Always","3":"17.9","4":"Jamaica","_rn_":"19"},{"1":"24","2":"Always","3":"17.0","4":"Guyana","_rn_":"20"},{"1":"5","2":"Sometimes","3":"49.4","4":"Nicaragua","_rn_":"25"},{"1":"6","2":"Sometimes","3":"40.2","4":"Costa Rica","_rn_":"26"},{"1":"7","2":"Sometimes","3":"57.1","4":"Panama","_rn_":"27"},{"1":"8","2":"Sometimes","3":"50.4","4":"Colombia","_rn_":"28"},{"1":"9","2":"Sometimes","3":"59.1","4":"Ecuador","_rn_":"29"},{"1":"10","2":"Sometimes","3":"59.2","4":"Bolivia","_rn_":"30"},{"1":"11","2":"Sometimes","3":"61.1","4":"Peru","_rn_":"31"},{"1":"12","2":"Sometimes","3":"48.3","4":"Paraguay","_rn_":"32"},{"1":"13","2":"Sometimes","3":"30.1","4":"Chile","_rn_":"33"},{"1":"14","2":"Sometimes","3":"16.9","4":"Uruguay","_rn_":"34"},{"1":"15","2":"Sometimes","3":"35.7","4":"Brazil","_rn_":"35"},{"1":"17","2":"Sometimes","3":"51.0","4":"Argentina","_rn_":"36"},{"1":"21","2":"Sometimes","3":"60.1","4":"Dom. Rep.","_rn_":"37"},{"1":"23","2":"Sometimes","3":"67.9","4":"Jamaica","_rn_":"39"},{"1":"24","2":"Sometimes","3":"65.1","4":"Guyana","_rn_":"40"},{"1":"5","2":"Never","3":"24.4","4":"Nicaragua","_rn_":"45"},{"1":"6","2":"Never","3":"7.5","4":"Costa Rica","_rn_":"46"},{"1":"7","2":"Never","3":"15.4","4":"Panama","_rn_":"47"},{"1":"8","2":"Never","3":"31.5","4":"Colombia","_rn_":"48"},{"1":"9","2":"Never","3":"19.4","4":"Ecuador","_rn_":"49"},{"1":"10","2":"Never","3":"16.3","4":"Bolivia","_rn_":"50"},{"1":"11","2":"Never","3":"13.8","4":"Peru","_rn_":"51"},{"1":"12","2":"Never","3":"25.8","4":"Paraguay","_rn_":"52"},{"1":"13","2":"Never","3":"5.8","4":"Chile","_rn_":"53"},{"1":"14","2":"Never","3":"3.0","4":"Uruguay","_rn_":"54"},{"1":"15","2":"Never","3":"16.1","4":"Brazil","_rn_":"55"},{"1":"17","2":"Never","3":"17.5","4":"Argentina","_rn_":"56"},{"1":"21","2":"Never","3":"14.7","4":"Dom. Rep.","_rn_":"57"},{"1":"23","2":"Never","3":"14.2","4":"Jamaica","_rn_":"59"},{"1":"24","2":"Never","3":"17.8","4":"Guyana","_rn_":"60"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We have the elements in this dataframe “count_pais” to replicate the
+stacked bar plot. We specify in <code>aes</code> that percentages are in
+X axis, countries in Y axis and each bar is divided by column Var2.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data=count_pais, aes(x=Freq, y=country, fill=Var2))+
+  geom_bar(stat=&quot;identity&quot;, width=0.3)+
+  geom_text(aes(label=paste(Freq, &quot;%&quot;, sep=&quot;&quot;)), color=&quot;white&quot;, 
+            position=position_stack(vjust=0.5), size=2)+
+  labs(x=&quot;Percentage&quot;, y=&quot;Country&quot;, fill=&quot;Votes are counted fairly&quot;,
+       caption=&quot;AmericasBarometer by LAPOP, 2021&quot;)</code></pre>
+<p><img src="chi_files/figure-html/unnamed-chunk-8-1.png" /><!-- --></p>
+</div>
+<div id="evaluating-democracy-in-practice" class="section level1">
+<h1>Evaluating Democracy in Practice</h1>
+<p>From page 20, the report <em>The Pulse of Democracy</em> evaluates
+democracy in practice. In particular, this section of the report uses
+the variable “pn4”. This variable is worded as follows: “In general,
+would you say that you are very satisfied, satisfied, dissatisfied, or
+very dissatisfied with the way democracy works in (country)?”</p>
+<p>The report indicates that this variable is recoded as a dichotomous
+variable to be able to work with percentages. In this section we are
+going to work with the original variable, which is an ordinal
+categorical variable (or factor).</p>
+<p>Figure 1.14 of the report presents an evaluation of satisfaction with
+democracy by demographic and socioeconomic variables, such as
+educational level, quintiles of wealth, place of residence, gender or
+age groups. That is, satisfaction with democracy is used as the
+dependent variable and each demographic or socioeconomic variable as the
+independent variable.</p>
+<p><img src="Figure1.14.JPG" width="419" /></p>
+<p>For example, the report indicates that among men, 42.3% are satisfied
+with democracy (using the variable recoded as a dummy), while among
+women, this percentage drops to 36.9%. Here we are going to analyze
+these same variables, but using the variable “pn4” in its original form
+(as an ordinal categorical). Before proceeding, we need to recode the
+variables as factor and label them.</p>
+<pre class="r"><code>lapop18$gender = as.factor(lapop18$q1)
+levels(lapop18$gender) = c(&quot;Male&quot;, &quot;Female&quot;)
+table(lapop18$gender)</code></pre>
+<pre><code>## 
+##   Male Female 
+##  13943  14084</code></pre>
+<p>The same is done for the variable “pn4” which becomes a new variable
+“satis”.</p>
+<pre class="r"><code>lapop18$satis = as.factor(lapop18$pn4)
+levels(lapop18$satis) = c(&quot;Very satisfied&quot;, &quot;Satisfied&quot;, &quot;Dissatisfied&quot;, &quot;Very dissatisfied&quot;)
+table(lapop18$satis)</code></pre>
+<pre><code>## 
+##    Very satisfied         Satisfied      Dissatisfied Very dissatisfied 
+##              1727              8916             12455              3855</code></pre>
+</div>
+<div id="cross-table-of-satisfaction-with-democracy-by-gender"
+class="section level1">
+<h1>Cross-table of satisfaction with democracy by gender</h1>
+<p>With the new factor variables, we first calculate a cross-table or
+contingency table. The command <code>table</code> is used to present the
+frequencies of one or two variables. By convention, the dependent
+variable “satisfaction with democracy” is placed in the rows and the
+independent variable “gender” in the columns.</p>
+<pre class="r"><code>table(lapop18$satis, lapop18$gender)</code></pre>
+<pre><code>##                    
+##                     Male Female
+##   Very satisfied     919    803
+##   Satisfied         4821   4091
+##   Dissatisfied      5994   6457
+##   Very dissatisfied 1874   1979</code></pre>
+<p>To calculate the relative frequencies, you have to nest the command
+<code>table</code> inside the command <code>prop.table</code>. If nested
+only, this command calculates the proportions over the total
+observations.</p>
+<pre class="r"><code>prop.table(table(lapop18$satis, lapop18$gender))</code></pre>
+<pre><code>##                    
+##                           Male     Female
+##   Very satisfied    0.03411538 0.02980919
+##   Satisfied         0.17896652 0.15186725
+##   Dissatisfied      0.22251095 0.23969857
+##   Very dissatisfied 0.06956715 0.07346499</code></pre>
+<p>These proportions are not very useful for the comparison we want to
+make. What we require are the conditional distributions of “satisfaction
+with democracy” for each gender group. That is, calculate the
+percentages for each column. In order for <code>prop.table</code> to
+calculate these percentages, we have to add the specification
+<code>(…, 2)</code>. Multiply by 100 to go from ratios to percentages.
+You can also nest all code inside the command <code>addmargins</code> to
+check the sum of percentages over the columns, with the specification
+<code>(..., 1)</code>.</p>
+<pre class="r"><code>addmargins(prop.table(table(lapop18$satis, lapop18$gender), 2)*100, 1)</code></pre>
+<pre><code>##                    
+##                           Male     Female
+##   Very satisfied      6.753380   6.024006
+##   Satisfied          35.427690  30.690173
+##   Dissatisfied       44.047619  48.439610
+##   Very dissatisfied  13.771311  14.846212
+##   Sum               100.000000 100.000000</code></pre>
+<p>The table shows that 6.8% of men are very satisfied with democracy, a
+percentage very similar to that of women. 44% of men are dissatisfied
+with democracy. In this category, women have a higher percentage
+(48.4%).</p>
+<p>In this way, it is possible to compare the percentages of the
+dependent variable “satisfaction with democracy” for each category of
+the independent variable “gender”.</p>
+</div>
+<div id="graphs-of-satisfaction-with-democracy-by-gender"
+class="section level1">
+<h1>Graphs of satisfaction with democracy by gender</h1>
+<p>In the section about <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives2.html">descriptives
+of ordinal variables</a>, we presented a preview of what we are seeing
+in this section. Here we will revisit those themes, using the
+tidyverse.</p>
+<p>To make the graph, we first create a new dataframe with the data from
+the cross-table. The command <code>as.data.frame</code> is used to
+transform the bivariate table into a new dataframe called “table”. Using
+this command, the results are sorted by new columns (Var1, Var2 and
+Freq) so that they can be used to create a graph.</p>
+<pre class="r"><code>table = as.data.frame(prop.table(table(lapop18$satis, lapop18$gender), 2)*100)
+table</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Var2"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Very satisfied","2":"Male","3":"6.753380"},{"1":"Satisfied","2":"Male","3":"35.427690"},{"1":"Dissatisfied","2":"Male","3":"44.047619"},{"1":"Very dissatisfied","2":"Male","3":"13.771311"},{"1":"Very satisfied","2":"Female","3":"6.024006"},{"1":"Satisfied","2":"Female","3":"30.690173"},{"1":"Dissatisfied","2":"Female","3":"48.439610"},{"1":"Very dissatisfied","2":"Female","3":"14.846212"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We will use the library <code>ggplot2</code> and the command
+<code>ggplot</code> to create a bar chart, using the dataframe “table”
+containing the percentages of satisfaction with democracy for men and
+women. This command requires an aesthetic where it is specified that
+“Var1” will be included on the X axis, which corresponds to the
+categories of satisfaction with democracy. The “Freq” is included on the
+Y axis, which corresponds to percentages. Also included is the
+specification <code>fill</code> to indicate that it will be split into
+Male/Female groups for each category of “Var1” and <code>ymax</code> to
+specify the upper limit of the Y axis.</p>
+<p>After defining the variables in the axes, it is indicated that a bar
+graph is wanted with the command <code>geom_bar</code> and with the
+specification <code>position="dodge"</code> it is indicated that a graph
+with bars separated by each combination of categories is wanted. The
+specification <code>stat="identity"</code> is added to indicate that the
+command works with the data in the table.</p>
+<p>The command <code>geom_text</code> includes the percentages of each
+bar, which is found in the “Freq” column. These percentages are rounded
+with <code>round</code> to 1 decimal place and the “%” symbol is added
+with <code>paste</code>. Also included is the specification
+<code>position=position_dodge(...)</code> which places these percentages
+at the top of each column. The default option within this specification
+is <code>width=NULL</code>, but this way the percentages would be
+misplaced, so <code>width=0.9</code> is defined to center the
+percentages.</p>
+<p>By default, the legend includes the name of the column with the
+gender data, which is “Var2”. To change this name, use the command
+<code>labs(fill="Gender")</code> to properly name the legend. Finally,
+the Y and X axis are labeled with <code>ylab</code> and
+<code>xlab.</code></p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data=table, aes(x=Var1, y=Freq, fill=Var2, ymax=60))+
+  geom_bar(position=&quot;dodge&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Freq, 1), &quot;%&quot;, sep=&quot;&quot;)),
+            position=position_dodge(width=0.9), vjust=-0.25)+
+  labs(fill=&quot;Gender&quot;)+
+  ylab(&quot;Percentage&quot;)+
+  xlab(&quot;Satisfaction with democracy&quot;)</code></pre>
+<p><img src="chi_files/figure-html/grafbar-1.png" /><!-- --></p>
+<p>Other way to display this data is through stacked bars. That is, for
+each gender category, the distribution of satisfaction with democracy is
+shown. For this, we use the same command <code>ggplot</code> but now the
+order of the variables in the aesthetic is changed. Now the variable
+“Var2” (with the gender categories) is located on the X axis and each
+bar is divided according to the values of Var1.</p>
+<p>The bar type changes in the command <code>geom_bar</code> to
+<code>position="stack"</code>. In the same way, the data labels have to
+consider the position of each slice, with
+<code>position=position_stack()</code>.</p>
+<pre class="r"><code>ggplot(data=table, aes(x=Var2, y=Freq, fill=Var1, ymax=100))+
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Freq, 1), &quot;%&quot;, sep=&quot;&quot;)),
+            position=position_stack(), vjust=2)+
+  labs(fill=&quot;Satisfaction with democracy&quot;)+
+  ylab(&quot;Percentage&quot;)+
+  xlab(&quot;Gender&quot;)</code></pre>
+<p><img src="chi_files/figure-html/grafbarapila-1.png" /><!-- --></p>
+</div>
+<div
+id="cross-table-of-satisfaction-with-democracy-by-educational-level"
+class="section level1">
+<h1>Cross-table of satisfaction with democracy by educational level</h1>
+<p>Figure 1.14 of the report shows the results on satisfaction with
+democracy (according to the recoded dummy variable) by educational
+level. As a second example, here we are going to replicate that
+relationship using the original variable of type factor.</p>
+<p>We first recode the education variable. The original variable “ed” is
+a numerical variable (years of study). This variable has values ranging
+from 0 to 18. It is recoded in such a way that those with zero years of
+education are assigned a value of 0 “None”, those between 1 and 6 years
+of education are assigned a value of 1 “Primary”, those between 7 and 11
+years of education are assigns them the value of 2 “Secondary” and
+between 12 and 18 years of education the value of 3
+“Post-secondary”.</p>
+<pre class="r"><code>library(car)
+lapop18$educ &lt;- car::recode(lapop18$ed, &quot;0=0; 1:6=1; 7:11=2; 12:18=3&quot;)
+lapop18$educ &lt;- as.factor(lapop18$educ)
+levels(lapop18$educ) &lt;- c(&quot;None&quot;, &quot;Primary&quot;, &quot;Secondary&quot;, &quot;Post-secondary&quot;)
+table(lapop18$educ)</code></pre>
+<pre><code>## 
+##           None        Primary      Secondary Post-secondary 
+##            643           6156          10176          10595</code></pre>
+<p>With the recoded variable it is possible to calculate the cross-table
+of satisfaction with democracy by educational levels.</p>
+<pre class="r"><code>addmargins(prop.table(table(lapop18$satis, lapop18$educ), 2)*100, 1)</code></pre>
+<pre><code>##                    
+##                           None    Primary  Secondary Post-secondary
+##   Very satisfied     13.818182   9.874826   6.002645       4.324428
+##   Satisfied          38.363636  34.961752  33.045071      31.760523
+##   Dissatisfied       34.363636  42.576495  46.596805      48.596963
+##   Very dissatisfied  13.454545  12.586926  14.355479      15.318086
+##   Sum               100.000000 100.000000 100.000000     100.000000</code></pre>
+<p>To create the graph, we have to save the table as a dataframe. The
+command <code>as.data.frame</code> is used to save the percentages so
+that they can be used with the command <code>ggplot</code>.</p>
+<pre class="r"><code>table2 &lt;- as.data.frame(prop.table(table(lapop18$satis, lapop18$educ), 2)*100)
+table2</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Var2"],"name":[2],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Very satisfied","2":"None","3":"13.818182"},{"1":"Satisfied","2":"None","3":"38.363636"},{"1":"Dissatisfied","2":"None","3":"34.363636"},{"1":"Very dissatisfied","2":"None","3":"13.454545"},{"1":"Very satisfied","2":"Primary","3":"9.874826"},{"1":"Satisfied","2":"Primary","3":"34.961752"},{"1":"Dissatisfied","2":"Primary","3":"42.576495"},{"1":"Very dissatisfied","2":"Primary","3":"12.586926"},{"1":"Very satisfied","2":"Secondary","3":"6.002645"},{"1":"Satisfied","2":"Secondary","3":"33.045071"},{"1":"Dissatisfied","2":"Secondary","3":"46.596805"},{"1":"Very dissatisfied","2":"Secondary","3":"14.355479"},{"1":"Very satisfied","2":"Post-secondary","3":"4.324428"},{"1":"Satisfied","2":"Post-secondary","3":"31.760523"},{"1":"Dissatisfied","2":"Post-secondary","3":"48.596963"},{"1":"Very dissatisfied","2":"Post-secondary","3":"15.318086"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>In this case, since we have 4 categories for satisfaction with
+democracy and another 4 categories for educational levels, a bar graph
+would create 16 bars, which would complicate the comparison. So, in this
+case, the stacked bar type is preferred.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data=table2, aes(x=Var2, y=Freq, fill=Var1, ymax=100))+
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Freq, 1), &quot;%&quot;, sep=&quot;&quot;)),
+            position=position_stack(), vjust=2)+
+  labs(fill=&quot;Satisfaction with democracy&quot;)+
+  ylab(&quot;Percentage&quot;)+
+  xlab(&quot;Education level&quot;)</code></pre>
+<p><img src="chi_files/figure-html/barrapiladased-1.png" /><!-- --></p>
+<p>Figure 1.14 shows that there is a higher percentage of satisfaction
+with democracy among the least educated. This relationship can also be
+seen in this graph. The sectors “very satisfied” (in pink) and
+“satisfied” (in green) decrease as we go from none to primary, secondary
+and higher.</p>
+<p>In all examples, we can observe percent differences in a variable by
+categories of other variable. These percentages can be compared directly
+in the graph, but we should run a significance test to evaluate if there
+is a statistically significant relationship.</p>
+</div>
+<div id="chi-square-test-of-independence" class="section level1">
+<h1>Chi-square test of independence</h1>
+<p>Two categorical variables are said to be statistically independent if
+the conditional (population) distributions are identical for each
+category of the independent variable. In the above bivariate
+relationship, this means that being male or female does not change
+opinions regarding satisfaction with democracy. As these conditional
+distributions differ more from each other, both variables are said to be
+more related or more dependent.</p>
+<p>This evaluation is done using the chi-square or <span
+class="math inline">\(\chi^2\)</span> test of independence. This test is
+based on the comparison of the observed frequencies (the observations
+collected in the field) versus the expected frequencies (the
+observations that should be in each cell if the variables were
+independent). The test statistic summarizes how close the expected
+frequencies are to the observed frequencies.</p>
+<p><span class="math display">\[
+\chi^2 = \sum\frac{(f_o-f_e)^2}{f_e}
+\]</span></p>
+<p>The smaller the distance in each cell, the less likely it is to
+reject the null hypothesis. The larger the distance in each cell, the
+more likely it is to reject the null hypothesis.</p>
+<p><span class="math display">\[
+H0: f_o = f_e
+\]</span></p>
+<p>With the value of <span class="math inline">\(\chi^2\)</span> and
+with the degrees of freedom (rows-1*columns-1), a p-value is calculated
+on the chi-square distribution. If this p-value is less than 0.05, H0 is
+rejected. This test requires that there be at least 5 observations in
+each cell.</p>
+</div>
+<div id="test-of-votes-are-counted-fairly-by-country"
+class="section level1">
+<h1>Test of votes are counted fairly by country</h1>
+<p>In R, the command <code>chisq.test</code> is used to calculate the
+statistic and the associated p-value. The results of this test can be
+saved to a new object “chitest1”.</p>
+<pre class="r"><code>chitest1 &lt;- chisq.test(lapop21$countfair1r, lapop21$pais)
+chitest1</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  lapop21$countfair1r and lapop21$pais
+## X-squared = 1691.6, df = 28, p-value &lt; 2.2e-16</code></pre>
+<p>The p-value obtained is less than 0.05, so the H0 is rejected, so we
+say that the observed frequencies seem to be different from the expected
+frequencies that would exist in each cell if there were no relationship,
+so we say that there is a relationship between the variables or that
+there is a dependency between the two.</p>
+<p>It is important to note that “chitest1” is an object of type
+<em>list</em>. This type of object can store other information of a
+different type. For example, “chitest1” saves the tables of observed
+frequencies (same result as with the command <code>table</code>) and the
+table of expected frequencies. In this object the value of the
+residuals, the standardized residuals and the value of the p-value are
+also saved.</p>
+<pre class="r"><code>chitest1$observed</code></pre>
+<pre><code>##                    lapop21$pais
+## lapop21$countfair1r   5   6   7   8   9  10  11  12  13  14  15  17  21  23  24
+##           Always    186 354 215 130 158 169 177 169 428 525 346 216 170 122 112
+##           Sometimes 351 272 445 362 435 408 430 315 201 111 257 350 406 464 428
+##           Never     173  51 120 226 143 112  97 168  39  20 116 120  99  97 117</code></pre>
+<pre class="r"><code>chitest1$expected</code></pre>
+<pre><code>##                    lapop21$pais
+## lapop21$countfair1r        5        6        7        8        9       10
+##           Always    237.1441 226.1219 260.5245 239.8161 245.8282 230.1300
+##           Sometimes 357.0461 340.4510 392.2478 361.0692 370.1210 346.4856
+##           Never     115.8098 110.4271 127.2277 117.1147 120.0507 112.3844
+##                    lapop21$pais
+## lapop21$countfair1r       11       12       13       14       15       17
+##           Always    235.1401 217.7718 223.1159 219.1078 240.1501 229.1280
+##           Sometimes 354.0288 327.8790 335.9251 329.8905 361.5720 344.9769
+##           Never     114.8311 106.3493 108.9591 107.0017 117.2778 111.8951
+##                    lapop21$pais
+## lapop21$countfair1r       21       23       24
+##           Always    225.4539 228.1259 219.4418
+##           Sometimes 339.4452 343.4683 330.3934
+##           Never     110.1009 111.4058 107.1648</code></pre>
+<p>To evaluate the strength of the relationship, we use the librery
+<code>vcd</code> that has the command <code>assocstats</code> that
+offers a series of measures of association for a cross-table between an
+ordinal variable, as “countfair1”, and a nominal variable, as
+“pais”.</p>
+<p>The command <code>assocstats</code> cannot calculate measures of
+associations if cells of a cross-table have null values. Because we have
+some countries where question “countfair1” was not asked, we have to
+indicate that this command does not take into account these countries.
+For deal with this, we create a new “country2” variable, where
+observations of these countries are set as NAs.</p>
+<pre class="r"><code>lapop21$country_r = lapop21$pais
+lapop21$country_r[lapop21$pais==1] = NA
+lapop21$country_r[lapop21$pais==2] = NA
+lapop21$country_r[lapop21$pais==3] = NA
+lapop21$country_r[lapop21$pais==4] = NA
+lapop21$country_r[lapop21$pais==22] = NA</code></pre>
+<p>With this new variable, we can create a cross-table between
+“countfair1” and “country_r” and calculate measures of association.</p>
+<pre class="r"><code>library(vcd)
+table2 &lt;- table(lapop21$countfair1r, lapop21$country_r)
+assocstats(table2)</code></pre>
+<pre><code>##                     X^2 df P(&gt; X^2)
+## Likelihood Ratio 1639.2 28        0
+## Pearson          1691.6 28        0
+## 
+## Phi-Coefficient   : NA 
+## Contingency Coeff.: 0.374 
+## Cramer&#39;s V        : 0.285</code></pre>
+<p>The command <code>assocstats</code> returns the contingency
+coefficient and Cramer´s V as measures. These measures vary between 0
+and 1. While closer to zero, the relationship is weaker. On the
+contrary, while closer to 1, the relationship is stronger.</p>
+<p>By convention, we can assume that weak relationships are between 0
+and 0.3, moderate relationships betwen 0.3 and 0.6 and strong
+relationships are higher than 0.6. In this case, we can indicate that
+the relationship between votes are counted fairly and country is
+weak.</p>
+</div>
+<div id="test-of-satisfaction-with-democracy-by-educational-level"
+class="section level1">
+<h1>Test of satisfaction with democracy by educational level</h1>
+<p>To evaluate the relationship between satisfaction with democracy and
+gender, we can also use the test of independence of <span
+class="math inline">\(\chi^2\)</span>. The results of this test are
+saved in an object “chitest2”.</p>
+<pre class="r"><code>chitest2 &lt;- chisq.test(lapop18$satis, lapop18$educ)
+chitest2</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  lapop18$satis and lapop18$educ
+## X-squared = 312.2, df = 9, p-value &lt; 2.2e-16</code></pre>
+<p>Again, we obtain a p-value of less than 0.05, with which the null
+hypothesis is rejected and it is affirmed that the observed frequencies
+are different from those expected, with which we conclude that there
+would be a dependency relationship between the variables.</p>
+<p>To evaluate the strength of the relationship, we use the library
+<code>oii</code> and the command <code>association.measures</code>, that
+return a series of association measures that fit this types of
+variables, that in this case are both ordinal</p>
+<pre class="r"><code>library(oii)
+association.measures(lapop18$satis, lapop18$educ)</code></pre>
+<pre><code>## Chi-square-based measures of association:
+##    Phi:                      0.108 
+##    Contingency coefficient:  0.108 
+##    Cramer&#39;s V:               0.063 
+## 
+## Ordinal measures of association:
+##    Total number of pairs:   352092916 
+##    Concordant pairs:        84356625   ( 23.96 %)
+##    Discordant pairs:        68163337   ( 19.36 %)
+##    Tied on first variable:  80445182   ( 22.85 %)
+##    Tied on second variable: 77098765   ( 21.9 %)
+##    Tied on both variables:  42029007   ( 11.94 %)
+## 
+##    Goodman-Kruskal Gamma: 0.106 
+##    Somers&#39; d (col dep.):  0.071 
+##    Kendall&#39;s tau-b:       0.070 
+##    Stuart&#39;s tau-c:        0.061</code></pre>
+<p>In this case, we observe the measures of association for ordinal
+variables. This command reports 4 of these measurements, all of them
+vary between -1 to +1. In our example, they all have a positive sign,
+which indicates a direct relationship between both variables. This would
+seem to go against what is reported in Figure 1.14 of the report where
+it is clearly observed that satisfaction with democracy decreases at
+higher educational levels, which would be expressed in a negative
+sign.</p>
+<p>This apparent contradiction is due on how satisfaction with democracy
+(“satis” variable that is created from “pn4”) has been coded. The
+original variable has values between 1 and 4, where 1 means “very
+satisfied” and 4 means “very dissatisfied”. That is, high values
+indicate “less”in the variable. It is for this reason that the
+association test results with a positive sign, which in this case would
+indicate that a higher value of the education variable means “more” of
+the satisfaction with democracy variable (which is actually less).</p>
+<p>To avoid this confusion, the monotony of the satisfaction with
+democracy variable should have been changed so that higher values
+indicate greater satisfaction and, with this, a negative sign is
+obtained in the association measures. This has been done in this section
+to draw attention to the fact that coding has consequences for the
+results and can lead to confusion if care is not taken.</p>
+<p>Finally, the value of the association measures are less than 0.3,
+indicating that the relationship between the variables is weak.</p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this section we have worked with bivariate relationships between
+categorical variables. Cross-tables and bar graphs have been calculated
+to show the descriptive results. Then, the chi-square test of
+independence has been used to infer whether there is a dependency
+relationship between the variables in the population and finally the
+strength of the association between the variables is evaluated,
+differentiating when it comes to nominal or ordinal variables.</p>
+</div>
+<div id="calculations-including-survey-weights" class="section level1">
+<h1>Calculations including survey weights</h1>
+<p>We calculate the percentage of votes are counted fairly by country
+including survey weights in the section about <a
+href="https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives2.html">descriptives
+of ordinal variables</a>. With this data, we replicate Figure 2.5.</p>
+<p>To calculate a chi-square test including survey weights, we can use
+the library <code>survey</code> and the command
+<code>svychisq</code>.</p>
+<pre class="r"><code>library(survey)
+design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)</code></pre>
+<p>We calculate the contingency table with the command
+<code>svytable</code>. In this case we cross satisfaction with democracy
+by gender. This command is nested inside <code>prop.table</code> to
+display the relative frequencies and not the absolute ones. In turn, all
+of this is nested inside the command <code>addmargins</code> to present
+the relative frequencies as percentages. In the same way as above, we
+can save this table in an object for graphing these results.</p>
+<pre class="r"><code>addmargins(prop.table(svytable(~satis+gender, design=design18),2)*100,1)</code></pre>
+<pre><code>##                    gender
+## satis                     Male     Female
+##   Very satisfied      6.777875   6.025175
+##   Satisfied          35.341585  30.695022
+##   Dissatisfied       44.119892  48.450745
+##   Very dissatisfied  13.760648  14.829058
+##   Sum               100.000000 100.000000</code></pre>
+<p>The Chi-square test of independence incorporating survey weights is
+computed using the command <code>svychisq</code>. The dependent
+variable, the independent variable and the object are included with the
+sample design.</p>
+<pre class="r"><code>chitest3 =svychisq(~satis+gender,design18)
+chitest3</code></pre>
+<pre><code>## 
+##  Pearson&#39;s X^2: Rao &amp; Scott adjustment
+## 
+## data:  svychisq(~satis + gender, design18)
+## F = 28.172, ndf = 2.9969, ddf = 3985.8861, p-value &lt; 2.2e-16</code></pre>
+<p>The results show a p-value less than 0.05, so the H0 of equal
+expected and observed frequencies can be rejected, so we conclude that
+there is a relationship of statistical dependence between both
+variables.</p>
+<p>Observed and expected values can be calculated. As can be seen, the
+expected values differ from the results without survey weights.</p>
+<pre class="r"><code>chitest3$observed</code></pre>
+<pre><code>##                    gender
+## satis                    Male    Female
+##   Very satisfied     960.0493  836.1461
+##   Satisfied         5005.9443 4259.7143
+##   Dissatisfied      6249.3440 6723.7720
+##   Very dissatisfied 1949.1214 2057.9086</code></pre>
+<pre class="r"><code>chitest3$expected</code></pre>
+<pre><code>##                    gender
+## satis                    Male    Female
+##   Very satisfied     907.2868  888.9086
+##   Satisfied         4680.2311 4585.4274
+##   Dissatisfied      6552.9267 6420.1893
+##   Very dissatisfied 2024.0144 1983.0156</code></pre>
+<p>In this case, there is no command to calculate the association
+measures incorporating the design effect. Unweighted association
+measures can be taken as reference values.</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ3Jvc3MtdGFibGVzIHdpdGggdGhlIEFtZXJpY2FzIEJhcm9tZXRlciIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29sbGFwc2VkOiBmYWxzZQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgdG9jX2RlcHRoOiAxCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogZmxhdGx5CiAgICBkZl9wcmludDogcGFnZWQKICAgIHNlbGZfY29udGFpbmVkOiBubwogICAga2VlcF9tZDogeWVzCmVkaXRvcl9vcHRpb25zOiAKICBtYXJrZG93bjogCiAgICB3cmFwOiBzZW50ZW5jZQotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQobWVzc2FnZT1GQUxTRSx3YXJuaW5nPUZBTFNFLCBjYWNoZT1UUlVFKQpgYGAKCmBgYHtjc3MgY29sb3IsIGVjaG89RkFMU0V9Ci5jb2x1bW5zIHtkaXNwbGF5OiBmbGV4O30KaDEge2NvbG9yOiAjMzM2NkNDO30KYGBgCgojIEludHJvZHVjdGlvbgoKVGhlIHByZXZpb3VzIHNlY3Rpb25zIGNvcnJlc3BvbmRpbmcgdG8gdGhlIFt0LXRlc3RdKGh0dHBzOi8vYXJ0dXJvbWFsZG9uYWRvLmdpdGh1Yi5pby9CYXJvbWV0cm9FZHVfV2ViX0VuZy90dGVzdC5odG1sKSBhbmQgdGhlIFtBTk9WQSB0ZXN0XShodHRwczovL2FydHVyb21hbGRvbmFkby5naXRodWIuaW8vQmFyb21ldHJvRWR1X1dlYl9FbmcvYW5vdmEuaHRtbCkgYXJlIGFib3V0IHRoZSByZWxhdGlvbnNoaXAgb2YgYSBudW1lcmljYWwgdmFyaWFibGUgd2l0aCBhIGNhdGVnb3JpY2FsIHZhcmlhYmxlLCBpbiBzdWNoIGEgd2F5IHRoYXQgdGhlIGdvYWwgaXMgdG8gY29tcGFyZSBhbmQgZXh0cmFwb2xhdGUgdGhlIG1lYW5zIG9mIGEgbnVtZXJpY2FsIHZhcmlhYmxlIGJ5IGdyb3VwcyBvZiBhIGNhdGVnb3JpY2FsIHZhcmlhYmxlLgoKSW4gdGhpcyBzZWN0aW9uIHdlIHdpbGwgbG9vayBhdCBiaXZhcmlhdGUgcmVsYXRpb25zaGlwcyBiZXR3ZWVuIHR3byBjYXRlZ29yaWNhbCAob3IgZmFjdG9yIGluIFIgdGVybWlub2xvZ3kpIHZhcmlhYmxlcy4KVGhpcyBldmFsdWF0aW9uIGlzIGRvbmUgdXNpbmcgY3Jvc3MtdGFibGVzIChvciBjb250aW5nZW5jeSB0YWJsZXMpIGFuZCBpcyBldmFsdWF0ZWQgdXNpbmcgdGhlIGNoaS1zcXVhcmUgdGVzdC4KCiMgQWJvdXQgdGhlIGRhdGFzZXQKClRoZSBkYXRhIHdlIGFyZSBnb2luZyB0byB1c2Ugc2hvdWxkIGJlIGNpdGVkIGFzIGZvbGxvd3M6IFNvdXJjZTogQW1lcmljYXNCYXJvbWV0ZXIgYnkgdGhlIExhdGluIEFtZXJpY2FuIFB1YmxpYyBPcGluaW9uIFByb2plY3QgKExBUE9QKSwgd3d3dy5MYXBvcFN1cnZleXMub3JnLgpXZSBjYW4gZG93bmxvYWQgdGhlIGRhdGEgZnJlZWx5IFtoZXJlXShodHRwOi8vZGF0YXNldHMuYW1lcmljYXNiYXJvbWV0ZXIub3JnL2RhdGFiYXNlL2xvZ2luLnBocCkuCgpUaGlzIHNlY3Rpb24gbG9hZHMgYSB0cmltbWVkIGRhdGFiYXNlLCBvcmlnaW5hbGx5IGluIFNQU1MgKC5zYXYpIGZvcm1hdC4KSXQgaXMgcmVjb21tZW5kZWQgdG8gY2xlYW4gdGhlIEVudmlyb25tZW50IGJlZm9yZSBzdGFydGluZyB0aGlzIHNlY3Rpb24uCgpUaGlzIGRhdGFzZXQgaXMgaG9zdGVkIGluIHRoZSAibWF0ZXJpYWxzX2VkdSIgcmVwb3NpdG9yeSBvZiB0aGUgTEFQT1AgYWNjb3VudCBvbiBHaXRIdWIuClVzaW5nIHRoZSBsaWJyYXJ5IGByaW9gIGFuZCB0aGUgY29tbWFuZCBgaW1wb3J0YCwgd2UgY2FuIGltcG9ydCB0aGlzIGRhdGFiYXNlIGZyb20gdGhpcyByZXBvc2l0b3J5LgpJbiBhZGRpdGlvbiwgdGhlIGRhdGEgZnJvbSBjb3VudHJpZXMgd2l0aCBjb2RlcyBsZXNzIHRoYW4gb3IgZXF1YWwgdG8gMzUgYXJlIHNlbGVjdGVkLCB0aGF0IGlzLCB0aGUgb2JzZXJ2YXRpb25zIG9mIHRoZSBVbml0ZWQgU3RhdGVzIGFuZCBDYW5hZGEgYXJlIGVsaW1pbmF0ZWQuCgpgYGB7ciBiYXNlfQpsaWJyYXJ5KHJpbykgCmxhcG9wMTggPSBpbXBvcnQoImh0dHBzOi8vcmF3LmdpdGh1Yi5jb20vbGFwb3AtY2VudHJhbC9tYXRlcmlhbHNfZWR1L21haW4vTEFQT1BfQUJfTWVyZ2VfMjAxOF92MS4wLnNhdiIpCmxhcG9wMTggPSBzdWJzZXQobGFwb3AxOCwgcGFpczw9MzUpCmBgYAoKV2UgYWxzbyBsb2FkIHRoZSBkYXRhc2V0IGZvciB0aGUgMjAyMSByb3VuZC4KCmBgYHtyfQpsYXBvcDIxID0gaW1wb3J0KCJodHRwczovL3Jhdy5naXRodWIuY29tL2xhcG9wLWNlbnRyYWwvbWF0ZXJpYWxzX2VkdS9tYWluL2xhcG9wMjEuUkRhdGEiKQpsYXBvcDIxID0gc3Vic2V0KGxhcG9wMjEsIHBhaXM8PTM1KQpgYGAKCiMgVm90ZXMgYXJlIGNvdW50ZWQgZmFpcmx5CgpUaGUgcmVwb3J0IFRoZSBQdWxzZSBvZiBEZW1vY3JhY3kgZm9yIHRoZSAyMDIxIHJvdW5kIG9mIHRoZSBBbWVyaWNhc0Jhcm9tZXRlciByZXBvcnRzIHRoZSByZXN1bHRzIG9mIHZhcmlhYmxlICoqQ09VTlRGQUlSMS4qKiBWb3RlcyBhcmUgY291bnRlZCBjb3JyZWN0bHkgYW5kIGZhaXJseS4KV291bGQgeW91IHNheSBpdCBoYXBwZW5zIGFsd2F5cywgc29tZXRpbWVzIG9yIG5ldmVyPwpQZXJjZW50YWdlcyBhcmUgcHJlc2VudGVkIGJ5IGNvdW50cmllcy4KClRoaXMgZmlndXJlIGlzIHJlcG9ydGluZyB0aGUgY3Jvc3Mgb2YgYSBjYXRlZ29yaWNhbCB2YXJpYWJsZSAob3IgZmFjdG9yIGluIFIgbGFuZ3VhZ2UpLCBjYWxsZWQgImNvdW50ZmFpcjEiIHRoYXQgaGFzIHRocmVlIGNhdGVnb3JpZXMgKG5ldmVyLCBzb21ldGltZXMgYW5kIGFsd2F5cyksIHdpdGggb3RoZXIgY2F0ZWdvcmljYWwgdmFyaWFibGVzIGNhbGxlZCAicGFpcyIgdGhhdCBoYXMgMTUgY2F0ZWdvcmllcyAoZWFjaCBjb3VudHJ5IHByZXNlbnRlZCkuCgohW10oRmlndXJlMi41LnBuZyl7d2lkdGg9IjU5NiJ9CgpUaGlzIHZhcmlhYmxlIGlzIGltcG9ydGVkIGluIFIgYXMgbnVtZXJpYy4KRm9yIGJlIGFibGUgdG8gd29yayB3aXRoIHRoaXMgdmFyaWFibGUsIHdlIGhhdmUgdG8gZGVjbGFyZSBpdCBhcyBhIGZhY3RvciB2YXJpYWJsZSwgdXNpbmcgdGhlIGNvbW1hbmQgYGFzLmZhY3RvcmAuCldlIHRoZW4gbGFiZWwgdGhpcyB2YXJpYWJsZSB3aXRoIHRoZSBjb21tYW5kIGBsZXZlbHNgLgoKYGBge3J9CmxpYnJhcnkoaGF2ZW4pCmxhcG9wMjEkY291bnRmYWlyMXIgPSBhcy5mYWN0b3IobGFwb3AyMSRjb3VudGZhaXIxKQpsZXZlbHMobGFwb3AyMSRjb3VudGZhaXIxcikgPSBjKCJBbHdheXMiLCAiU29tZXRpbWVzIiwgIk5ldmVyIikKdGFibGUobGFwb3AyMSRjb3VudGZhaXIxcikKYGBgCgojIENyb3NzLXRhYmxlIG9mIHZvdGVzIGFyZSBjb3VudGVkIGZhaXJseSBieSBjb3VudHJ5CgpCZWZvcmUgcmVwbGljYXRpbmcgdGhpcyBmaWd1cmUsIGl0IGlzIHVzZWZ1bCB0byBzZWUgcmVzdWx0cyBpbiBhIGNyb3NzLXRhYmxlLgpXZSBjYW4gY3JlYXRlIHRoaXMgdGFibGUgd2l0aCB0aGUgY29tbWFuZCBgdGFibGVgLgpIb3dldmVyLCB0aGlzIHRhYmxlIHByZXNlbnRzIGFic29sdXRlIGZyZXF1ZW5jaWVzLgpBbHNvLCB0aGlzIHRhYmxlIHNob3dzIHRoYXQgdGhpcyBxdWVzdGlvbiB3YXMgbm90IGZpZWxkZWQgaW4gc29tZSBjb3VudHJpZXMuCgpgYGB7cn0KdGFibGUobGFwb3AyMSRwYWlzLCBsYXBvcDIxJGNvdW50ZmFpcjFyKQpgYGAKClRvIHJlcHJvZHVjZSB0aGUgcmVsYXRpdmUgZnJlcXVlbmNpZXMsIHdlIGhhdmUgdG8gdXNlIHRoZSBjb21tYW5kIGBwcm9wLnRhYmxlYC4KVGhpcyBjb21tYW5kIHJldHVybnMgdGhlIHBlcmNlbnRhZ2VzIGZvciB0aGUgdG90YWwgYnkgZGVmZWN0LgpXZSB3YW50IHRvIGNhbGN1bGF0ZSBwZXJjZW50YWdlcyBieSByb3dzICh0aGF0IGlzLCBieSBjb3VudHJ5KSBpbiB0aGlzIGNhc2UuCgpgYGB7cn0KcHJvcC50YWJsZSh0YWJsZShsYXBvcDIxJHBhaXMsIGxhcG9wMjEkY291bnRmYWlyMXIpKQpgYGAKClRvIGNhbGN1bGF0ZSB0aGUgcGVyY2VudGFnZXMgYnkgcm93cywgd2UgaGF2ZSB0byBhZGQgdGhlIHNwZWNpZmljYXRpb24gYCwgMWAgaW4gYHByb3AudGFibGVgLgpXZSBjYW4gYWxzbyBuZXN0IHRoaXMgY29kZSBpbiB0aGUgY29tbWFuZCBgYWRkbWFyZ2luc2AgdG8gY2FsY3VsYXRlIHRoZSBzdW0gb2YgaG9yaXpvbnRhbCBwZXJjZW50YWdlcy4KVGhlc2UgYXJlIHRoZSBzYW1lIHBlcmNlbnRhZ2VzIHRoYXQgYXJlIHByZXNlbnRlZCBpbiBhIGJhciBwbG90IGJlbG93LgpUaGVzZSBwZXJjZW50YWdlcyBhcmUgbm90IGVxdWFsIHRvIHRob3NlIHByZXNlbnRlZCBpbiBGaWd1cmUgMi41IGJlY2F1c2UgdGhpcyBjYWxjdWxhdGlvbiBkb2VzIG5vdCBpbmNsdWRlIHN1cnZleSB3ZWlnaHRzLgoKYGBge3J9CmFkZG1hcmdpbnMocHJvcC50YWJsZSh0YWJsZShsYXBvcDIxJHBhaXMsIGxhcG9wMjEkY291bnRmYWlyMXIpLCAxKSoxMDAsIDIpCmBgYAoKIyBCYXIgZ3JhcGggb2Ygdm90ZXMgYXJlIGNvdW50ZWQgZmFpcmx5IGJ5IGNvdW50cnkKCkluIHRoZSBzYW1lIHdheSBhcyB3ZSBkaWQgaW4gdGhlIHNlY3Rpb24gYWJvdXQgb3JkaW5hbCB2YXJpYWJsZXMsIGF2YWlsYWJsZSBbaGVyZV0oaHR0cHM6Ly9hcnR1cm9tYWxkb25hZG8uZ2l0aHViLmlvL0Jhcm9tZXRyb0VkdV9XZWJfRW5nL0Rlc2NyaXB0aXZlczIuaHRtbCksIHdlIGNhbiByZXBsaWNhdGUgdGhlIGNvbXBhcmF0aXZlIGdyYXBoIGJ5IGNvdW50cnkgd2UgaGF2ZSB0byBjcmVhdGUgYSBjb250aW5nZW5jeSB0YWJsZSBiZXR3ZWVuIHZhcmlhYmxlcyAiY291bnRmYWlyMSIgYW5kICJwYWlzIi4KVGhpcyBjcm9zcy10YWJsZSBpcyBzYXZlZCBpbiBhbiBhYmplY3QgImNvdW50X3BhaXMiLgpXZSBzaG91bGQgbm90ZSB0aGF0IHRoZSBkYXRhZnJhbWUgaW5jbHVkZSBhIHJvdyBmb3IgZWFjaCB2YWx1ZSBvZiAiY291bnRmYWlyMSIgaW4gZWFjaCBjb3VudHJ5LgpJbiB0aGlzIHdheSwgd2UgaGF2ZSAzIG9wdGlvbnMgeCAyMCBjb3VudHJpZXMgPSA2MCByb3dzLgoKYGBge3J9CmNvdW50X3BhaXMgPSBhcy5kYXRhLmZyYW1lKHJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AyMSRwYWlzLCBsYXBvcDIxJGNvdW50ZmFpcjFyKSwgMSksIDMpKjEwMCkKY291bnRfcGFpcwpgYGAKClRoaXMgdGFibGUgcHJlc2VudHMgTkFzIGZvciBjb3VudHJpZXMgd2hlcmUgdGhlIHF1ZXN0aW9uICJjb3VudGZhaXIxIiB3YXMgbm90IGFza2VkLgpGb3IgdGhpcyByZWFzb24sIHdlIGhhdmUgdG8gZHJvcCByb3dzIHdoZXJlIHRoZXJlIGlzIG5vIGRhdGEuCldlIGNhbiBkbyB0aGlzIHdpdGggdGhlIHNwZWNpZmljYXRpb24gYFstYyhyb3dzKV1gLgpBZnRlciB0aGF0IHdlIGNyZWF0ZSBhIHZlY3RvciB3aXRoIHRoZSBuYW1lcyBvZiBjb3VudHJpZXMuCldlIHJlcGVhdCBuYW1lcyB0aHJlZSB0aW1lcyAoMTUgY291bnRyaWVzIHggMyBvcHRpb25zKS4KV2UgZGQgdGhpcyB2ZWN0b3IgdG8gdGhlIGRhdGFmcmFtZSBpbiBjb2x1bW4gImNvdW50cnkiLgoKYGBge3J9CmNvdW50X3BhaXMgPSBjb3VudF9wYWlzWy1jKDE6NCwxOCwyMToyNCwzOCw0MTo0NCw1OCksXQpjb3VudHJ5ID0gYygiTmljYXJhZ3VhIiwiQ29zdGEgUmljYSIsICJQYW5hbWEiLCAiQ29sb21iaWEiLCAiRWN1YWRvciIsICJCb2xpdmlhIiwgIlBlcnUiLAogICAgICAgICJQYXJhZ3VheSIsICJDaGlsZSIsICJVcnVndWF5IiwgIkJyYXppbCIsICJBcmdlbnRpbmEiLCAiRG9tLiBSZXAuIiwiSmFtYWljYSIsICJHdXlhbmEiLCAiTmljYXJhZ3VhIiwiQ29zdGEgUmljYSIsICJQYW5hbWEiLCAiQ29sb21iaWEiLCAiRWN1YWRvciIsICJCb2xpdmlhIiwgIlBlcnUiLAogICAgICAgICJQYXJhZ3VheSIsICJDaGlsZSIsICJVcnVndWF5IiwgIkJyYXppbCIsICJBcmdlbnRpbmEiLCAiRG9tLiBSZXAuIiwiSmFtYWljYSIsICJHdXlhbmEiLCJOaWNhcmFndWEiLCJDb3N0YSBSaWNhIiwgIlBhbmFtYSIsICJDb2xvbWJpYSIsICJFY3VhZG9yIiwgIkJvbGl2aWEiLCAiUGVydSIsCiAgICAgICAgIlBhcmFndWF5IiwgIkNoaWxlIiwgIlVydWd1YXkiLCAiQnJhemlsIiwgIkFyZ2VudGluYSIsICJEb20uIFJlcC4iLCJKYW1haWNhIiwgIkd1eWFuYSIpCmNvdW50X3BhaXMkY291bnRyeSA9IGNvdW50cnkKY291bnRfcGFpcwpgYGAKCldlIGhhdmUgdGhlIGVsZW1lbnRzIGluIHRoaXMgZGF0YWZyYW1lICJjb3VudF9wYWlzIiB0byByZXBsaWNhdGUgdGhlIHN0YWNrZWQgYmFyIHBsb3QuCldlIHNwZWNpZnkgaW4gYGFlc2AgdGhhdCBwZXJjZW50YWdlcyBhcmUgaW4gWCBheGlzLCBjb3VudHJpZXMgaW4gWSBheGlzIGFuZCBlYWNoIGJhciBpcyBkaXZpZGVkIGJ5IGNvbHVtbiBWYXIyLgoKYGBge3J9CmxpYnJhcnkoZ2dwbG90MikKZ2dwbG90KGRhdGE9Y291bnRfcGFpcywgYWVzKHg9RnJlcSwgeT1jb3VudHJ5LCBmaWxsPVZhcjIpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIsIHdpZHRoPTAuMykrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShGcmVxLCAiJSIsIHNlcD0iIikpLCBjb2xvcj0id2hpdGUiLCAKICAgICAgICAgICAgcG9zaXRpb249cG9zaXRpb25fc3RhY2sodmp1c3Q9MC41KSwgc2l6ZT0yKSsKICBsYWJzKHg9IlBlcmNlbnRhZ2UiLCB5PSJDb3VudHJ5IiwgZmlsbD0iVm90ZXMgYXJlIGNvdW50ZWQgZmFpcmx5IiwKICAgICAgIGNhcHRpb249IkFtZXJpY2FzQmFyb21ldGVyIGJ5IExBUE9QLCAyMDIxIikKYGBgCgojIEV2YWx1YXRpbmcgRGVtb2NyYWN5IGluIFByYWN0aWNlCgpGcm9tIHBhZ2UgMjAsIHRoZSByZXBvcnQgKlRoZSBQdWxzZSBvZiBEZW1vY3JhY3kqIGV2YWx1YXRlcyBkZW1vY3JhY3kgaW4gcHJhY3RpY2UuCkluIHBhcnRpY3VsYXIsIHRoaXMgc2VjdGlvbiBvZiB0aGUgcmVwb3J0IHVzZXMgdGhlIHZhcmlhYmxlICJwbjQiLgpUaGlzIHZhcmlhYmxlIGlzIHdvcmRlZCBhcyBmb2xsb3dzOiAiSW4gZ2VuZXJhbCwgd291bGQgeW91IHNheSB0aGF0IHlvdSBhcmUgdmVyeSBzYXRpc2ZpZWQsIHNhdGlzZmllZCwgZGlzc2F0aXNmaWVkLCBvciB2ZXJ5IGRpc3NhdGlzZmllZCB3aXRoIHRoZSB3YXkgZGVtb2NyYWN5IHdvcmtzIGluIChjb3VudHJ5KT8iCgpUaGUgcmVwb3J0IGluZGljYXRlcyB0aGF0IHRoaXMgdmFyaWFibGUgaXMgcmVjb2RlZCBhcyBhIGRpY2hvdG9tb3VzIHZhcmlhYmxlIHRvIGJlIGFibGUgdG8gd29yayB3aXRoIHBlcmNlbnRhZ2VzLgpJbiB0aGlzIHNlY3Rpb24gd2UgYXJlIGdvaW5nIHRvIHdvcmsgd2l0aCB0aGUgb3JpZ2luYWwgdmFyaWFibGUsIHdoaWNoIGlzIGFuIG9yZGluYWwgY2F0ZWdvcmljYWwgdmFyaWFibGUgKG9yIGZhY3RvcikuCgpGaWd1cmUgMS4xNCBvZiB0aGUgcmVwb3J0IHByZXNlbnRzIGFuIGV2YWx1YXRpb24gb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGJ5IGRlbW9ncmFwaGljIGFuZCBzb2Npb2Vjb25vbWljIHZhcmlhYmxlcywgc3VjaCBhcyBlZHVjYXRpb25hbCBsZXZlbCwgcXVpbnRpbGVzIG9mIHdlYWx0aCwgcGxhY2Ugb2YgcmVzaWRlbmNlLCBnZW5kZXIgb3IgYWdlIGdyb3Vwcy4KVGhhdCBpcywgc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGlzIHVzZWQgYXMgdGhlIGRlcGVuZGVudCB2YXJpYWJsZSBhbmQgZWFjaCBkZW1vZ3JhcGhpYyBvciBzb2Npb2Vjb25vbWljIHZhcmlhYmxlIGFzIHRoZSBpbmRlcGVuZGVudCB2YXJpYWJsZS4KCiFbXShGaWd1cmUxLjE0LkpQRyl7d2lkdGg9IjQxOSJ9CgpGb3IgZXhhbXBsZSwgdGhlIHJlcG9ydCBpbmRpY2F0ZXMgdGhhdCBhbW9uZyBtZW4sIDQyLjMlIGFyZSBzYXRpc2ZpZWQgd2l0aCBkZW1vY3JhY3kgKHVzaW5nIHRoZSB2YXJpYWJsZSByZWNvZGVkIGFzIGEgZHVtbXkpLCB3aGlsZSBhbW9uZyB3b21lbiwgdGhpcyBwZXJjZW50YWdlIGRyb3BzIHRvIDM2LjklLgpIZXJlIHdlIGFyZSBnb2luZyB0byBhbmFseXplIHRoZXNlIHNhbWUgdmFyaWFibGVzLCBidXQgdXNpbmcgdGhlIHZhcmlhYmxlICJwbjQiIGluIGl0cyBvcmlnaW5hbCBmb3JtIChhcyBhbiBvcmRpbmFsIGNhdGVnb3JpY2FsKS4KQmVmb3JlIHByb2NlZWRpbmcsIHdlIG5lZWQgdG8gcmVjb2RlIHRoZSB2YXJpYWJsZXMgYXMgZmFjdG9yIGFuZCBsYWJlbCB0aGVtLgoKYGBge3IgZ2VuZGVyfQpsYXBvcDE4JGdlbmRlciA9IGFzLmZhY3RvcihsYXBvcDE4JHExKQpsZXZlbHMobGFwb3AxOCRnZW5kZXIpID0gYygiTWFsZSIsICJGZW1hbGUiKQp0YWJsZShsYXBvcDE4JGdlbmRlcikKYGBgCgpUaGUgc2FtZSBpcyBkb25lIGZvciB0aGUgdmFyaWFibGUgInBuNCIgd2hpY2ggYmVjb21lcyBhIG5ldyB2YXJpYWJsZSAic2F0aXMiLgoKYGBge3Igc2F0aXN9CmxhcG9wMTgkc2F0aXMgPSBhcy5mYWN0b3IobGFwb3AxOCRwbjQpCmxldmVscyhsYXBvcDE4JHNhdGlzKSA9IGMoIlZlcnkgc2F0aXNmaWVkIiwgIlNhdGlzZmllZCIsICJEaXNzYXRpc2ZpZWQiLCAiVmVyeSBkaXNzYXRpc2ZpZWQiKQp0YWJsZShsYXBvcDE4JHNhdGlzKQpgYGAKCiMgQ3Jvc3MtdGFibGUgb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGJ5IGdlbmRlcgoKV2l0aCB0aGUgbmV3IGZhY3RvciB2YXJpYWJsZXMsIHdlIGZpcnN0IGNhbGN1bGF0ZSBhIGNyb3NzLXRhYmxlIG9yIGNvbnRpbmdlbmN5IHRhYmxlLgpUaGUgY29tbWFuZCBgdGFibGVgIGlzIHVzZWQgdG8gcHJlc2VudCB0aGUgZnJlcXVlbmNpZXMgb2Ygb25lIG9yIHR3byB2YXJpYWJsZXMuCkJ5IGNvbnZlbnRpb24sIHRoZSBkZXBlbmRlbnQgdmFyaWFibGUgInNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSIgaXMgcGxhY2VkIGluIHRoZSByb3dzIGFuZCB0aGUgaW5kZXBlbmRlbnQgdmFyaWFibGUgImdlbmRlciIgaW4gdGhlIGNvbHVtbnMuCgpgYGB7ciB0YWJsZX0KdGFibGUobGFwb3AxOCRzYXRpcywgbGFwb3AxOCRnZW5kZXIpCmBgYAoKVG8gY2FsY3VsYXRlIHRoZSByZWxhdGl2ZSBmcmVxdWVuY2llcywgeW91IGhhdmUgdG8gbmVzdCB0aGUgY29tbWFuZCBgdGFibGVgIGluc2lkZSB0aGUgY29tbWFuZCBgcHJvcC50YWJsZWAuCklmIG5lc3RlZCBvbmx5LCB0aGlzIGNvbW1hbmQgY2FsY3VsYXRlcyB0aGUgcHJvcG9ydGlvbnMgb3ZlciB0aGUgdG90YWwgb2JzZXJ2YXRpb25zLgoKYGBge3IgdGFibGUyfQpwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkc2F0aXMsIGxhcG9wMTgkZ2VuZGVyKSkKYGBgCgpUaGVzZSBwcm9wb3J0aW9ucyBhcmUgbm90IHZlcnkgdXNlZnVsIGZvciB0aGUgY29tcGFyaXNvbiB3ZSB3YW50IHRvIG1ha2UuCldoYXQgd2UgcmVxdWlyZSBhcmUgdGhlIGNvbmRpdGlvbmFsIGRpc3RyaWJ1dGlvbnMgb2YgInNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSIgZm9yIGVhY2ggZ2VuZGVyIGdyb3VwLgpUaGF0IGlzLCBjYWxjdWxhdGUgdGhlIHBlcmNlbnRhZ2VzIGZvciBlYWNoIGNvbHVtbi4KSW4gb3JkZXIgZm9yIGBwcm9wLnRhYmxlYCB0byBjYWxjdWxhdGUgdGhlc2UgcGVyY2VudGFnZXMsIHdlIGhhdmUgdG8gYWRkIHRoZSBzcGVjaWZpY2F0aW9uIGAo4oCmLCAyKWAuCk11bHRpcGx5IGJ5IDEwMCB0byBnbyBmcm9tIHJhdGlvcyB0byBwZXJjZW50YWdlcy4KWW91IGNhbiBhbHNvIG5lc3QgYWxsIGNvZGUgaW5zaWRlIHRoZSBjb21tYW5kIGBhZGRtYXJnaW5zYCB0byBjaGVjayB0aGUgc3VtIG9mIHBlcmNlbnRhZ2VzIG92ZXIgdGhlIGNvbHVtbnMsIHdpdGggdGhlIHNwZWNpZmljYXRpb24gYCguLi4sIDEpYC4KCmBgYHtyIHRhYmxlczN9CmFkZG1hcmdpbnMocHJvcC50YWJsZSh0YWJsZShsYXBvcDE4JHNhdGlzLCBsYXBvcDE4JGdlbmRlciksIDIpKjEwMCwgMSkKYGBgCgpUaGUgdGFibGUgc2hvd3MgdGhhdCA2LjglIG9mIG1lbiBhcmUgdmVyeSBzYXRpc2ZpZWQgd2l0aCBkZW1vY3JhY3ksIGEgcGVyY2VudGFnZSB2ZXJ5IHNpbWlsYXIgdG8gdGhhdCBvZiB3b21lbi4KNDQlIG9mIG1lbiBhcmUgZGlzc2F0aXNmaWVkIHdpdGggZGVtb2NyYWN5LgpJbiB0aGlzIGNhdGVnb3J5LCB3b21lbiBoYXZlIGEgaGlnaGVyIHBlcmNlbnRhZ2UgKDQ4LjQlKS4KCkluIHRoaXMgd2F5LCBpdCBpcyBwb3NzaWJsZSB0byBjb21wYXJlIHRoZSBwZXJjZW50YWdlcyBvZiB0aGUgZGVwZW5kZW50IHZhcmlhYmxlICJzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kiIGZvciBlYWNoIGNhdGVnb3J5IG9mIHRoZSBpbmRlcGVuZGVudCB2YXJpYWJsZSAiZ2VuZGVyIi4KCiMgR3JhcGhzIG9mIHNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSBieSBnZW5kZXIKCkluIHRoZSBzZWN0aW9uIGFib3V0IFtkZXNjcmlwdGl2ZXMgb2Ygb3JkaW5hbCB2YXJpYWJsZXNdKGh0dHBzOi8vYXJ0dXJvbWFsZG9uYWRvLmdpdGh1Yi5pby9CYXJvbWV0cm9FZHVfV2ViX0VuZy9EZXNjcmlwdGl2ZXMyLmh0bWwpLCB3ZSBwcmVzZW50ZWQgYSBwcmV2aWV3IG9mIHdoYXQgd2UgYXJlIHNlZWluZyBpbiB0aGlzIHNlY3Rpb24uCkhlcmUgd2Ugd2lsbCByZXZpc2l0IHRob3NlIHRoZW1lcywgdXNpbmcgdGhlIHRpZHl2ZXJzZS4KClRvIG1ha2UgdGhlIGdyYXBoLCB3ZSBmaXJzdCBjcmVhdGUgYSBuZXcgZGF0YWZyYW1lIHdpdGggdGhlIGRhdGEgZnJvbSB0aGUgY3Jvc3MtdGFibGUuClRoZSBjb21tYW5kIGBhcy5kYXRhLmZyYW1lYCBpcyB1c2VkIHRvIHRyYW5zZm9ybSB0aGUgYml2YXJpYXRlIHRhYmxlIGludG8gYSBuZXcgZGF0YWZyYW1lIGNhbGxlZCAidGFibGUiLgpVc2luZyB0aGlzIGNvbW1hbmQsIHRoZSByZXN1bHRzIGFyZSBzb3J0ZWQgYnkgbmV3IGNvbHVtbnMgKFZhcjEsIFZhcjIgYW5kIEZyZXEpIHNvIHRoYXQgdGhleSBjYW4gYmUgdXNlZCB0byBjcmVhdGUgYSBncmFwaC4KCmBgYHtyIHRhYmxlNH0KdGFibGUgPSBhcy5kYXRhLmZyYW1lKHByb3AudGFibGUodGFibGUobGFwb3AxOCRzYXRpcywgbGFwb3AxOCRnZW5kZXIpLCAyKSoxMDApCnRhYmxlCmBgYAoKV2Ugd2lsbCB1c2UgdGhlIGxpYnJhcnkgYGdncGxvdDJgIGFuZCB0aGUgY29tbWFuZCBgZ2dwbG90YCB0byBjcmVhdGUgYSBiYXIgY2hhcnQsIHVzaW5nIHRoZSBkYXRhZnJhbWUgInRhYmxlIiBjb250YWluaW5nIHRoZSBwZXJjZW50YWdlcyBvZiBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgZm9yIG1lbiBhbmQgd29tZW4uClRoaXMgY29tbWFuZCByZXF1aXJlcyBhbiBhZXN0aGV0aWMgd2hlcmUgaXQgaXMgc3BlY2lmaWVkIHRoYXQgIlZhcjEiIHdpbGwgYmUgaW5jbHVkZWQgb24gdGhlIFggYXhpcywgd2hpY2ggY29ycmVzcG9uZHMgdG8gdGhlIGNhdGVnb3JpZXMgb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5LgpUaGUgIkZyZXEiIGlzIGluY2x1ZGVkIG9uIHRoZSBZIGF4aXMsIHdoaWNoIGNvcnJlc3BvbmRzIHRvIHBlcmNlbnRhZ2VzLgpBbHNvIGluY2x1ZGVkIGlzIHRoZSBzcGVjaWZpY2F0aW9uIGBmaWxsYCB0byBpbmRpY2F0ZSB0aGF0IGl0IHdpbGwgYmUgc3BsaXQgaW50byBNYWxlL0ZlbWFsZSBncm91cHMgZm9yIGVhY2ggY2F0ZWdvcnkgb2YgIlZhcjEiIGFuZCBgeW1heGAgdG8gc3BlY2lmeSB0aGUgdXBwZXIgbGltaXQgb2YgdGhlIFkgYXhpcy4KCkFmdGVyIGRlZmluaW5nIHRoZSB2YXJpYWJsZXMgaW4gdGhlIGF4ZXMsIGl0IGlzIGluZGljYXRlZCB0aGF0IGEgYmFyIGdyYXBoIGlzIHdhbnRlZCB3aXRoIHRoZSBjb21tYW5kIGBnZW9tX2JhcmAgYW5kIHdpdGggdGhlIHNwZWNpZmljYXRpb24gYHBvc2l0aW9uPSJkb2RnZSJgIGl0IGlzIGluZGljYXRlZCB0aGF0IGEgZ3JhcGggd2l0aCBiYXJzIHNlcGFyYXRlZCBieSBlYWNoIGNvbWJpbmF0aW9uIG9mIGNhdGVnb3JpZXMgaXMgd2FudGVkLgpUaGUgc3BlY2lmaWNhdGlvbiBgc3RhdD0iaWRlbnRpdHkiYCBpcyBhZGRlZCB0byBpbmRpY2F0ZSB0aGF0IHRoZSBjb21tYW5kIHdvcmtzIHdpdGggdGhlIGRhdGEgaW4gdGhlIHRhYmxlLgoKVGhlIGNvbW1hbmQgYGdlb21fdGV4dGAgaW5jbHVkZXMgdGhlIHBlcmNlbnRhZ2VzIG9mIGVhY2ggYmFyLCB3aGljaCBpcyBmb3VuZCBpbiB0aGUgIkZyZXEiIGNvbHVtbi4KVGhlc2UgcGVyY2VudGFnZXMgYXJlIHJvdW5kZWQgd2l0aCBgcm91bmRgIHRvIDEgZGVjaW1hbCBwbGFjZSBhbmQgdGhlICIlIiBzeW1ib2wgaXMgYWRkZWQgd2l0aCBgcGFzdGVgLgpBbHNvIGluY2x1ZGVkIGlzIHRoZSBzcGVjaWZpY2F0aW9uIGBwb3NpdGlvbj1wb3NpdGlvbl9kb2RnZSguLi4pYCB3aGljaCBwbGFjZXMgdGhlc2UgcGVyY2VudGFnZXMgYXQgdGhlIHRvcCBvZiBlYWNoIGNvbHVtbi4KVGhlIGRlZmF1bHQgb3B0aW9uIHdpdGhpbiB0aGlzIHNwZWNpZmljYXRpb24gaXMgYHdpZHRoPU5VTExgLCBidXQgdGhpcyB3YXkgdGhlIHBlcmNlbnRhZ2VzIHdvdWxkIGJlIG1pc3BsYWNlZCwgc28gYHdpZHRoPTAuOWAgaXMgZGVmaW5lZCB0byBjZW50ZXIgdGhlIHBlcmNlbnRhZ2VzLgoKQnkgZGVmYXVsdCwgdGhlIGxlZ2VuZCBpbmNsdWRlcyB0aGUgbmFtZSBvZiB0aGUgY29sdW1uIHdpdGggdGhlIGdlbmRlciBkYXRhLCB3aGljaCBpcyAiVmFyMiIuClRvIGNoYW5nZSB0aGlzIG5hbWUsIHVzZSB0aGUgY29tbWFuZCBgbGFicyhmaWxsPSJHZW5kZXIiKWAgdG8gcHJvcGVybHkgbmFtZSB0aGUgbGVnZW5kLgpGaW5hbGx5LCB0aGUgWSBhbmQgWCBheGlzIGFyZSBsYWJlbGVkIHdpdGggYHlsYWJgIGFuZCBgeGxhYi5gCgpgYGB7ciBncmFmYmFyfQpsaWJyYXJ5KGdncGxvdDIpCmdncGxvdChkYXRhPXRhYmxlLCBhZXMoeD1WYXIxLCB5PUZyZXEsIGZpbGw9VmFyMiwgeW1heD02MCkpKwogIGdlb21fYmFyKHBvc2l0aW9uPSJkb2RnZSIsIHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChGcmVxLCAxKSwgIiUiLCBzZXA9IiIpKSwKICAgICAgICAgICAgcG9zaXRpb249cG9zaXRpb25fZG9kZ2Uod2lkdGg9MC45KSwgdmp1c3Q9LTAuMjUpKwogIGxhYnMoZmlsbD0iR2VuZGVyIikrCiAgeWxhYigiUGVyY2VudGFnZSIpKwogIHhsYWIoIlNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSIpCmBgYAoKT3RoZXIgd2F5IHRvIGRpc3BsYXkgdGhpcyBkYXRhIGlzIHRocm91Z2ggc3RhY2tlZCBiYXJzLgpUaGF0IGlzLCBmb3IgZWFjaCBnZW5kZXIgY2F0ZWdvcnksIHRoZSBkaXN0cmlidXRpb24gb2Ygc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IGlzIHNob3duLgpGb3IgdGhpcywgd2UgdXNlIHRoZSBzYW1lIGNvbW1hbmQgYGdncGxvdGAgYnV0IG5vdyB0aGUgb3JkZXIgb2YgdGhlIHZhcmlhYmxlcyBpbiB0aGUgYWVzdGhldGljIGlzIGNoYW5nZWQuCk5vdyB0aGUgdmFyaWFibGUgIlZhcjIiICh3aXRoIHRoZSBnZW5kZXIgY2F0ZWdvcmllcykgaXMgbG9jYXRlZCBvbiB0aGUgWCBheGlzIGFuZCBlYWNoIGJhciBpcyBkaXZpZGVkIGFjY29yZGluZyB0byB0aGUgdmFsdWVzIG9mIFZhcjEuCgpUaGUgYmFyIHR5cGUgY2hhbmdlcyBpbiB0aGUgY29tbWFuZCBgZ2VvbV9iYXJgIHRvIGBwb3NpdGlvbj0ic3RhY2siYC4KSW4gdGhlIHNhbWUgd2F5LCB0aGUgZGF0YSBsYWJlbHMgaGF2ZSB0byBjb25zaWRlciB0aGUgcG9zaXRpb24gb2YgZWFjaCBzbGljZSwgd2l0aCBgcG9zaXRpb249cG9zaXRpb25fc3RhY2soKWAuCgpgYGB7ciBncmFmYmFyYXBpbGF9CmdncGxvdChkYXRhPXRhYmxlLCBhZXMoeD1WYXIyLCB5PUZyZXEsIGZpbGw9VmFyMSwgeW1heD0xMDApKSsKICBnZW9tX2Jhcihwb3NpdGlvbj0ic3RhY2siLCBzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUocm91bmQoRnJlcSwgMSksICIlIiwgc2VwPSIiKSksCiAgICAgICAgICAgIHBvc2l0aW9uPXBvc2l0aW9uX3N0YWNrKCksIHZqdXN0PTIpKwogIGxhYnMoZmlsbD0iU2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IikrCiAgeWxhYigiUGVyY2VudGFnZSIpKwogIHhsYWIoIkdlbmRlciIpCmBgYAoKIyBDcm9zcy10YWJsZSBvZiBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYnkgZWR1Y2F0aW9uYWwgbGV2ZWwKCkZpZ3VyZSAxLjE0IG9mIHRoZSByZXBvcnQgc2hvd3MgdGhlIHJlc3VsdHMgb24gc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IChhY2NvcmRpbmcgdG8gdGhlIHJlY29kZWQgZHVtbXkgdmFyaWFibGUpIGJ5IGVkdWNhdGlvbmFsIGxldmVsLgpBcyBhIHNlY29uZCBleGFtcGxlLCBoZXJlIHdlIGFyZSBnb2luZyB0byByZXBsaWNhdGUgdGhhdCByZWxhdGlvbnNoaXAgdXNpbmcgdGhlIG9yaWdpbmFsIHZhcmlhYmxlIG9mIHR5cGUgZmFjdG9yLgoKV2UgZmlyc3QgcmVjb2RlIHRoZSBlZHVjYXRpb24gdmFyaWFibGUuClRoZSBvcmlnaW5hbCB2YXJpYWJsZSAiZWQiIGlzIGEgbnVtZXJpY2FsIHZhcmlhYmxlICh5ZWFycyBvZiBzdHVkeSkuClRoaXMgdmFyaWFibGUgaGFzIHZhbHVlcyByYW5naW5nIGZyb20gMCB0byAxOC4KSXQgaXMgcmVjb2RlZCBpbiBzdWNoIGEgd2F5IHRoYXQgdGhvc2Ugd2l0aCB6ZXJvIHllYXJzIG9mIGVkdWNhdGlvbiBhcmUgYXNzaWduZWQgYSB2YWx1ZSBvZiAwICJOb25lIiwgdGhvc2UgYmV0d2VlbiAxIGFuZCA2IHllYXJzIG9mIGVkdWNhdGlvbiBhcmUgYXNzaWduZWQgYSB2YWx1ZSBvZiAxICJQcmltYXJ5IiwgdGhvc2UgYmV0d2VlbiA3IGFuZCAxMSB5ZWFycyBvZiBlZHVjYXRpb24gYXJlIGFzc2lnbnMgdGhlbSB0aGUgdmFsdWUgb2YgMiAiU2Vjb25kYXJ5IiBhbmQgYmV0d2VlbiAxMiBhbmQgMTggeWVhcnMgb2YgZWR1Y2F0aW9uIHRoZSB2YWx1ZSBvZiAzICJQb3N0LXNlY29uZGFyeSIuCgpgYGB7ciByZWNvZWR9CmxpYnJhcnkoY2FyKQpsYXBvcDE4JGVkdWMgPC0gY2FyOjpyZWNvZGUobGFwb3AxOCRlZCwgIjA9MDsgMTo2PTE7IDc6MTE9MjsgMTI6MTg9MyIpCmxhcG9wMTgkZWR1YyA8LSBhcy5mYWN0b3IobGFwb3AxOCRlZHVjKQpsZXZlbHMobGFwb3AxOCRlZHVjKSA8LSBjKCJOb25lIiwgIlByaW1hcnkiLCAiU2Vjb25kYXJ5IiwgIlBvc3Qtc2Vjb25kYXJ5IikKdGFibGUobGFwb3AxOCRlZHVjKQpgYGAKCldpdGggdGhlIHJlY29kZWQgdmFyaWFibGUgaXQgaXMgcG9zc2libGUgdG8gY2FsY3VsYXRlIHRoZSBjcm9zcy10YWJsZSBvZiBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYnkgZWR1Y2F0aW9uYWwgbGV2ZWxzLgoKYGBge3IgdGFibGVlZH0KYWRkbWFyZ2lucyhwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkc2F0aXMsIGxhcG9wMTgkZWR1YyksIDIpKjEwMCwgMSkKYGBgCgpUbyBjcmVhdGUgdGhlIGdyYXBoLCB3ZSBoYXZlIHRvIHNhdmUgdGhlIHRhYmxlIGFzIGEgZGF0YWZyYW1lLgpUaGUgY29tbWFuZCBgYXMuZGF0YS5mcmFtZWAgaXMgdXNlZCB0byBzYXZlIHRoZSBwZXJjZW50YWdlcyBzbyB0aGF0IHRoZXkgY2FuIGJlIHVzZWQgd2l0aCB0aGUgY29tbWFuZCBgZ2dwbG90YC4KCmBgYHtyIHRhYmxlNX0KdGFibGUyIDwtIGFzLmRhdGEuZnJhbWUocHJvcC50YWJsZSh0YWJsZShsYXBvcDE4JHNhdGlzLCBsYXBvcDE4JGVkdWMpLCAyKSoxMDApCnRhYmxlMgpgYGAKCkluIHRoaXMgY2FzZSwgc2luY2Ugd2UgaGF2ZSA0IGNhdGVnb3JpZXMgZm9yIHNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSBhbmQgYW5vdGhlciA0IGNhdGVnb3JpZXMgZm9yIGVkdWNhdGlvbmFsIGxldmVscywgYSBiYXIgZ3JhcGggd291bGQgY3JlYXRlIDE2IGJhcnMsIHdoaWNoIHdvdWxkIGNvbXBsaWNhdGUgdGhlIGNvbXBhcmlzb24uClNvLCBpbiB0aGlzIGNhc2UsIHRoZSBzdGFja2VkIGJhciB0eXBlIGlzIHByZWZlcnJlZC4KCmBgYHtyIGJhcnJhcGlsYWRhc2VkfQpsaWJyYXJ5KGdncGxvdDIpCmdncGxvdChkYXRhPXRhYmxlMiwgYWVzKHg9VmFyMiwgeT1GcmVxLCBmaWxsPVZhcjEsIHltYXg9MTAwKSkrCiAgZ2VvbV9iYXIocG9zaXRpb249InN0YWNrIiwgc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHJvdW5kKEZyZXEsIDEpLCAiJSIsIHNlcD0iIikpLAogICAgICAgICAgICBwb3NpdGlvbj1wb3NpdGlvbl9zdGFjaygpLCB2anVzdD0yKSsKICBsYWJzKGZpbGw9IlNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSIpKwogIHlsYWIoIlBlcmNlbnRhZ2UiKSsKICB4bGFiKCJFZHVjYXRpb24gbGV2ZWwiKQpgYGAKCkZpZ3VyZSAxLjE0IHNob3dzIHRoYXQgdGhlcmUgaXMgYSBoaWdoZXIgcGVyY2VudGFnZSBvZiBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYW1vbmcgdGhlIGxlYXN0IGVkdWNhdGVkLgpUaGlzIHJlbGF0aW9uc2hpcCBjYW4gYWxzbyBiZSBzZWVuIGluIHRoaXMgZ3JhcGguClRoZSBzZWN0b3JzICJ2ZXJ5IHNhdGlzZmllZCIgKGluIHBpbmspIGFuZCAic2F0aXNmaWVkIiAoaW4gZ3JlZW4pIGRlY3JlYXNlIGFzIHdlIGdvIGZyb20gbm9uZSB0byBwcmltYXJ5LCBzZWNvbmRhcnkgYW5kIGhpZ2hlci4KCkluIGFsbCBleGFtcGxlcywgd2UgY2FuIG9ic2VydmUgcGVyY2VudCBkaWZmZXJlbmNlcyBpbiBhIHZhcmlhYmxlIGJ5IGNhdGVnb3JpZXMgb2Ygb3RoZXIgdmFyaWFibGUuClRoZXNlIHBlcmNlbnRhZ2VzIGNhbiBiZSBjb21wYXJlZCBkaXJlY3RseSBpbiB0aGUgZ3JhcGgsIGJ1dCB3ZSBzaG91bGQgcnVuIGEgc2lnbmlmaWNhbmNlIHRlc3QgdG8gZXZhbHVhdGUgaWYgdGhlcmUgaXMgYSBzdGF0aXN0aWNhbGx5IHNpZ25pZmljYW50IHJlbGF0aW9uc2hpcC4KCiMgQ2hpLXNxdWFyZSB0ZXN0IG9mIGluZGVwZW5kZW5jZQoKVHdvIGNhdGVnb3JpY2FsIHZhcmlhYmxlcyBhcmUgc2FpZCB0byBiZSBzdGF0aXN0aWNhbGx5IGluZGVwZW5kZW50IGlmIHRoZSBjb25kaXRpb25hbCAocG9wdWxhdGlvbikgZGlzdHJpYnV0aW9ucyBhcmUgaWRlbnRpY2FsIGZvciBlYWNoIGNhdGVnb3J5IG9mIHRoZSBpbmRlcGVuZGVudCB2YXJpYWJsZS4KSW4gdGhlIGFib3ZlIGJpdmFyaWF0ZSByZWxhdGlvbnNoaXAsIHRoaXMgbWVhbnMgdGhhdCBiZWluZyBtYWxlIG9yIGZlbWFsZSBkb2VzIG5vdCBjaGFuZ2Ugb3BpbmlvbnMgcmVnYXJkaW5nIHNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeS4KQXMgdGhlc2UgY29uZGl0aW9uYWwgZGlzdHJpYnV0aW9ucyBkaWZmZXIgbW9yZSBmcm9tIGVhY2ggb3RoZXIsIGJvdGggdmFyaWFibGVzIGFyZSBzYWlkIHRvIGJlIG1vcmUgcmVsYXRlZCBvciBtb3JlIGRlcGVuZGVudC4KClRoaXMgZXZhbHVhdGlvbiBpcyBkb25lIHVzaW5nIHRoZSBjaGktc3F1YXJlIG9yICRcY2hpXjIkIHRlc3Qgb2YgaW5kZXBlbmRlbmNlLgpUaGlzIHRlc3QgaXMgYmFzZWQgb24gdGhlIGNvbXBhcmlzb24gb2YgdGhlIG9ic2VydmVkIGZyZXF1ZW5jaWVzICh0aGUgb2JzZXJ2YXRpb25zIGNvbGxlY3RlZCBpbiB0aGUgZmllbGQpIHZlcnN1cyB0aGUgZXhwZWN0ZWQgZnJlcXVlbmNpZXMgKHRoZSBvYnNlcnZhdGlvbnMgdGhhdCBzaG91bGQgYmUgaW4gZWFjaCBjZWxsIGlmIHRoZSB2YXJpYWJsZXMgd2VyZSBpbmRlcGVuZGVudCkuClRoZSB0ZXN0IHN0YXRpc3RpYyBzdW1tYXJpemVzIGhvdyBjbG9zZSB0aGUgZXhwZWN0ZWQgZnJlcXVlbmNpZXMgYXJlIHRvIHRoZSBvYnNlcnZlZCBmcmVxdWVuY2llcy4KCiQkClxjaGleMiA9IFxzdW1cZnJhY3soZl9vLWZfZSleMn17Zl9lfQokJAoKVGhlIHNtYWxsZXIgdGhlIGRpc3RhbmNlIGluIGVhY2ggY2VsbCwgdGhlIGxlc3MgbGlrZWx5IGl0IGlzIHRvIHJlamVjdCB0aGUgbnVsbCBoeXBvdGhlc2lzLgpUaGUgbGFyZ2VyIHRoZSBkaXN0YW5jZSBpbiBlYWNoIGNlbGwsIHRoZSBtb3JlIGxpa2VseSBpdCBpcyB0byByZWplY3QgdGhlIG51bGwgaHlwb3RoZXNpcy4KCiQkCkgwOiBmX28gPSBmX2UKJCQKCldpdGggdGhlIHZhbHVlIG9mICRcY2hpXjIkIGFuZCB3aXRoIHRoZSBkZWdyZWVzIG9mIGZyZWVkb20gKHJvd3MtMVwqY29sdW1ucy0xKSwgYSBwLXZhbHVlIGlzIGNhbGN1bGF0ZWQgb24gdGhlIGNoaS1zcXVhcmUgZGlzdHJpYnV0aW9uLgpJZiB0aGlzIHAtdmFsdWUgaXMgbGVzcyB0aGFuIDAuMDUsIEgwIGlzIHJlamVjdGVkLgpUaGlzIHRlc3QgcmVxdWlyZXMgdGhhdCB0aGVyZSBiZSBhdCBsZWFzdCA1IG9ic2VydmF0aW9ucyBpbiBlYWNoIGNlbGwuCgojIFRlc3Qgb2Ygdm90ZXMgYXJlIGNvdW50ZWQgZmFpcmx5IGJ5IGNvdW50cnkKCkluIFIsIHRoZSBjb21tYW5kIGBjaGlzcS50ZXN0YCBpcyB1c2VkIHRvIGNhbGN1bGF0ZSB0aGUgc3RhdGlzdGljIGFuZCB0aGUgYXNzb2NpYXRlZCBwLXZhbHVlLgpUaGUgcmVzdWx0cyBvZiB0aGlzIHRlc3QgY2FuIGJlIHNhdmVkIHRvIGEgbmV3IG9iamVjdCAiY2hpdGVzdDEiLgoKYGBge3J9CmNoaXRlc3QxIDwtIGNoaXNxLnRlc3QobGFwb3AyMSRjb3VudGZhaXIxciwgbGFwb3AyMSRwYWlzKQpjaGl0ZXN0MQpgYGAKClRoZSBwLXZhbHVlIG9idGFpbmVkIGlzIGxlc3MgdGhhbiAwLjA1LCBzbyB0aGUgSDAgaXMgcmVqZWN0ZWQsIHNvIHdlIHNheSB0aGF0IHRoZSBvYnNlcnZlZCBmcmVxdWVuY2llcyBzZWVtIHRvIGJlIGRpZmZlcmVudCBmcm9tIHRoZSBleHBlY3RlZCBmcmVxdWVuY2llcyB0aGF0IHdvdWxkIGV4aXN0IGluIGVhY2ggY2VsbCBpZiB0aGVyZSB3ZXJlIG5vIHJlbGF0aW9uc2hpcCwgc28gd2Ugc2F5IHRoYXQgdGhlcmUgaXMgYSByZWxhdGlvbnNoaXAgYmV0d2VlbiB0aGUgdmFyaWFibGVzIG9yIHRoYXQgdGhlcmUgaXMgYSBkZXBlbmRlbmN5IGJldHdlZW4gdGhlIHR3by4KCkl0IGlzIGltcG9ydGFudCB0byBub3RlIHRoYXQgImNoaXRlc3QxIiBpcyBhbiBvYmplY3Qgb2YgdHlwZSAqbGlzdCouClRoaXMgdHlwZSBvZiBvYmplY3QgY2FuIHN0b3JlIG90aGVyIGluZm9ybWF0aW9uIG9mIGEgZGlmZmVyZW50IHR5cGUuCkZvciBleGFtcGxlLCAiY2hpdGVzdDEiIHNhdmVzIHRoZSB0YWJsZXMgb2Ygb2JzZXJ2ZWQgZnJlcXVlbmNpZXMgKHNhbWUgcmVzdWx0IGFzIHdpdGggdGhlIGNvbW1hbmQgYHRhYmxlYCkgYW5kIHRoZSB0YWJsZSBvZiBleHBlY3RlZCBmcmVxdWVuY2llcy4KSW4gdGhpcyBvYmplY3QgdGhlIHZhbHVlIG9mIHRoZSByZXNpZHVhbHMsIHRoZSBzdGFuZGFyZGl6ZWQgcmVzaWR1YWxzIGFuZCB0aGUgdmFsdWUgb2YgdGhlIHAtdmFsdWUgYXJlIGFsc28gc2F2ZWQuCgpgYGB7cn0KY2hpdGVzdDEkb2JzZXJ2ZWQKY2hpdGVzdDEkZXhwZWN0ZWQKYGBgCgpUbyBldmFsdWF0ZSB0aGUgc3RyZW5ndGggb2YgdGhlIHJlbGF0aW9uc2hpcCwgd2UgdXNlIHRoZSBsaWJyZXJ5IGB2Y2RgIHRoYXQgaGFzIHRoZSBjb21tYW5kIGBhc3NvY3N0YXRzYCB0aGF0IG9mZmVycyBhIHNlcmllcyBvZiBtZWFzdXJlcyBvZiBhc3NvY2lhdGlvbiBmb3IgYSBjcm9zcy10YWJsZSBiZXR3ZWVuIGFuIG9yZGluYWwgdmFyaWFibGUsIGFzICJjb3VudGZhaXIxIiwgYW5kIGEgbm9taW5hbCB2YXJpYWJsZSwgYXMgInBhaXMiLgoKVGhlIGNvbW1hbmQgYGFzc29jc3RhdHNgIGNhbm5vdCBjYWxjdWxhdGUgbWVhc3VyZXMgb2YgYXNzb2NpYXRpb25zIGlmIGNlbGxzIG9mIGEgY3Jvc3MtdGFibGUgaGF2ZSBudWxsIHZhbHVlcy4KQmVjYXVzZSB3ZSBoYXZlIHNvbWUgY291bnRyaWVzIHdoZXJlIHF1ZXN0aW9uICJjb3VudGZhaXIxIiB3YXMgbm90IGFza2VkLCB3ZSBoYXZlIHRvIGluZGljYXRlIHRoYXQgdGhpcyBjb21tYW5kIGRvZXMgbm90IHRha2UgaW50byBhY2NvdW50IHRoZXNlIGNvdW50cmllcy4KRm9yIGRlYWwgd2l0aCB0aGlzLCB3ZSBjcmVhdGUgYSBuZXcgImNvdW50cnkyIiB2YXJpYWJsZSwgd2hlcmUgb2JzZXJ2YXRpb25zIG9mIHRoZXNlIGNvdW50cmllcyBhcmUgc2V0IGFzIE5Bcy4KCmBgYHtyfQpsYXBvcDIxJGNvdW50cnlfciA9IGxhcG9wMjEkcGFpcwpsYXBvcDIxJGNvdW50cnlfcltsYXBvcDIxJHBhaXM9PTFdID0gTkEKbGFwb3AyMSRjb3VudHJ5X3JbbGFwb3AyMSRwYWlzPT0yXSA9IE5BCmxhcG9wMjEkY291bnRyeV9yW2xhcG9wMjEkcGFpcz09M10gPSBOQQpsYXBvcDIxJGNvdW50cnlfcltsYXBvcDIxJHBhaXM9PTRdID0gTkEKbGFwb3AyMSRjb3VudHJ5X3JbbGFwb3AyMSRwYWlzPT0yMl0gPSBOQQpgYGAKCldpdGggdGhpcyBuZXcgdmFyaWFibGUsIHdlIGNhbiBjcmVhdGUgYSBjcm9zcy10YWJsZSBiZXR3ZWVuICJjb3VudGZhaXIxIiBhbmQgImNvdW50cnlfciIgYW5kIGNhbGN1bGF0ZSBtZWFzdXJlcyBvZiBhc3NvY2lhdGlvbi4KCmBgYHtyfQpsaWJyYXJ5KHZjZCkKdGFibGUyIDwtIHRhYmxlKGxhcG9wMjEkY291bnRmYWlyMXIsIGxhcG9wMjEkY291bnRyeV9yKQphc3NvY3N0YXRzKHRhYmxlMikKYGBgCgpUaGUgY29tbWFuZCBgYXNzb2NzdGF0c2AgcmV0dXJucyB0aGUgY29udGluZ2VuY3kgY29lZmZpY2llbnQgYW5kIENyYW1lcsK0cyBWIGFzIG1lYXN1cmVzLgpUaGVzZSBtZWFzdXJlcyB2YXJ5IGJldHdlZW4gMCBhbmQgMS4KV2hpbGUgY2xvc2VyIHRvIHplcm8sIHRoZSByZWxhdGlvbnNoaXAgaXMgd2Vha2VyLgpPbiB0aGUgY29udHJhcnksIHdoaWxlIGNsb3NlciB0byAxLCB0aGUgcmVsYXRpb25zaGlwIGlzIHN0cm9uZ2VyLgoKQnkgY29udmVudGlvbiwgd2UgY2FuIGFzc3VtZSB0aGF0IHdlYWsgcmVsYXRpb25zaGlwcyBhcmUgYmV0d2VlbiAwIGFuZCAwLjMsIG1vZGVyYXRlIHJlbGF0aW9uc2hpcHMgYmV0d2VuIDAuMyBhbmQgMC42IGFuZCBzdHJvbmcgcmVsYXRpb25zaGlwcyBhcmUgaGlnaGVyIHRoYW4gMC42LgpJbiB0aGlzIGNhc2UsIHdlIGNhbiBpbmRpY2F0ZSB0aGF0IHRoZSByZWxhdGlvbnNoaXAgYmV0d2VlbiB2b3RlcyBhcmUgY291bnRlZCBmYWlybHkgYW5kIGNvdW50cnkgaXMgd2Vhay4KCiMgVGVzdCBvZiBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYnkgZWR1Y2F0aW9uYWwgbGV2ZWwKClRvIGV2YWx1YXRlIHRoZSByZWxhdGlvbnNoaXAgYmV0d2VlbiBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgYW5kIGdlbmRlciwgd2UgY2FuIGFsc28gdXNlIHRoZSB0ZXN0IG9mIGluZGVwZW5kZW5jZSBvZiAkXGNoaV4yJC4KVGhlIHJlc3VsdHMgb2YgdGhpcyB0ZXN0IGFyZSBzYXZlZCBpbiBhbiBvYmplY3QgImNoaXRlc3QyIi4KCmBgYHtyfQpjaGl0ZXN0MiA8LSBjaGlzcS50ZXN0KGxhcG9wMTgkc2F0aXMsIGxhcG9wMTgkZWR1YykKY2hpdGVzdDIKYGBgCgpBZ2Fpbiwgd2Ugb2J0YWluIGEgcC12YWx1ZSBvZiBsZXNzIHRoYW4gMC4wNSwgd2l0aCB3aGljaCB0aGUgbnVsbCBoeXBvdGhlc2lzIGlzIHJlamVjdGVkIGFuZCBpdCBpcyBhZmZpcm1lZCB0aGF0IHRoZSBvYnNlcnZlZCBmcmVxdWVuY2llcyBhcmUgZGlmZmVyZW50IGZyb20gdGhvc2UgZXhwZWN0ZWQsIHdpdGggd2hpY2ggd2UgY29uY2x1ZGUgdGhhdCB0aGVyZSB3b3VsZCBiZSBhIGRlcGVuZGVuY3kgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIHZhcmlhYmxlcy4KClRvIGV2YWx1YXRlIHRoZSBzdHJlbmd0aCBvZiB0aGUgcmVsYXRpb25zaGlwLCB3ZSB1c2UgdGhlIGxpYnJhcnkgYG9paWAgYW5kIHRoZSBjb21tYW5kIGBhc3NvY2lhdGlvbi5tZWFzdXJlc2AsIHRoYXQgcmV0dXJuIGEgc2VyaWVzIG9mIGFzc29jaWF0aW9uIG1lYXN1cmVzIHRoYXQgZml0IHRoaXMgdHlwZXMgb2YgdmFyaWFibGVzLCB0aGF0IGluIHRoaXMgY2FzZSBhcmUgYm90aCBvcmRpbmFsCgpgYGB7ciBvcmRpbmFsfQpsaWJyYXJ5KG9paSkKYXNzb2NpYXRpb24ubWVhc3VyZXMobGFwb3AxOCRzYXRpcywgbGFwb3AxOCRlZHVjKQpgYGAKCkluIHRoaXMgY2FzZSwgd2Ugb2JzZXJ2ZSB0aGUgbWVhc3VyZXMgb2YgYXNzb2NpYXRpb24gZm9yIG9yZGluYWwgdmFyaWFibGVzLgpUaGlzIGNvbW1hbmQgcmVwb3J0cyA0IG9mIHRoZXNlIG1lYXN1cmVtZW50cywgYWxsIG9mIHRoZW0gdmFyeSBiZXR3ZWVuIC0xIHRvICsxLgpJbiBvdXIgZXhhbXBsZSwgdGhleSBhbGwgaGF2ZSBhIHBvc2l0aXZlIHNpZ24sIHdoaWNoIGluZGljYXRlcyBhIGRpcmVjdCByZWxhdGlvbnNoaXAgYmV0d2VlbiBib3RoIHZhcmlhYmxlcy4KVGhpcyB3b3VsZCBzZWVtIHRvIGdvIGFnYWluc3Qgd2hhdCBpcyByZXBvcnRlZCBpbiBGaWd1cmUgMS4xNCBvZiB0aGUgcmVwb3J0IHdoZXJlIGl0IGlzIGNsZWFybHkgb2JzZXJ2ZWQgdGhhdCBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgZGVjcmVhc2VzIGF0IGhpZ2hlciBlZHVjYXRpb25hbCBsZXZlbHMsIHdoaWNoIHdvdWxkIGJlIGV4cHJlc3NlZCBpbiBhIG5lZ2F0aXZlIHNpZ24uCgpUaGlzIGFwcGFyZW50IGNvbnRyYWRpY3Rpb24gaXMgZHVlIG9uIGhvdyBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgKCJzYXRpcyIgdmFyaWFibGUgdGhhdCBpcyBjcmVhdGVkIGZyb20gInBuNCIpIGhhcyBiZWVuIGNvZGVkLgpUaGUgb3JpZ2luYWwgdmFyaWFibGUgaGFzIHZhbHVlcyBiZXR3ZWVuIDEgYW5kIDQsIHdoZXJlIDEgbWVhbnMgInZlcnkgc2F0aXNmaWVkIiBhbmQgNCBtZWFucyAidmVyeSBkaXNzYXRpc2ZpZWQiLgpUaGF0IGlzLCBoaWdoIHZhbHVlcyBpbmRpY2F0ZSAibGVzcyJpbiB0aGUgdmFyaWFibGUuCkl0IGlzIGZvciB0aGlzIHJlYXNvbiB0aGF0IHRoZSBhc3NvY2lhdGlvbiB0ZXN0IHJlc3VsdHMgd2l0aCBhIHBvc2l0aXZlIHNpZ24sIHdoaWNoIGluIHRoaXMgY2FzZSB3b3VsZCBpbmRpY2F0ZSB0aGF0IGEgaGlnaGVyIHZhbHVlIG9mIHRoZSBlZHVjYXRpb24gdmFyaWFibGUgbWVhbnMgIm1vcmUiIG9mIHRoZSBzYXRpc2ZhY3Rpb24gd2l0aCBkZW1vY3JhY3kgdmFyaWFibGUgKHdoaWNoIGlzIGFjdHVhbGx5IGxlc3MpLgoKVG8gYXZvaWQgdGhpcyBjb25mdXNpb24sIHRoZSBtb25vdG9ueSBvZiB0aGUgc2F0aXNmYWN0aW9uIHdpdGggZGVtb2NyYWN5IHZhcmlhYmxlIHNob3VsZCBoYXZlIGJlZW4gY2hhbmdlZCBzbyB0aGF0IGhpZ2hlciB2YWx1ZXMgaW5kaWNhdGUgZ3JlYXRlciBzYXRpc2ZhY3Rpb24gYW5kLCB3aXRoIHRoaXMsIGEgbmVnYXRpdmUgc2lnbiBpcyBvYnRhaW5lZCBpbiB0aGUgYXNzb2NpYXRpb24gbWVhc3VyZXMuClRoaXMgaGFzIGJlZW4gZG9uZSBpbiB0aGlzIHNlY3Rpb24gdG8gZHJhdyBhdHRlbnRpb24gdG8gdGhlIGZhY3QgdGhhdCBjb2RpbmcgaGFzIGNvbnNlcXVlbmNlcyBmb3IgdGhlIHJlc3VsdHMgYW5kIGNhbiBsZWFkIHRvIGNvbmZ1c2lvbiBpZiBjYXJlIGlzIG5vdCB0YWtlbi4KCkZpbmFsbHksIHRoZSB2YWx1ZSBvZiB0aGUgYXNzb2NpYXRpb24gbWVhc3VyZXMgYXJlIGxlc3MgdGhhbiAwLjMsIGluZGljYXRpbmcgdGhhdCB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIHZhcmlhYmxlcyBpcyB3ZWFrLgoKIyBTdW1tYXJ5CgpJbiB0aGlzIHNlY3Rpb24gd2UgaGF2ZSB3b3JrZWQgd2l0aCBiaXZhcmlhdGUgcmVsYXRpb25zaGlwcyBiZXR3ZWVuIGNhdGVnb3JpY2FsIHZhcmlhYmxlcy4KQ3Jvc3MtdGFibGVzIGFuZCBiYXIgZ3JhcGhzIGhhdmUgYmVlbiBjYWxjdWxhdGVkIHRvIHNob3cgdGhlIGRlc2NyaXB0aXZlIHJlc3VsdHMuClRoZW4sIHRoZSBjaGktc3F1YXJlIHRlc3Qgb2YgaW5kZXBlbmRlbmNlIGhhcyBiZWVuIHVzZWQgdG8gaW5mZXIgd2hldGhlciB0aGVyZSBpcyBhIGRlcGVuZGVuY3kgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIHZhcmlhYmxlcyBpbiB0aGUgcG9wdWxhdGlvbiBhbmQgZmluYWxseSB0aGUgc3RyZW5ndGggb2YgdGhlIGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIHZhcmlhYmxlcyBpcyBldmFsdWF0ZWQsIGRpZmZlcmVudGlhdGluZyB3aGVuIGl0IGNvbWVzIHRvIG5vbWluYWwgb3Igb3JkaW5hbCB2YXJpYWJsZXMuCgojIENhbGN1bGF0aW9ucyBpbmNsdWRpbmcgc3VydmV5IHdlaWdodHMKCldlIGNhbGN1bGF0ZSB0aGUgcGVyY2VudGFnZSBvZiB2b3RlcyBhcmUgY291bnRlZCBmYWlybHkgYnkgY291bnRyeSBpbmNsdWRpbmcgc3VydmV5IHdlaWdodHMgaW4gdGhlIHNlY3Rpb24gYWJvdXQgW2Rlc2NyaXB0aXZlcyBvZiBvcmRpbmFsIHZhcmlhYmxlc10oaHR0cHM6Ly9hcnR1cm9tYWxkb25hZG8uZ2l0aHViLmlvL0Jhcm9tZXRyb0VkdV9XZWJfRW5nL0Rlc2NyaXB0aXZlczIuaHRtbCkuCldpdGggdGhpcyBkYXRhLCB3ZSByZXBsaWNhdGUgRmlndXJlIDIuNS4KClRvIGNhbGN1bGF0ZSBhIGNoaS1zcXVhcmUgdGVzdCBpbmNsdWRpbmcgc3VydmV5IHdlaWdodHMsIHdlIGNhbiB1c2UgdGhlIGxpYnJhcnkgYHN1cnZleWAgYW5kIHRoZSBjb21tYW5kIGBzdnljaGlzcWAuCgpgYGB7ciBkZXNpZ259CmxpYnJhcnkoc3VydmV5KQpkZXNpZ24xOCA9IHN2eWRlc2lnbihpZHMgPSB+dXBtLCBzdHJhdGEgPSB+ZXN0cmF0b3ByaSwgd2VpZ2h0cyA9IH53ZWlnaHQxNTAwLCBuZXN0PVRSVUUsIGRhdGE9bGFwb3AxOCkKYGBgCgpXZSBjYWxjdWxhdGUgdGhlIGNvbnRpbmdlbmN5IHRhYmxlIHdpdGggdGhlIGNvbW1hbmQgYHN2eXRhYmxlYC4KSW4gdGhpcyBjYXNlIHdlIGNyb3NzIHNhdGlzZmFjdGlvbiB3aXRoIGRlbW9jcmFjeSBieSBnZW5kZXIuClRoaXMgY29tbWFuZCBpcyBuZXN0ZWQgaW5zaWRlIGBwcm9wLnRhYmxlYCB0byBkaXNwbGF5IHRoZSByZWxhdGl2ZSBmcmVxdWVuY2llcyBhbmQgbm90IHRoZSBhYnNvbHV0ZSBvbmVzLgpJbiB0dXJuLCBhbGwgb2YgdGhpcyBpcyBuZXN0ZWQgaW5zaWRlIHRoZSBjb21tYW5kIGBhZGRtYXJnaW5zYCB0byBwcmVzZW50IHRoZSByZWxhdGl2ZSBmcmVxdWVuY2llcyBhcyBwZXJjZW50YWdlcy4KSW4gdGhlIHNhbWUgd2F5IGFzIGFib3ZlLCB3ZSBjYW4gc2F2ZSB0aGlzIHRhYmxlIGluIGFuIG9iamVjdCBmb3IgZ3JhcGhpbmcgdGhlc2UgcmVzdWx0cy4KCmBgYHtyIHRhYmxld30KYWRkbWFyZ2lucyhwcm9wLnRhYmxlKHN2eXRhYmxlKH5zYXRpcytnZW5kZXIsIGRlc2lnbj1kZXNpZ24xOCksMikqMTAwLDEpCmBgYAoKVGhlIENoaS1zcXVhcmUgdGVzdCBvZiBpbmRlcGVuZGVuY2UgaW5jb3Jwb3JhdGluZyBzdXJ2ZXkgd2VpZ2h0cyBpcyBjb21wdXRlZCB1c2luZyB0aGUgY29tbWFuZCBgc3Z5Y2hpc3FgLgpUaGUgZGVwZW5kZW50IHZhcmlhYmxlLCB0aGUgaW5kZXBlbmRlbnQgdmFyaWFibGUgYW5kIHRoZSBvYmplY3QgYXJlIGluY2x1ZGVkIHdpdGggdGhlIHNhbXBsZSBkZXNpZ24uCgpgYGB7ciBjaGl3fQpjaGl0ZXN0MyA9c3Z5Y2hpc3EofnNhdGlzK2dlbmRlcixkZXNpZ24xOCkKY2hpdGVzdDMKYGBgCgpUaGUgcmVzdWx0cyBzaG93IGEgcC12YWx1ZSBsZXNzIHRoYW4gMC4wNSwgc28gdGhlIEgwIG9mIGVxdWFsIGV4cGVjdGVkIGFuZCBvYnNlcnZlZCBmcmVxdWVuY2llcyBjYW4gYmUgcmVqZWN0ZWQsIHNvIHdlIGNvbmNsdWRlIHRoYXQgdGhlcmUgaXMgYSByZWxhdGlvbnNoaXAgb2Ygc3RhdGlzdGljYWwgZGVwZW5kZW5jZSBiZXR3ZWVuIGJvdGggdmFyaWFibGVzLgoKT2JzZXJ2ZWQgYW5kIGV4cGVjdGVkIHZhbHVlcyBjYW4gYmUgY2FsY3VsYXRlZC4KQXMgY2FuIGJlIHNlZW4sIHRoZSBleHBlY3RlZCB2YWx1ZXMgZGlmZmVyIGZyb20gdGhlIHJlc3VsdHMgd2l0aG91dCBzdXJ2ZXkgd2VpZ2h0cy4KCmBgYHtyIG9ic3ZyZXhwd30KY2hpdGVzdDMkb2JzZXJ2ZWQKY2hpdGVzdDMkZXhwZWN0ZWQKYGBgCgpJbiB0aGlzIGNhc2UsIHRoZXJlIGlzIG5vIGNvbW1hbmQgdG8gY2FsY3VsYXRlIHRoZSBhc3NvY2lhdGlvbiBtZWFzdXJlcyBpbmNvcnBvcmF0aW5nIHRoZSBkZXNpZ24gZWZmZWN0LgpVbndlaWdodGVkIGFzc29jaWF0aW9uIG1lYXN1cmVzIGNhbiBiZSB0YWtlbiBhcyByZWZlcmVuY2UgdmFsdWVzLgo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("chi.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

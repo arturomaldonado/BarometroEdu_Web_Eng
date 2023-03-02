@@ -34,7 +34,7 @@ navbar:
         href: ttest.html
       - text: "Comparing more than 2 means"
         href: anova.html
-      - text: "Crosstables and chi-square analysis"
+      - text: "Cross-tables and chi-square analysis"
         href: chi.html
     - text: "Modeling"
       menu:
