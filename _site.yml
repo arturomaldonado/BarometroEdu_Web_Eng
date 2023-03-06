@@ -39,7 +39,7 @@ navbar:
     - text: "Modeling"
       menu:
       - text: "Correlation"
-        href: correlacion.html
+        href: correlation.html
       - text: "Simple linear regresion"
         href: regresion1.html
       - text: "Multiple linear regresion"
