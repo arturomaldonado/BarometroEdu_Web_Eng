@@ -1,5 +1,5 @@
 ---
-title: "Cross-tables with the Americas Barometer"
+title: "Cross-tables with the AmericasBarometer"
 output:
   html_document:
     toc: true
