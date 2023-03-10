@@ -62,11 +62,11 @@ You will find in this web modules where AmericasBarometer data is used in R and 
 
 1.  [Correlation](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/correlation.html)
 
-2.  [Simple linear regresion](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion1.html)
+2.  [Simple linear regression](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion1.html)
 
-3.  [Multiple linear regresion](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion2.html)
+3.  [Multivariate linear regression](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion2.html)
 
-4.  [Logistic regresion](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/logit.html)
+4.  [Logistic regression](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/logit.html)
 
 ## Extras
 

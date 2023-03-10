@@ -1,0 +1,349 @@
+---
+title: "Multivariate linear regression with the AmericasBarometer"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: flatly
+    df_print: paged
+    self_contained: no
+    keep_md: yes
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+In the previous section we saw the basic aspects of the ordinary least squares model to analyze the relationship between a dependent and an independent variable, both numerical.
+In this section the analysis will be expanded from a bivariate analysis to a multivariate analysis.
+That is, the method of ordinary least squares will be used to analyze the relationship of a numerical dependent variable with several independent variables.
+
+This section will continue replicating the analysis of the chapter "Democratic legitimacy" of the report [The Pulse of Democracy](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_10.13.19.pdf).
+This chapter analyzes a measure of support for democracy.
+
+# About the dataset
+
+The data we are going to use should be cited as follows: Source: AmericasBarometer by the Latin American Public Opinion Project (LAPOP), wwww.LapopSurveys.org.
+You can download the data freely [here](http://datasets.americasbarometer.org/database/login.php).
+
+It is recommended to clean the Environment before starting this section.
+In this document, a database in RData format is again loaded.
+This format is efficient in terms of storage space.
+This database is hosted in the "materials_edu" repository of the LAPOP account on GitHub.
+Using the `rio` library and the `import` command, you can import this database from this repository, using the following code.
+
+```{r base, message=FALSE, warning=FALSE}
+library(rio)
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData")
+lapop18 = subset(lapop18, pais<=35)
+```
+
+# Determinants of system support
+
+In the previous section we saw that the Democratic Legitimacy section of the report presents a multiple regression model with predictors of the index of system support.
+Figure 2.10 shows the results for five independent variables, although the full model includes socioeconomic and demographic controls.
+
+![](FIgure2.10.JPG){width="525"}
+
+The variables shown in the graph are: external efficacy, political tolerance, trust in the executive, trust in the community, and trust in local government.
+
+The dataset includes the variable "psar" that measures support for the system and that was calculated in the previous section from the original variables.
+This variable is already recoded on the 0-100 scale.
+
+```{r vd}
+summary(lapop18$psar)
+```
+
+Figure 2.10 shows the relationship between system support and five independent variables, used as predictors of this dependent variable.
+These variables are:
+
+-   Index of political tolerance, built from four variables: D1, D2, D3 and D4.
+    In the dataset, the recoded variable is called "tol1r".
+
+-   External efficacy (EFF1): "Those who govern the country are interested in what people like you think. To what extent do you agree or disagree with this statement?" In the dataset, the recoded variable is called "eff1r".
+
+-   Confidence in the executive (B21A): "To what extent do you trust the president/prime minister?"
+
+-   Confidence in the local government (B32): "To what extent do you trust your mayor's office?" In the dataset, the recoded variable is named "b32r".
+
+-   Trust in your community (IT1): "Now, speaking of the people around here, would you say that the people in your community are very trustworthy, somewhat trustworthy, not very trustworthy, or not at all trustworthy?" In the dataset, the recoded variable is called "it1r".
+
+In the same way as in the previous section, we have to calculate the trust in the executive variable, recoded to a scale of 0 to 100.
+
+```{r vi}
+lapop18$ejec = ((lapop18$b21a-1)/6)*100
+summary(lapop18$ejec)
+```
+
+# Multivariate linear regression model
+
+To assess the determinants of system support, we can compute a multivariate linear regression model.
+The model is calculated with the command `lm` where the Y variable is indicated and then the independent variables.
+Each independent variable is added to the model.
+This model is saved in an object "model1" which can be described with the command `summary`.
+
+```{r modelo}
+model1 = lm(psar ~ eff1r + ejec + tolr + it1r + b32r, data=lapop18)
+summary(model1)
+```
+
+To present the results clearly, we can use various libraries and commands.
+In the previous section we used the library `jtools` and the command `summs`.
+In this section we will use the library `stargazer` and the command of the same name.
+
+```{r table}
+library(stargazer)
+stargazer(model1, align=T, type = 'text')
+```
+
+Figure 2.10 shows the coefficients of each variable and the 95% confidence interval of this estimate.
+A vertical line is included at point 0.
+If a confidence interval crosses this vertical line, we can say that it does not have a statistically significant relationship with the dependent variable of system support.
+Confidence intervals that do not cross this line and that lie to the right (left) of this line have a positive (negative) relationship with system support, that is, when this variable increases, average system support increases (decreases).
+In this example, all five variables are statistically significant and show a positive relationship with system support.
+To approximate a plot similar to the one shown in the report, we can use the library `jtools` and the command `plot_summs`.
+
+```{r graph}
+library(jtools)
+plot_summs(model1)
+```
+
+# Interpretation
+
+As the report indicates: "All five support indicators have a positive, significant relationship with system support, according to the 95% confidence interval...This indicates that as the external efficacy, political tolerance, trust in the executive, community, and local government increase, so does the average level of support for the political system".
+
+Before analyzing the relationship of each independent variable with the dependent variable, we can analyze the validity of the model as a whole.
+
+## Model validity
+
+The F test is used to evaluate the model in general.
+This test hypothesizes:
+
+$$
+H0: \beta_1 = \beta_2 = \beta_3 = \beta_4 = \beta_5 = 0
+$$
+
+That is, the null hypothesis is that all the coefficients as a whole are equal to zero.
+In our example, the p-value is less than 0.05, which means that H0 can be rejected and that at least one coefficient is different from zero.
+This concludes that the model is valid.
+
+## Relationship between independent and dependent variables
+
+For each independent variable, the model calculates a t-test.
+This significance test evaluates $H0: \beta_n =0$.
+That is, if the coefficient of a single independent variable is equal to zero.
+
+For example, the independent variable external efficacy has a coefficient of 0.128, a t-test statistic of 34.3, and an associated t-value of 0.004.
+In the same way as in bivariate analysis, a critical value is established, conventionally 0.05.
+Since this t-value is less than 0.05, the null hypothesis can be rejected and we can state that the coefficient is different from zero with 95% confidence.
+
+The same conclusion can be drawn for the other independent variables, presenting a t-value less than 0.05.
+With this it can be corroborated that the five independent variables are significant, as indicated in the report.
+
+## Direction of relationship
+
+The direction of the relationship is marked by the sign of the coefficient of the independent variable.
+In our example, all five coefficients have positive signs, indicating a direct relationship; that is, when the independent variable increases, the dependent variable increases, on average.
+
+## Determination coefficient $R^2$
+
+Figure 2.10, in addition to showing the coefficients and the 95% confidence intervals, also shows the data for the determination coefficient $R^2$ and for the number of observations with which the model is calculated.
+
+In our example the value of $R^2=0.401$.
+This value is not the same as the one presented in the report (0.44) because the model of our example does not include socioeconomic and demographic controls and survey weights.
+The result of our example indicates that the model reduces the error of using only the average to estimate system support by 40.1%.
+
+# Including "dummy" variables
+
+The report indicates that "We control for the same socio-economic and demographic indicators analyzed earlier, and country fixed effects".
+Although the coefficients for these variables are not shown, the results shown in Figure 2.10 include the effect of these variables.
+
+Before replicating the full model, we will explain the role of dummy variables.
+A dummy variable is one that is coded as 0 and 1.
+In the "lapop18" dataset we have a variable called "mujer", which identifies those interviewed as women with 1 and all others with 0.
+
+In this section we want to compare system support between women and others.
+In the section referring to the [t-test](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/ttest.html), we explain the procedure for comparing a numerical dependent variable between groups of a dichotomous variable.
+Here we will follow a similar procedure.
+First, we compute the Levene's test for equality of variances.
+
+```{r Levene}
+library(DescTools)
+LeveneTest(lapop18$psar, lapop18$mujer)
+```
+
+With this result, the zero hypothesis of equality of variances cannot be rejected, so we will assume that the variances are equal in the t-test.
+
+```{r t-test}
+t.test(psar ~ mujer, data = lapop18, var.equal=T)
+```
+
+The results indicate that the group of women presents a higher support for the system (49.6) than the group of men (48.2), and that this difference is statistically significant with a p-value lower than 0.05 (2.17x10-6).
+
+These results can be replicated through a simple linear regression analysis, using system support, a numerical variable, as the dependent variable, and woman, a dummy variable, as the independent variable.
+
+```{r regresion dummy}
+model2 = lm(psar ~ mujer, data=lapop18)
+summary(model2)
+```
+
+The estimate for the intercept, when X=0, that is, for men, replicates the result obtained in the t-test of the average system support for men.
+In the case of the average of women, X=1 must be replaced in the model equation, which would give 48.22+1.33 = 49.55, similar to the result obtained in the t test.
+The p-value of the coefficient of the dummy variable, in turn, also replicates the p-value obtained in the t-test.
+
+In this way, it can be seen that by means of a simple linear regression model, the results of a t-test can be replicated, since both evaluate whether there are differences in the mean of a numerical variable between two groups.
+
+The evaluation can be done with a variable that indicates one of the countries included in the 2018/19 round.
+For example, if we want to assess whether there are differences between Mexican and non-Mexican citizens in their levels of support for the system, we have to create this dummy variable and then proceed in the same way as with the variable "mujer".
+
+First, we create the dummy variable "mexico" with values 1 if a interviewee is from Mexico and 0 in any other case.
+
+```{r mexico}
+lapop18$mexico = ifelse(lapop18$pais==1, 1, 0)
+```
+
+With this variable, it is possible to evaluate the differences in support for the system between Mexicans and the rest of the interviewees.
+
+```{r levenemex}
+LeveneTest(lapop18$psar, lapop18$mexico)
+```
+
+```{r pruebatmex}
+t.test(psar ~ mexico, data = lapop18, var.equal=F)
+```
+
+This result is similar to that obtained with a simple linear regression
+
+```{r regresionmex}
+model3 = lm(psar ~ mexico, data=lapop18)
+summary(model3)
+```
+
+# Including categorical variables
+
+The calculation of system support for Mexicans involved the creation of a "dummy" variable from the categorical variable "country".
+This variable is a variable of type "factor", which includes the 18 countries included in this dataset.
+
+If we want to assess system support in each country, we have to create a dummy variable for each group.
+In the simple linear regression analysis, we evaluate the difference in support for the system between the citizens of the included country and the rest of the interviewees.
+
+Other way to do this evaluation is to include all the dummy variables (except one) in a multiple linear regression model.
+The excluded variable will act as a reference variable and the other countries will be evaluated based on this variable.
+
+Instead of creating 18 "dummy" variables for each country, we can use the function `factor` inside the function `lm` to indicate that this is a categorical variable and to evaluate each group separately.
+By default, the first group (that is, country=1, Mexico) is taken as a reference.
+
+```{r regresionpais}
+model4 = lm(psar ~ factor(pais), data=lapop18)
+summary(model4)
+```
+
+The results indicate that the intercept is 55.44, which is the mean of system support for the reference group, Mexico, as calculated in the previous procedures.
+The average support for the system for the rest of the countries can be calculated by adding (or subtracting) the value of the coefficient of the country from the reference value.
+
+For example, Guatemala is country 2.
+To calculate the average support for the system in that country, we have to calculate 55.44-4.88=50.56.
+Not only that, the p-value corresponding to country 2 indicates that the difference in system support between Guatemala and Mexico is statistically significant.
+
+Another example, Peru is country 11.
+The mean support for the system in Peru would be 55.44-13.63=41.81 and is statistically different from the mean support in Mexico.
+
+# Including control variables
+
+The inclusion of "dummy" variables for each country allows us to analyze the average support for the system in each group and to know if there are statistically significant differences with the reference country.
+Many times these "dummy" variables are included as part of a more general analysis.
+Such is the case of Figure 2.10, where the effect of five independent variables on system support is analyzed and "controlled by the same socioeconomic and demographic indicators and by country fixed effects." These so-called "country fixed effects" refer to the inclusion of these "dummies" as control variables in a multivariate linear regression.
+These variables capture idiosyncratic effects present in each country.
+
+For example, if we want to evaluate the relationship between external efficacy and system support, including country fixed effects, we have to calculate a multivariate linear regression model with system support as the dependent variable, external efficacy as the main independent variable and the "dummy" variables for each country, except for the reference country.
+
+```{r efectosfijos}
+model5 = lm(psar ~ eff1r + factor(pais), data=lapop18)
+summary(model5)
+```
+
+We can calculate other model including the five independent variables of interest and country fixed effects.
+
+```{r cincoivefectosfijos}
+model6 = lm(psar ~ eff1r + ejec + tolr + it1r + b32r + factor(pais), data=lapop18)
+summary(model6)
+```
+
+To replicate the model presented in Figure 2.10, it is necessary to add the socio-demographic controls: level of education, quintiles of wealth, place of residence, gender and age (in groups).
+The following model includes all these controls.
+Since these are categorical variables, the command `factor` is included to make "dummy" variables for each category of the variable, leaving the first group of each variable as the reference category.
+
+```{r complete model}
+model7 = lm(psar ~ eff1r + ejec + tolr + it1r + b32r + factor(pais)
+              + factor(edr) + factor(quintall) + factor(urban) + factor(mujer)
+              + factor(edad), data=lapop18)
+summary(model7)
+```
+
+Figure 2.10 includes these controls, but does not present them on the graph.
+This can be replicated with the command `plot_summs`, which can display model 7, but it allows that we say which coefficients to plot with the command `coefs`.
+
+```{r grafico modelo completo}
+plot_summs(model7, coefs=c("External efficacy"="eff1r", "Confidence in the executive"= "ejec",
+                            "Political tolerance"="tolr", "Trust in the community"="it1r",
+                            "Trust in local government"="b32r"))
+```
+
+In this way, a multivariate linear regression model has been created, in which five independent numerical variables of interest and a series of socio-demographic controls and fixed effects by country have been included.
+
+# Summary
+
+In this section we have used the method of least squares to compute a multivariate model.
+In particular, a model with five predictors of system support has been presented.
+This model has been presented in a standard way in a table of results and through a graph similar to Figure 2.10 of the report.
+
+According to the results of this multivariate model, we explain the validity of the model, the inference test to evaluate the relationship between each independent variable with the dependent variable, the direction of the relationships and the decrease in error through the coefficient of determination.
+
+Then, we include control dummy variables and country fixed effects in the multivariate model to replicate Figure 2.10.
+
+# Including survey weights
+
+The calculations made do not include the survey weights.
+An introduction to the use of the survey weights was made [here](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Expansion.html).
+In this part we will use the library `survey`.
+
+We will use the command `svydesign` (similar to the command svyset in STATA).
+With this command, we create a new object called "design18", which saves the information of the variables contained in the dataframe, including the survey weights in the calculations.
+Therefore, if a new variable is created later, this command would have to be calculated again so that this object "design18" includes this new variable.
+
+```{r design, message=FALSE, warning=FALSE}
+library(survey)
+design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
+```
+
+The library `survey` includes the command `svyglm` that allows to compute a multivariate linear regression model.
+We can include the same variables used in model 7 in this command.
+We have to specify the design that is used and the treatment of missing values.
+This calculation is saved in a object "model8".
+The command `summ` from the library `jtools` is used to describe the model.
+
+```{r modelow}
+model8 = svyglm(psar ~ eff1r + ejec + tolr + it1r + b32r + factor(pais) + 
+    factor(edr) + factor(quintall) + factor(urban) + factor(mujer) + 
+    factor(edad), design=design18, na.action = na.omit)
+summ(model8)
+```
+
+We should note that this table presents the $R^2 = 0.44$ and $N = 23084$, which are the same values reported in Figure 2.10.
+
+In the same way as with model 7, these results can also be plotted using the command `plot_summs`, selecting the variables to display.
+
+```{r graficow}
+plot_summs(model8, coefs=c("External efficacy"="eff1r", "Confidence in the executive"= "ejec",
+                            "Political tolerance"="tolr", "Trust in the community"="it1r",
+                            "Trust in local government"="b32r"))
+```

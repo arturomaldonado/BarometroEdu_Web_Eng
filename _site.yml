@@ -42,7 +42,7 @@ navbar:
         href: correlation.html
       - text: "Simple linear regresion"
         href: regresion1.html
-      - text: "Multiple linear regresion"
+      - text: "Multivariate linear regresion"
         href: regresion2.html
       - text: "Logistic regresion"
         href: logit.html
