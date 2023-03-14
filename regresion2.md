@@ -208,17 +208,6 @@ library(jtools)
 plot_summs(model1)
 ```
 
-```
-## Registered S3 methods overwritten by 'broom':
-##   method            from  
-##   tidy.glht         jtools
-##   tidy.summary.glht jtools
-```
-
-```
-## Loading required namespace: broom.mixed
-```
-
 ![](regresion2_files/figure-html/graph-1.png)<!-- -->
 
 # Interpretation

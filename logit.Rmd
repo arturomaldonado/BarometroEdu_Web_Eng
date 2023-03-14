@@ -1,0 +1,228 @@
+---
+title: "Logistic regression using the AmericasBarometer"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: flatly
+    df_print: paged
+    self_contained: no
+    keep_md: yes
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+In this section, we will see basic aspects of the logistic model to analyze the relationship between a binary dependent variable and an independent variable.
+
+We continue to replicate the analysis of chapter "Social networks and political attitudes" from the report [The Pulse of Democracy](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_10.13.19.pdf) of the 2018/19 round.
+In this chapter, we analyze a measure of support for democracy.
+
+# About the dataset
+
+The data we are going to use should be cited as follows: Source: AmericasBarometer by the Latin American Public Opinion Project (LAPOP), wwww.LapopSurveys.org.
+You can download the data freely [here](http://datasets.americasbarometer.org/database/login.php).
+
+It is recommended to clean the Environment before starting this section.
+In this document, a database in RData format is again loaded.
+This format is efficient in terms of storage space.
+This database is hosted in the "materials_edu" repository of the LAPOP account on GitHub.
+Using the `rio` library and the `import` command, you can import this database from this repository, using the following code.
+
+```{r base, message=FALSE, warning=FALSE}
+library(rio)
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData")
+lapop18 = subset(lapop18, pais<=35)
+```
+
+# Determinants of use of social networks
+
+The section about social networks presents results of a logistic regression model in Figure 3.4.
+As report says, this figure "shows the results of a logistic regression analysis that regress high use of social media (vs. low use) on the same set of demographic and socioeconomic factors" (p. 59).
+
+![](Figure3.4.png){width="409"}
+
+As the report also indicates "the dependent variable, *Social Media User*, is based on responses to the three questions about holding accounts from Facebook, Twitter, and Whatsapp. This dichotomous measure distinguishes between those individuals who use accounts from one or more of these platforms, compared to those who do not engane with any social media account" (p. 59).
+
+In the section on [descriptive statistics](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Descriptives.html) we present the code to create users of each social network using the command`ifelse`.
+
+```{r users}
+lapop18$fb_user = ifelse(lapop18$smedia1==1 & lapop18$smedia2<=4, 1, 0)
+lapop18$tw_user = ifelse(lapop18$smedia4==1 & lapop18$smedia5<=4, 1, 0)
+lapop18$wa_user = ifelse(lapop18$smedia7==1 & lapop18$smedia8<=4, 1, 0)
+```
+
+Based on these variables, we create a variable for users of any social network.
+This dichotomous variable has a value of 1 if interviewee reports being user of any social network in the questionnaire (Facebook or Twitter or Whatsapp).
+
+```{r userany}
+lapop18$user = ifelse(lapop18$fb_user==1 | lapop18$wa_user==1 | lapop18$tw_user ==1, 1, 0)
+table(lapop18$user)
+```
+
+Figure 3.4 shows the determinants of social media use.
+These variables are:
+
+-   Level of wealth: variable "quintall" in the dataset.
+
+-   Years of education: variable "ed" in the dataset.
+
+-   Age: variable "q2" in the dataset.
+
+-   Female: variable "mujer" in the dataset.
+
+-   Urban area: variable "ur" in the dataset.
+
+Footnote 16 indicates that "Age and education are measured in years, rescaled to 0 to 1, where 0 indicates the youngest or the lowest level of education, and 1 the oldest or the highest level of education. Wealth is an ordinal variable, rescaled to 0 to 1, where 0 indicates the lowest level of wealth, and 1 the highest level of wealth. Place of residence is coded 1 for urban and 0 for rural. Gender is coded 1 for female and 0 for male" (p. 64).
+
+We proceed to recode variables "quintall", "ed" and "q2" in variables that vary between 0 and 1, called "wealth", "educ" and "age".
+Variables "mujer" and "urban", available in the dataset, are dichotomous variables, so we do not have to recode.
+
+```{r recode}
+lapop18$wealth = (lapop18$quintall - 1)/4
+lapop18$educ = (lapop18$ed)/18
+lapop18$age = (lapop18$q2 - 16)/83
+summary(lapop18$wealth)
+summary(lapop18$educ)
+summary(lapop18$age)
+```
+
+With the command `summary` we can evaluate if these variables vary between 0 and 1.
+We should note that these variables have missing values "NAs" that will not be included in calculations.
+
+# Logistic regression model
+
+To evaluate factors associated to social media use, we can calculate a regression model.
+In this case, different from the linear regression model, the dependent variable is not of type numeric, but it is a dichotomous variable, with value 0 to indicate not users and 1 to identify social media users.
+
+Linear regression models do not fit this type of variable.
+The reasons are multiple.
+A linear regression to model the relationship between a dichotomous dependent variables and an numeric independent variable could results in predicted values higher than 1 o lower than 0.
+So, it is not a good approach to calculate probabilities.
+
+On the contrary, a logistic regression model restricts results between 0 and 1, so we can interpret as a probability.
+In our example, we calculate the probability of being a social media user for different values of the independent variables.
+
+Other reasons for not using a lineal regression model are more technical and are related to residuals.
+If we use a linear regression model to fit the relationship between a dichotomous dependent variable and a numeric independent variable, the residuals would not be normally distributed and would be heteroskedastic.
+
+To calculate a model, we use the command `glm` in which we specify the variable Y and then the independent variables.
+Each independent variable is summed to the model.
+The model in Figure 3.4 includes country fixed effects.
+In the section on [multivariate linear regression](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/regresion2.html) we explain the use of country fixed effects.
+Here, we use the command `factor()` to include dummy variables for each country, taking Mexico (pais = 1) as reference.
+
+This model is saved in an object "model1".
+We can describe this model with the command `summary`.
+
+```{r model}
+model1 = glm(user ~ wealth + educ + age + mujer + urban + factor(pais), family = binomial, data=lapop18)
+summary(model1)
+```
+
+The results shows the coefficient, standard errors, the z statistic and the linked p-value.
+With this information, we can conclude about the direction of the relationship between each independent variable and the dependent variable.
+For example, the relationship between wealth and the probability of being a social media user is positive, indicating that when wealth is higher, the probabilities of being a social media user are higher.
+The relationship between age and the probability of being a social media user is negative: when age is higher, there are less probabilities of being a social media user.
+In both cases, we have statistically significant relations because p-values are lower than 0.05.
+
+The coefficients of the regression are interpreted as the change in the log odds of the dependent variable for an unit change in the independent variable.
+For example, for each additional year in age, the log odds of being a social media user (versus not being a user) decreases in 5.69.
+
+Other way to present these coefficients is transforming them whit the exponential function.
+In this way, we can interpret the results as a rise in the probability in a factor according to this results.
+
+With the following code, we can make this calculation for the main independent variables, excluding the dummy variables for each country.
+
+```{r odds}
+exp(coef(model1)[1:6])
+```
+
+In this manner, we can interpret that an increase of one unit in wealth increases the probability of being a social media user in a factor of 7.7.
+Because wealth was recoded to vary between 0 and 1, a change of one unit is the maximum possible increase.
+
+In the case of women, we can conclude that women have a 15.9% more probabilities of being social media users than men.
+
+To present the results more clearly, we can use several libraries and commands.
+In this section we use the library `jtools` and the command `summs`.
+This command brings statistics to evaluate the model´s goodness of fit.
+For example, the statistic χ2 evaluates the multivariate model versus the null model.
+Because we have a high statistic and a p-value lower than 0.05, we conclude that the model fits the data.
+
+Other statistic is the Pseudo-$R^2$, that we cannot interpret as the determination coefficient in a lineal regression, it gives an idea of the explanatory power of the model.
+
+```{r table}
+#library(stargazer)
+#stargazer(modelo1[1:6], align=T, type = 'text')
+library(jtools)
+summ(model1)
+```
+
+Figure 3.4 shows the coefficients for each variable and the 95% confidence interval.
+A vertical line is included at point 0.
+If a confidence interval crosses this vertical line, we can say that it does not have a statistically significant relationship with the dependent variable of being a social media user.
+Confidence intervals that do not cross this line and that lie to the right (left) of this line have a positive (negative) relationship with social media user, that is, when this variable increases, the probability of being a social media user increases (decreases).
+In this example, all five variables are statistically significant and four show a positive relationship with being a social media user.
+Age is the only independent variable that has a negative relationship with being a social media user.
+
+```{r plot, message=FALSE, warning=FALSE}
+library(jtools)
+plot_summs(model1, coefs=c("Level of wealth"="wealth", "Years of education"="educ",
+                            "Age"="age", "Women"="mujer", "Urban area"="urban"))
+```
+
+This plot is similar and has the same tendencies as Figure 3.4.
+However, it does not show the same results because, as the report indicates "The dots in Figure 4 are the predicted changes in the probability of the dependent variable taking on the value of \"1\" (social media user), given a change from the minimum to maximum value on the independent variable" (p. 59).
+In the figure above, we present the coefficients of the logistic regression.
+
+# Summary
+
+In this section, we have used a logistic regression to model the relationship between independent variables and a dichotomous dependent variable.
+In particular, we have presented a model with five predictors of being a social media user.
+This model has been presented in a standard way in a table of results and also with a plot similar to Figure 3.4 in the report.
+
+# Including survey weights
+
+The calculations made do not include the survey weights.
+An introduction to the use of the survey weights was made [here](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/Expansion.html).
+In this part we will use the library `survey`.
+
+We will use the command `svydesign` (similar to the command svyset in STATA).
+With this command, we create a new object called "design18", which saves the information of the variables contained in the dataframe, including the survey weights in the calculations.
+Therefore, if a new variable is created later, this command would have to be calculated again so that this object "design18" includes this new variable.
+
+```{r diseno, message=FALSE, warning=FALSE}
+library(survey)
+design18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
+```
+
+The library `survey` includes the command `svyglm` that allows to compute a logistic regression model.
+We can include the same variables used in model 1 in this command.
+We have to specify the design that is used and the treatment of missing values.
+This calculation is saved in a object "model2".
+The command `summ` from the library `jtools` is used to describe the model.
+
+```{r modelow, message=FALSE, warning=FALSE}
+model2 = svyglm(user ~ wealth + educ + age + mujer + urban + factor(pais), family=quasibinomial, design=design18, na.action = na.omit)
+summ(model2)
+```
+
+In the same way as with model 1, these results can also be plotted using the command `plot_summs`, selecting the variables to display.
+
+```{r graficow}
+plot_summs(model2, coefs=c("Level of wealth"="wealth", "Years of education"="educ",
+                            "Age"="age", "Mujer"="mujer", "Urban area"="urban"))
+```
+
+This plot is similar to the one reported in Figure 3.4.
+Differences are due to the fact that this plot shows the coefficients whereas Figure 3.4 shows predicted changes in the probability of the dependent variable.
