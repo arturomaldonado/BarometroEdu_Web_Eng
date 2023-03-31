@@ -314,7 +314,7 @@ plot_summs(model1, coefs=c("Level of wealth"="wealth", "Years of education"="edu
 ![](logit_files/figure-html/plot-1.png)<!-- -->
 
 This plot is similar and has the same tendencies as Figure 3.4.
-However, it does not show the same results because, as the report indicates "The dots in Figure 4 are the predicted changes in the probability of the dependent variable taking on the value of \"1\" (social media user), given a change from the minimum to maximum value on the independent variable" (p. 59).
+However, it does not show the same results because, as the report indicates "The dots in Figure 4 are the predicted changes in the probability of the dependent variable taking on the value of"1" (social media user), given a change from the minimum to maximum value on the independent variable" (p. 59).
 In the figure above, we present the coefficients of the logistic regression.
 
 # Summary

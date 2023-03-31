@@ -49,7 +49,7 @@ navbar:
     - text: "Extras"
       menu:
       - text: "Maps"
-        href: mapas.html
+        href: maps.html
     - text: "Contact"
       href: Links.html
     - text: "Spanish"
