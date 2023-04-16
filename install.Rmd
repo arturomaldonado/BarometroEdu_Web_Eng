@@ -24,7 +24,7 @@ h1 {color: #3366CC;}
 
 [R](http://www.r-project.org) is a license-free software that can be used to statistical analysis, data visualization, among other uses. In this case, we use them to analyze public opinion data, in particular, AmricasBarometer data from the Latin American Public Opinion Project, [LAPOP Lab](https://www.vanderbilt.edu/lapop/). R can be downloaded from its own repository: <https://cran.r-project.org>.
 
-Other freeware is [RStudio](http://www.rstudio.com), which is a graphic interface IDE for R. In these links, both programs can be downloaded. First, you should download R and then RStudio. Both have versions for Windows, IOS and Linux.
+Other freeware is [RStudio](https://posit.co), which is a graphic interface IDE for R. In these links, both programs can be downloaded. First, you should download R and then RStudio. Both have versions for Windows, IOS and Linux.
 
 # RStudio
 

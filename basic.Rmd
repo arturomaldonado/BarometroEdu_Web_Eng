@@ -68,13 +68,16 @@ This new object appears in the Envorinment.
 # Vectors
 
 A vector is an object that contain a set of elements, such as numbers or string of characters, among other types.
+This data has to be concatenated.
+For this reason, the function `c(…)` appears before this series of numbers.
+
 For example, we can create a vector called "support" that saves all the percentages of the Figure 1.1.
 
 ```{r vector percentages}
 support = c(80, 73, 71, 69, 68, 67, 66, 63, 63, 63, 62, 61, 61, 57, 53, 52, 50, 50, 49, 46)
 ```
 
-In a similar way, we can create a vector with the names (or acronyms) of all countries.
+In a similar way, we can create a vector with the names (or acronyms) of all countries, in quotation marks and within the function `c(…)`.
 
 ```{r vector pais}
 country = c("UY", "SV", "CR", "AR", "CL", "BR", "GY", "MX", "EC", "NI", "DO", "PN", "BO", "JA", "CO", "GT", "PY", "PE", "HN", "HT")
@@ -134,11 +137,6 @@ Figure 1.1 shows results for countries where the AmericasBarometer has informati
 However, in some cases, a vector can include a missing value.
 For example, this figure does not show information for Venezuela, country where LAPOP did not do fieldwork for security reasons.
 If we want to create a vector that includes a missing value, we can run this code:
-
-El Gráfico 1.1 muestra los resultados para los países donde se tiene información.
-Sin embargo, en algunos casos un vector puede incluir un valor perdido.
-Por ejemplo, el gráfico no muestra información para Venezuela, país donde no se realizó trabajo de campo por motivos de seguridad.
-Si quisiéramos crear un vector que incluya este valor faltante, se podría hacer así:
 
 ```{r apoyo con NA}
 support2 = c(support, NA)

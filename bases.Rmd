@@ -24,7 +24,7 @@ h1 {color: #3366CC;}
 
 Data that we are going to use through this sections are the AmericasBarometer datasets from the [LAPOP Lab](https://www.vanderbilt.edu/lapop/). A center for excellence in international survey research, LAPOP team uses gold-standard scientific approaches and innovative methods in cross-national and targeted surveys, evaluations, and reports about individuals´ attitudes, evaluations and experiences. The AmericasBarometer is the only scientifically rigorous comparative survey of democratic values and behaviors that covers all independent countries in North, Central, and South America, as well as a significant number of countries in the Caribbean. Every year, it publishes dozens of high-quality academic research and relevant articles for public policy implementation. Reports from this project can be seen and downloaded in this [link](https://www.vanderbilt.edu/lapop/publications.php).
 
-The 2018/19 wave of the AmericasBarometer is the eighth wave of this project. The questionnaiere includes a common module that allows to evaluate to what extent citizens support democratic values, perceive if there are basic liberties, how they experience the rule of law, who they participate in political life, whether they support their political system, if they use social networks, among other topics. The common questionnaires and the country-specific questionnaires are available in this [link](https://www.vanderbilt.edu/lapop/core-surveys.php).
+The 2021 wave of the AmericasBarometer is the nineth wave of this project. The questionnaiere includes a common module that allows to evaluate to what extent citizens support democratic values, perceive if there are basic liberties, how they experience the rule of law, who they participate in political life, whether they support their political system, if they use social networks, among other topics. The common questionnaires and the country-specific questionnaires are available in this [link](https://www.vanderbilt.edu/lapop/core-surveys.php).
 
 Datasets and reports are public and are available in the project´s webpage.
 
@@ -36,7 +36,7 @@ Datasets are for free download [here](http://datasets.americasbarometer.org/data
 
 ![](datos.png){width="372"}
 
-We can also access datasets for each country. For example, if we look for "Mexico" in the Search space, we can access datasets for each round of the AmericasBarometer for Mexico. Data for the last round can be downloaded as a file called "Mexico LAPOP AmericasBarometer 2019 v1.0_W.dta" in STATA format. Also, we can download the questionnaire and a codebook.
+We can also access datasets for each country. For example, if we look for "Mexico" in the Search space, we can access datasets for each round of the AmericasBarometer for Mexico. Data for the last round can be downloaded as a file called "MEX_2021_LAPOP_AmericasBarometer_v1.2_w.dta" in STATA format. Also, we can download the questionnaire and a technical document.
 
 ![](mexico.png){width="376"}
 
@@ -50,7 +50,7 @@ This path is the working directory where produced files will be saved. If you ar
 
 `setwd("path_of_working_directory/working_directory")`
 
-The downloaded AmericasBarometer dataset have to be saved in the working directory. In this way, we can read a STATA dataset as a dataframe object in R. There are many ways to read a dataset in R. A first way is via the menu "File" and the sub menu "Import Dataset". In this option, we can import files in text, Excel, SPSS, SAS or STATA format. If we choose STATA, R opens a window where we should look for path of the file. This window shows a previsualization of the dataset. The dataset shows the original name by defect, but we can change the name to a simpler one. On this example, we hacve changed the name "LAPOP_Merge_2004_2018.dta" to just "lapop". The Environment will show this name.
+The downloaded AmericasBarometer dataset has to be saved in the working directory. In this way, we can read a STATA dataset as a dataframe object in R. There are many ways to read a dataset in R. A first way is via the menu "File" and the sub menu "Import Dataset". In this option, we can import files in text, Excel, SPSS, SAS or STATA format. If we choose STATA, R opens a window where we should look for path of the file. This window shows a previsualization of the dataset. The dataset shows the original name by defect, but we can change the name to a simpler one. On this example, we have changed the name "LAPOP_Merge_2004_2018.dta" to just "lapop". The Environment will show this name.
 
 ![](import.png){width="700"}
 
@@ -93,7 +93,7 @@ For example, to load a limited version of the dataset of the 2018/19 wave, store
 ```{r importing GitHub}
 #install.packages("rio") You should use this code if rio is not installed yet
 library(rio) 
-lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
 ```
 
 Once this code run, we see a dataset appears in the Environment. This dataset includes 31,050 observations and 84 variables.
@@ -101,7 +101,7 @@ Once this code run, we see a dataset appears in the Environment. This dataset in
 In the same manner, we can use the library `rio` to call a complete dataset, in RData format, with the same commando. This new dataset is saved in a dataframe called "lapop18v2".
 
 ```{r importing RData}
-lapop18v2 <- import("https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData")
+lapop18v2 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData")
 ```
 
 This new dataset has 28,042 observations (because it does not include USA and Canada) and 1,369 variables.

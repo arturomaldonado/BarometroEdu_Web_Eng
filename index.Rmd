@@ -32,7 +32,7 @@ You will find in this web modules where AmericasBarometer data is used in R and 
 
 2.  [Basic procedures](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/basic.html)
 
-3.  [Importing datasets](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/dataset.html)
+3.  [Importing datasets](https://arturomaldonado.github.io/BarometroEdu_Web_Eng/bases.html)
 
 ## First steps
 

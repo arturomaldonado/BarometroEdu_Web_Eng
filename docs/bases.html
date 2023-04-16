@@ -470,7 +470,7 @@ high-quality academic research and relevant articles for public policy
 implementation. Reports from this project can be seen and downloaded in
 this <a
 href="https://www.vanderbilt.edu/lapop/publications.php">link</a>.</p>
-<p>The 2018/19 wave of the AmericasBarometer is the eighth wave of this
+<p>The 2021 wave of the AmericasBarometer is the nineth wave of this
 project. The questionnaiere includes a common module that allows to
 evaluate to what extent citizens support democratic values, perceive if
 there are basic liberties, how they experience the rule of law, who they
@@ -497,9 +497,9 @@ dataset “2004-2018 LAPOP AmericasBarometer Merge (v1.0FREE).dta”
 <p>We can also access datasets for each country. For example, if we look
 for “Mexico” in the Search space, we can access datasets for each round
 of the AmericasBarometer for Mexico. Data for the last round can be
-downloaded as a file called “Mexico LAPOP AmericasBarometer 2019
-v1.0_W.dta” in STATA format. Also, we can download the questionnaire and
-a codebook.</p>
+downloaded as a file called
+“MEX_2021_LAPOP_AmericasBarometer_v1.2_w.dta” in STATA format. Also, we
+can download the questionnaire and a technical document.</p>
 <p><img src="mexico.png" width="376" /></p>
 </div>
 <div id="importing-americasbarometer-datasets" class="section level1">
@@ -516,7 +516,7 @@ the commando <code>getwd()</code>. If you want to change the working
 directory, you can use the command <code>setwd()</code>. For example,
 you can define:</p>
 <p><code>setwd("path_of_working_directory/working_directory")</code></p>
-<p>The downloaded AmericasBarometer dataset have to be saved in the
+<p>The downloaded AmericasBarometer dataset has to be saved in the
 working directory. In this way, we can read a STATA dataset as a
 dataframe object in R. There are many ways to read a dataset in R. A
 first way is via the menu “File” and the sub menu “Import Dataset”. In
@@ -524,7 +524,7 @@ this option, we can import files in text, Excel, SPSS, SAS or STATA
 format. If we choose STATA, R opens a window where we should look for
 path of the file. This window shows a previsualization of the dataset.
 The dataset shows the original name by defect, but we can change the
-name to a simpler one. On this example, we hacve changed the name
+name to a simpler one. On this example, we have changed the name
 “LAPOP_Merge_2004_2018.dta” to just “lapop”. The Environment will show
 this name.</p>
 <p><img src="import.png" width="700" /></p>
@@ -595,13 +595,13 @@ wave, stored in GitHub in SPSS format, we can activate library
 <code>import</code>.</p>
 <pre class="r"><code>#install.packages(&quot;rio&quot;) You should use this code if rio is not installed yet
 library(rio) 
-lapop18 &lt;- import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)</code></pre>
+lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)</code></pre>
 <p>Once this code run, we see a dataset appears in the Environment. This
 dataset includes 31,050 observations and 84 variables.</p>
 <p>In the same manner, we can use the library <code>rio</code> to call a
 complete dataset, in RData format, with the same commando. This new
 dataset is saved in a dataframe called “lapop18v2”.</p>
-<pre class="r"><code>lapop18v2 &lt;- import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData&quot;)</code></pre>
+<pre class="r"><code>lapop18v2 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData&quot;)</code></pre>
 <p>This new dataset has 28,042 observations (because it does not include
 USA and Canada) and 1,369 variables.</p>
 </div>
